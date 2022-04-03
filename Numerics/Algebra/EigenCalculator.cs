@@ -142,4 +142,78 @@ namespace Orbifold.Numerics
 
 			for(int i = 0; i < n - 1; i++) {
 				System.Threading.Tasks.Parallel.For(0, n / 2, j => {
-					int p, q, k = n - 1
+					int p, q, k = n - 1 - j;
+
+					int eK = queue.ElementAt(k - 1);
+					int eJ = j == 0 ? 0 : queue.ElementAt(j - 1);
+
+					p = Math.Min(eJ, eK);
+					q = Math.Max(eJ, eK);
+
+					// are we in a buy week?
+					if(p >= 0)
+						Sweep(p, q);
+
+					//Console.WriteLine("({0}, {1}) [{2}] {3}", p, q, Thread.CurrentThread.ManagedThreadId, p < 0 ? "buy" : "");
+
+				});
+
+				//Console.WriteLine("----------[{0}]----------", Thread.CurrentThread.ManagedThreadId);
+				// move stuff around
+				queue.Enqueue(queue.Dequeue());
+			}
+
+		}
+
+		/// <summary>Factorizes this object.</summary>
+		private void Factorize()
+		{
+			int N = A.ColumnCount;
+			for(int p = 0; p < N - 1; p++)
+				for(int q = p + 1; q < N; q++)
+					Sweep(p, q);
+		}
+
+		/// <summary>Computes the given tolerance.</summary>
+		/// <param name="tol">(Optional) the tolerance.</param>
+		public void Compute(double tol = 1.0e-10)
+		{
+			int s = 0;
+			do {
+				s++;
+				Factorize();
+				// TODO: Fix parallelization
+				//if (A.Cols <= 300) // small enough
+				//    factorize();
+				//else          // parallelize
+				//    parallel();
+
+			} while (Offset(A) > tol);
+
+			Sort();
+		}
+
+		/// <summary>Sorts this object.</summary>
+		private void Sort()
+		{
+			//ordering
+			var eigs = A.Diag().ToArray()
+				.Select((d, i) => new Tuple<int, double>(i, d))
+				.OrderByDescending(j => j.Item2)
+				.ToArray();
+
+			// sort eigenvectors
+			var copy = V.Clone();
+			for(int i = 0; i < eigs.Length; i++)
+				copy[i, VectorType.Col] = V[eigs[i].Item1, VectorType.Col];
+
+			// normalize eigenvectors
+			copy.Normalize(VectorType.Col);
+			V = copy;
+
+			EigenValues = eigs.Select(t => t.Item2).ToArray();
+		}
+
+		 
+	}
+}
