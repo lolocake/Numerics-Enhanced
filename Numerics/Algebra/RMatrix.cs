@@ -86,4 +86,67 @@ namespace Orbifold.Numerics
                 return new RMatrix(this.colCount, this.rowCount)
                            {
                                isTransposed = true,
-        
+                               matrix = this.matrix
+                           };
+            }
+        }
+
+        public double this[int m, int n]
+        {
+            get
+            {
+                if (this.isTransposed)
+                {
+                    if (m < 0 || m > this.ColumnCount) throw new Exception("m-th row is out of range!");
+                    if (n < 0 || n > this.RowCount) throw new Exception("n-th col is out of range!");
+                    return this.matrix[n, m];
+                }
+                if (m < 0 || m > this.RowCount) throw new Exception("m-th row is out of range!");
+                if (n < 0 || n > this.ColumnCount) throw new Exception("n-th col is out of range!");
+                return this.matrix[m, n];
+            }
+            set
+            {
+                if (this.isTransposed) throw new Exception("The transosed matrix is read-only.");
+                this.matrix[m, n] = value;
+            }
+        }
+
+        public Vector this[int i]
+        {
+            get
+            {
+                return this[i, VectorType.Row];
+            }
+            set
+            {
+                this[i, VectorType.Row] = value;
+            }
+        }
+
+        public Vector this[int i, VectorType t]
+        {
+            get
+            {
+                // switch it up if using a transposed version
+                if (this.isTransposed) t = t == VectorType.Row ? VectorType.Col : VectorType.Row;
+
+                if (t == VectorType.Row)
+                {
+                    if (i >= this.RowCount) throw new IndexOutOfRangeException();
+
+                    return new Vector(this.matrix, i, true);
+                }
+                if (i >= this.ColumnCount) throw new IndexOutOfRangeException();
+
+                return new Vector(this.matrix, i);
+            }
+            set
+            {
+                if (this.isTransposed) throw new InvalidOperationException("Cannot modify matrix in read-only transpose mode!");
+
+                if (t == VectorType.Row)
+                {
+                    if (i >= this.RowCount) throw new IndexOutOfRangeException();
+
+                    if (value.Dimension > this.ColumnCount) throw new InvalidOperationException(string.Format("Given vector has larger dimension than the {0} columns available.", this.ColumnCount
