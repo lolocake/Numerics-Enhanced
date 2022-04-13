@@ -149,4 +149,88 @@ namespace Orbifold.Numerics
                 {
                     if (i >= this.RowCount) throw new IndexOutOfRangeException();
 
-                    if (value.Dimension > this.ColumnCount) throw new InvalidOperationException(string.Format("Given vector has larger dimension than the {0} columns available.", this.ColumnCount
+                    if (value.Dimension > this.ColumnCount) throw new InvalidOperationException(string.Format("Given vector has larger dimension than the {0} columns available.", this.ColumnCount));
+
+                    for (var k = 0; k < this.ColumnCount; k++) this.matrix[i, k] = value[k];
+                }
+                else
+                {
+                    if (i >= this.ColumnCount) throw new IndexOutOfRangeException();
+
+                    if (value.Dimension > this.RowCount) throw new InvalidOperationException(string.Format("Given vector has larger dimension than the {0} rows available.", this.RowCount));
+
+                    for (var k = 0; k < this.RowCount; k++) this.matrix[k, i] = value[k];
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Gets the number or rows in this matrix.
+        /// </summary>
+        /// <value>The row count.</value>
+        public int RowCount
+        {
+            get
+            {
+                return this.rowCount;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the number or columns in this matrix.
+        /// </summary>
+        /// <value>The column count.</value>
+        public int ColumnCount
+        {
+            get
+            {
+                return this.colCount;
+            }
+        }
+
+        /// <summary>
+        ///     Clones this instance.
+        /// </summary>
+        object ICloneable.Clone()
+        {
+            return this.Clone();
+        }
+
+        public IEnumerable<Vector> GetRows()
+        {
+            for (var i = 0; i < this.RowCount; i++) yield return this[i, VectorType.Row];
+        }
+
+        public IEnumerable<Vector> GetCols()
+        {
+            for (var i = 0; i < this.ColumnCount; i++) yield return this[i, VectorType.Col];
+        }
+
+        public Vector Col(int i)
+        {
+            return this[i, VectorType.Col];
+        }
+
+        public Vector Row(int i)
+        {
+            return this[i, VectorType.Row];
+        }
+
+        public static RMatrix Identity(int size)
+        {
+            return Identity(size, size);
+        }
+
+        public static RMatrix Identity(int n, int d)
+        {
+            var m = new double[n, d];
+            for (var i = 0; i < n; i++)
+            {
+                for (var j = 0; j < d; j++)
+                {
+                    if (i == j) m[i, j] = 1;
+                    else m[i, j] = 0;
+                }
+            }
+
+            return new RMa
