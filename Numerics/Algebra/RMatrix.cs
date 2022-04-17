@@ -300,4 +300,69 @@ namespace Orbifold.Numerics
             return strMatrix;
         }
 
+        public override bool Equals(object obj)
+        {
+            return (obj is RMatrix) && this.Equals((RMatrix)obj);
+        }
+
+        public bool Equals(RMatrix m)
+        {
+            return Utils.ArraysEqual(this.matrix, m.matrix);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.matrix.GetHashCode();
+        }
+
+        public static Vector Dot(RMatrix x, Vector v)
+        {
+            if (v.Dimension != x.ColumnCount) throw new InvalidOperationException("objects are not aligned");
+
+            var toReturn = Vector.Zeros(x.RowCount);
+            for (var i = 0; i < toReturn.Dimension; i++) toReturn[i] = Vector.Dot(x[i, VectorType.Row], v);
+            return toReturn;
+        }
+
+        /// <summary>Dot product between a matrix and a vector.</summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="v">Vector v.</param>
+        /// <param name="x">Matrix x.</param>
+        /// <returns>Vector dot product.</returns>
+        public static Vector Dot(Vector v, RMatrix x)
+        {
+            if (v.Dimension != x.RowCount) throw new InvalidOperationException("objects are not aligned");
+
+            var toReturn = Vector.Zeros(x.ColumnCount);
+            for (var i = 0; i < toReturn.Dimension; i++) toReturn[i] = Vector.Dot(x[i, VectorType.Col], v);
+            return toReturn;
+        }
+
+        public static RMatrix operator *(RMatrix m, Vector v)
+        {
+            var ans = Dot(m, v);
+            return ans.ToMatrix(VectorType.Col);
+        }
+
+        /// <summary>Multiplication operator.</summary>
+        /// <param name="v">The Vector to process.</param>
+        /// <param name="m">The Matrix to process.</param>
+        /// <returns>The result of the operation.</returns>
+        public static RMatrix operator *(Vector v, RMatrix m)
+        {
+            var ans = Dot(v, m);
+            return ans.ToMatrix(VectorType.Row);
+        }
+
+        public static bool operator ==(RMatrix m1, RMatrix m2)
+        {
+            return m1.Equals(m2);
+        }
+
+        public static bool operator !=(RMatrix m1, RMatrix m2)
+        {
+            return !m1.Equals(m2);
+        }
+
+        public static RMatrix operator +(RMatrix m)
       
