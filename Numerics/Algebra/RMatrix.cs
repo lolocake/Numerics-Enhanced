@@ -233,4 +233,71 @@ namespace Orbifold.Numerics
                 }
             }
 
-            return new RMa
+            return new RMatrix(n, d)
+                       {
+                           matrix = m,
+                           isTransposed = false
+                       };
+        }
+
+        public RMatrix IdentityMatrix()
+        {
+            var m = new RMatrix(this.rowCount, this.colCount);
+            for (var i = 0; i < this.rowCount; i++) for (var j = 0; j < this.colCount; j++) if (i == j) m[i, j] = 1;
+            return m;
+        }
+
+        public static implicit operator RMatrix(double[,] m)
+        {
+            return new RMatrix(m);
+        }
+
+        public RMatrix Center(VectorType t)
+        {
+            var max = t == VectorType.Row ? this.RowCount : this.ColumnCount;
+            for (var i = 0; i < max; i++) this[i, t] -= this[i, t].Mean();
+            return this;
+        }
+
+        public void Normalize(VectorType t)
+        {
+            var max = t == VectorType.Row ? this.RowCount : this.ColumnCount;
+            for (var i = 0; i < max; i++) this[i, t] /= this[i, t].Norm();
+        }
+
+        /// <summary>
+        ///     Returns a clone of this matrix.
+        /// </summary>
+        public RMatrix Clone()
+        {
+            return new RMatrix(this.matrix)
+                       {
+                           matrix = (double[,])this.matrix.Clone()
+                       };
+        }
+
+        public Vector ToVector()
+        {
+            if (this.RowCount == 1) return this[0, VectorType.Row].Clone();
+
+            if (this.ColumnCount == 1) return this[0, VectorType.Col].Clone();
+
+            throw new InvalidOperationException("Only one-dimensional matrices can be converted to a vector.");
+        }
+
+        public override string ToString()
+        {
+            var strMatrix = "(";
+            for (var i = 0; i < this.rowCount; i++)
+            {
+                var str = "";
+                for (var j = 0; j < this.colCount - 1; j++) str += this.matrix[i, j].ToString(CultureInfo.InvariantCulture) + ", ";
+                str += this.matrix[i, this.colCount - 1].ToString(CultureInfo.InvariantCulture);
+                if (i != this.rowCount - 1 && i == 0) strMatrix += str + "\n";
+                else if (i != this.rowCount - 1 && i != 0) strMatrix += " " + str + "\n";
+                else strMatrix += " " + str + ")";
+            }
+            return strMatrix;
+        }
+
+      
