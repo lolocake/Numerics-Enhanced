@@ -365,4 +365,64 @@ namespace Orbifold.Numerics
         }
 
         public static RMatrix operator +(RMatrix m)
-      
+        {
+            return m;
+        }
+
+
+        public static RMatrix operator +(RMatrix m1, RMatrix m2)
+        {
+            if (!CompareDimension(m1, m2)) throw new Exception("The dimensions of two matrices must be the same!");
+            var result = new RMatrix(m1.RowCount, m1.ColumnCount);
+            for (var i = 0; i < m1.RowCount; i++) for (var j = 0; j < m1.ColumnCount; j++) result[i, j] = m1[i, j] + m2[i, j];
+            return result;
+        }
+
+        public static RMatrix operator -(RMatrix m)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) 
+                for (var j = 0; j < m.ColumnCount; j++)
+                    result[i, j] *= -1;
+            return result;
+        }
+
+        public static RMatrix operator -(RMatrix m1, RMatrix m2)
+        {
+            if (!CompareDimension(m1, m2)) throw new Exception("The dimensions of two matrices must be the same!");
+            var result = new RMatrix(m1.RowCount, m1.ColumnCount);
+            for (var i = 0; i < m1.RowCount; i++) for (var j = 0; j < m1.ColumnCount; j++) result[i, j] = m1[i, j] - m2[i, j];
+            return result;
+        }
+
+        public static RMatrix operator *(RMatrix m, double d)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] *= d;
+            return result;
+        }
+
+        public static RMatrix operator *(double d, RMatrix m)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] *= d;
+            return result;
+        }
+
+        public static RMatrix operator /(RMatrix m, double d)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] /= d;
+            return result;
+        }
+
+        public static RMatrix operator /(RMatrix m, RMatrix q)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] /= q[i, j];
+            return result;
+        }
+
+        /// <summary>
+        /// The entry-by-entry multiplication.
+        /// See the <see cref="MatrixExtensions.Time
