@@ -425,4 +425,70 @@ namespace Orbifold.Numerics
 
         /// <summary>
         /// The entry-by-entry multiplication.
-        /// See the <see cref="MatrixExtensions.Time
+        /// See the <see cref="MatrixExtensions.Times"/> method if you need the standard matrix multiplication.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="q"></param>
+        /// <returns></returns>
+        public static RMatrix operator *(RMatrix m, RMatrix q)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] *= q[i, j];
+            return result;
+        }
+
+        public static RMatrix operator +(RMatrix m, double d)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] += d;
+            return result;
+        }
+
+        public static RMatrix operator +(double d, RMatrix m)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] += d;
+            return result;
+        }
+
+        public static RMatrix operator -(RMatrix m, double d)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] -= d;
+            return result;
+        }
+
+        public static RMatrix operator -(double d, RMatrix m)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] += d;
+            return result;
+        }
+
+        public static RMatrix operator /(double d, RMatrix m)
+        {
+            var result = new RMatrix(m.RowCount, m.ColumnCount);
+            for (var i = 0; i < m.RowCount; i++)
+            {
+                for (var j = 0; j < m.ColumnCount; j++)
+                {
+                    // TODO: need to check the almost zero deivision here
+                    result[i, j] = d / m[i, j];
+                }
+            }
+            return result;
+        }
+
+
+
+        public static RMatrix operator ^(RMatrix m, double d)
+        {
+            var result = m.Clone();
+            for (var i = 0; i < m.RowCount; i++) for (var j = 0; j < m.ColumnCount; j++) result[i, j] = Math.Pow(result[i, j], d);
+            return result;
+        }
+
+        public RMatrix GetTranspose()
+        {
+            var m = this;
+            m.Tran
