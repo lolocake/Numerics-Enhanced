@@ -611,4 +611,64 @@ namespace Orbifold.Numerics
         public static RMatrix Transform(Vector v1, Vector v2)
         {
             if (v1.Dimension != v2.Dimension) throw new Exception("The vectors must have the same ndim!");
-   
+            var result = new RMatrix(v1.Dimension, v1.Dimension);
+            for (var i = 0; i < v1.Dimension; i++) for (var j = 0; j < v1.Dimension; j++) result[j, i] = v1[i] * v2[j];
+            return result;
+        }
+
+        public static double Determinant(RMatrix mat)
+        {
+            var result = 0.0;
+            if (!mat.IsSquared()) throw new Exception("The matrix must be squared!");
+            if (mat.RowCount == 1) result = mat[0, 0];
+            else for (var i = 0; i < mat.RowCount; i++) result += Math.Pow(-1, i) * mat[0, i] * Determinant(Minor(mat, 0, i));
+            return result;
+        }
+
+        public static RMatrix Minor(RMatrix mat, int row, int col)
+        {
+            var mm = new RMatrix(mat.RowCount - 1, mat.ColumnCount - 1);
+            var ii = 0;
+            for (var i = 0; i < mat.RowCount; i++)
+            {
+                if (i == row) continue;
+                var jj = 0;
+                for (var j = 0; j < mat.ColumnCount; j++)
+                {
+                    if (j == col) continue;
+                    mm[ii, jj] = mat[i, j];
+                    jj++;
+                }
+                ii++;
+            }
+            return mm;
+        }
+
+        public static RMatrix Adjoint(RMatrix mat)
+        {
+            if (!mat.IsSquared()) throw new Exception("The matrix must be squared!");
+            var ma = new RMatrix(mat.RowCount, mat.ColumnCount);
+            for (var i = 0; i < mat.RowCount; i++) for (var j = 0; j < mat.ColumnCount; j++) ma[i, j] = Math.Pow(-1, i + j) * (Determinant(Minor(mat, i, j)));
+            return ma.GetTranspose();
+        }
+
+        public static RMatrix Inverse(RMatrix mat)
+        {
+            if (Math.Abs(Determinant(mat)) < Constants.Epsilon) throw new Exception("Cannot inverse a matrix with a zero determinant!");
+            return (Adjoint(mat) / Determinant(mat));
+        }
+
+        /// <summary>
+        ///     Returns the zero matrixx of specified square dimensions.
+        /// </summary>
+        /// <param name="n">The number of rows/columns.</param>
+        public static RMatrix Zeros(int n)
+        {
+            return new RMatrix(n, n);
+        }
+
+        /// <summary>
+        ///     Returns the zero matrixx of specified dimensions.
+        /// </summary>
+        /// <param name="m">The number of rows.</param>
+  
