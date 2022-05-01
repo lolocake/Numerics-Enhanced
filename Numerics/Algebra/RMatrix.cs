@@ -556,4 +556,59 @@ namespace Orbifold.Numerics
             for (var i = 0; i < this.colCount; i++)
             {
                 var temp = this.matrix[m, i];
-  
+                this.matrix[m, i] = this.matrix[n, i];
+                this.matrix[n, i] = temp;
+            }
+            return new RMatrix(this.matrix);
+        }
+
+        public RMatrix SwapMatrixColumn(int m, int n)
+        {
+            for (var i = 0; i < this.rowCount; i++)
+            {
+                var temp = this.matrix[i, m];
+                this.matrix[i, m] = this.matrix[i, n];
+                this.matrix[i, n] = temp;
+            }
+            return new RMatrix(this.matrix);
+        }
+
+        public static Vector StdDev(RMatrix source, VectorType t = VectorType.Col)
+        {
+            var count = t == VectorType.Row ? source.ColumnCount : source.RowCount;
+            var type = t == VectorType.Row ? VectorType.Col : VectorType.Row;
+            var v = new Vector(count);
+            for (var i = 0; i < count; i++) v[i] = source[i, type].StandardDeviation();
+            return v;
+        }
+
+        public static Vector Transform(RMatrix mat, Vector vec)
+        {
+            var result = new Vector(vec.Dimension);
+            if (!mat.IsSquared()) throw new Exception("The matrix must be squared!");
+            if (mat.ColumnCount != vec.Dimension) throw new Exception("The ndim of the vector must be equal " + "to the number of cols of the matrix!");
+            for (var i = 0; i < mat.RowCount; i++)
+            {
+                result[i] = 0.0;
+                for (var j = 0; j < mat.ColumnCount; j++) result[i] += mat[i, j] * vec[j];
+            }
+            return result;
+        }
+
+        public static Vector Transform(Vector vec, RMatrix mat)
+        {
+            var result = new Vector(vec.Dimension);
+            if (!mat.IsSquared()) throw new Exception("The matrix must be squared!");
+            if (mat.RowCount != vec.Dimension) throw new Exception("The ndim of the vector must be equal " + "to the number of rows of the matrix!");
+            for (var i = 0; i < mat.RowCount; i++)
+            {
+                result[i] = 0.0;
+                for (var j = 0; j < mat.ColumnCount; j++) result[i] += vec[j] * mat[j, i];
+            }
+            return result;
+        }
+
+        public static RMatrix Transform(Vector v1, Vector v2)
+        {
+            if (v1.Dimension != v2.Dimension) throw new Exception("The vectors must have the same ndim!");
+   
