@@ -491,4 +491,69 @@ namespace Orbifold.Numerics
         public RMatrix GetTranspose()
         {
             var m = this;
-            m.Tran
+            m.Transpose();
+            return m;
+        }
+
+        public void Transpose()
+        {
+            var m = new RMatrix(this.colCount, this.rowCount);
+            for (var i = 0; i < this.rowCount; i++) for (var j = 0; j < this.colCount; j++) m[j, i] = this.matrix[i, j];
+            this = m;
+        }
+
+        public double GetTrace()
+        {
+            var sumOfDiag = 0.0;
+            for (var i = 0; i < this.rowCount; i++) if (i < this.colCount) sumOfDiag += this.matrix[i, i];
+            return sumOfDiag;
+        }
+
+        public bool IsSquared()
+        {
+            return this.rowCount == this.colCount;
+        }
+
+        public static bool CompareDimension(RMatrix m1, RMatrix m2)
+        {
+            return m1.RowCount == m2.RowCount && m1.ColumnCount == m2.ColumnCount;
+        }
+
+        public Vector GetRowVector(int m)
+        {
+            if (m < 0 || m > this.rowCount) throw new Exception("m-th row is out of range!");
+            var rowVector = new Vector(this.colCount);
+            for (var i = 0; i < this.colCount; i++) rowVector[i] = this.matrix[m, i];
+            return rowVector;
+        }
+
+        public Vector GetColVector(int n)
+        {
+            if (n < 0 || n > this.colCount) throw new Exception("n-th col is out of range!");
+            var colVector = new Vector(this.rowCount);
+            for (var i = 0; i < this.rowCount; i++) colVector[i] = this.matrix[i, n];
+            return colVector;
+        }
+
+        public RMatrix ReplaceRow(Vector vec, int m)
+        {
+            if (m < 0 || m > this.rowCount) throw new Exception("m-th row is out of range!");
+            if (vec.Dimension != this.colCount) throw new Exception("Vector ndim is out of range!");
+            for (var i = 0; i < this.colCount; i++) this.matrix[m, i] = vec[i];
+            return new RMatrix(this.matrix);
+        }
+
+        public RMatrix ReplaceCol(Vector vec, int n)
+        {
+            if (n < 0 || n > this.colCount) throw new Exception("n-th col is out of range!");
+            if (vec.Dimension != this.rowCount) throw new Exception("Vector ndim is out of range!");
+            for (var i = 0; i < this.rowCount; i++) this.matrix[i, n] = vec[i];
+            return new RMatrix(this.matrix);
+        }
+
+        public RMatrix SwapRMatrixow(int m, int n)
+        {
+            for (var i = 0; i < this.colCount; i++)
+            {
+                var temp = this.matrix[m, i];
+  
