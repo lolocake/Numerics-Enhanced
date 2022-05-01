@@ -671,4 +671,58 @@ namespace Orbifold.Numerics
         ///     Returns the zero matrixx of specified dimensions.
         /// </summary>
         /// <param name="m">The number of rows.</param>
-  
+        /// <param name="n">The number of columns.</param>
+        public static RMatrix Zeros(int m, int n)
+        {
+            return new RMatrix(m, n);
+        }
+
+        public static RMatrix Create(int n, Func<double> f)
+        {
+            return Create(n, n, f);
+        }
+
+        /// <summary>Creates a new Matrix.</summary>
+        /// <param name="n">Size.</param>
+        /// <param name="d">cols.</param>
+        /// <param name="f">The Func&lt;int,int,double&gt; to process.</param>
+        /// <returns>A Matrix.</returns>
+        public static RMatrix Create(int n, int d, Func<double> f)
+        {
+            var matrix = new RMatrix(n, d);
+            for (var i = 0; i < matrix.RowCount; i++) for (var j = 0; j < matrix.ColumnCount; j++) matrix[i, j] = f();
+            return matrix;
+        }
+
+        /// <summary>Creates a new Matrix.</summary>
+        /// <param name="n">Size.</param>
+        /// <param name="f">The Func&lt;int,int,double&gt; to process.</param>
+        /// <returns>A Matrix.</returns>
+        public static RMatrix Create(int n, Func<int, int, double> f)
+        {
+            return Create(n, n, f);
+        }
+
+        /// <summary>Creates a new Matrix.</summary>
+        /// <param name="n">Size.</param>
+        /// <param name="d">cols.</param>
+        /// <param name="f">The Func&lt;int,int,double&gt; to process.</param>
+        /// <returns>A Matrix.</returns>
+        public static RMatrix Create(int n, int d, Func<int, int, double> f)
+        {
+            var matrix = new RMatrix(n, d);
+            for (var i = 0; i < matrix.RowCount; i++) for (var j = 0; j < matrix.ColumnCount; j++) matrix[i, j] = f(i, j);
+            return matrix;
+        }
+
+        /// <summary>
+        /// Returns a random matrix.
+        /// </summary>
+        /// <param name="rows">The row count.</param>
+        /// <param name="columns">The column count.</param>
+        /// <param name="min">The minimum value of the entries.</param>
+        /// <param name="max">The maximum value of the entries</param>
+        /// <param name="decimals">How many decimals should be taken.</param>
+        public static RMatrix Random(int rows = 5, int columns = 5, double min = 0, double max = 100d, int decimals = 0)
+        {
+            if (decimals < 0) throw new Exception(
