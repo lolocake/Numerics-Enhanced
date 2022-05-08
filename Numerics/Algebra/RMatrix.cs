@@ -725,4 +725,49 @@ namespace Orbifold.Numerics
         /// <param name="decimals">How many decimals should be taken.</param>
         public static RMatrix Random(int rows = 5, int columns = 5, double min = 0, double max = 100d, int decimals = 0)
         {
-            if (decimals < 0) throw new Exception(
+            if (decimals < 0) throw new Exception("The decimals parameter should be a positive integer.");
+            var m = new double[rows, columns];
+            for (var i = 0; i < rows; i++)
+                for (var j = 0; j < columns; j++)
+                {
+                    if (decimals == 0)
+                    {
+                        m[i, j] = (int)Math.Round(max * MultiplyWithCarryRandomGenerator.GetUniform() + min);
+
+                    }
+                    else
+                    {
+                        var p = Math.Pow(10, decimals);
+                        m[i, j] = Math.Round((max * MultiplyWithCarryRandomGenerator.GetUniform() + min) * p) / p;
+                    }
+                }
+            return new RMatrix(rows, columns)
+                       {
+                           matrix = m,
+                           isTransposed = false
+                       };
+        }
+
+        public static RMatrix Random(int order, double min = 0)
+        {
+            return Random(order, order, min, 100d, 2);
+        }
+
+        public static RMatrix Diag(Vector v)
+        {
+            var m = Zeros(v.Dimension);
+            for (var i = 0; i < v.Dimension; i++) m[i, i] = v[i];
+            return m;
+        }
+
+        public bool Equals(RMatrix m, double tolerance)
+        {
+            if (this.RowCount != m.RowCount || this.ColumnCount != m.ColumnCount) return false;
+
+            for (var i = 0; i < this.RowCount; i++) for (var j = 0; j < this.ColumnCount; j++) if (Math.Abs(this[i, j] - m[i, j]) > tolerance) return false;
+            return true;
+        }
+
+
+    }
+}
