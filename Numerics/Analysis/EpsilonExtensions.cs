@@ -110,4 +110,63 @@ namespace Orbifold.Numerics
 		/// <param name="value1">A value.</param>
 		/// <param name="value2">Another value.</param>
 		/// <returns>
-		///   <c>True</c> if the first value is less th
+		///   <c>True</c> if the first value is less than the second and not an epsilon apart; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsGreaterThan(double value1, double value2)
+		{
+			return (value1 > value2) && !AreClose(value1, value2);
+		}
+
+		/// <summary>
+		/// Determines whether a given value is strictly bigger than another one or an epsilon away.
+		/// </summary>
+		/// <param name="value1">A value.</param>
+		/// <param name="value2">Another value.</param>
+		/// <returns>
+		///   <c>True</c> if the first value is less than the second or an epsilon apart; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsGreaterThanOrClose(double value1, double value2)
+		{
+			return value1 > value2 || AreClose(value1, value2);
+		}
+
+		/// <summary>
+		/// Determines whether the double values are equal up to an epsilon.
+		/// </summary>
+		/// <param name="value1">A double value.</param>
+		/// <param name="value2">Another double value.</param>
+		/// <returns>
+		///   <c>True</c> If the values are equal; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsEqualTo(this double value1, double value2)
+		{
+			return System.Math.Abs(value1 - value2) < Constants.Epsilon;
+		}
+
+		/// <summary>
+		/// Determines whether the number is as good as zero within the <see cref="Constants.Epsilon" /> bounds.
+		/// </summary>
+		/// <param name="value">The value to test.</param>
+		/// <param name="accuracy">The accuracy or bounds within which the value has to be in order to be considered as zero.</param>
+		/// <returns>
+		///   <c>true</c> if the specified absolute value is within the accuracy; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsZero(this double value, double accuracy = Constants.Epsilon)
+		{
+			return System.Math.Abs(value) < accuracy;
+		}
+        
+        public static bool IsMachineZero(this double value)
+		{
+			return System.Math.Abs(value) < double.Epsilon;
+		}
+
+		/// <summary>
+		/// Determines whether the number is not zero within the <see cref="Constants.Epsilon" /> bounds.
+		/// </summary>
+		/// <param name="value">The value to test.</param>
+		/// <param name="accuracy">The accuracy or bounds within which the value has to be in order to be considered as zero.</param>
+		/// <returns>
+		///   <c>true</c> if the specified absolute value is within the accuracy; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsNotZero(this double value, d
