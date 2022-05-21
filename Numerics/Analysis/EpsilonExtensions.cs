@@ -169,4 +169,25 @@ namespace Orbifold.Numerics
 		/// <returns>
 		///   <c>true</c> if the specified absolute value is within the accuracy; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsNotZero(this double value, d
+		public static bool IsNotZero(this double value, double accuracy = Constants.Epsilon)
+		{
+			return !IsZero(value, accuracy);
+		}
+
+		/// <summary>
+		/// Determines whether the two values are different in an epsilon sense.
+		/// </summary>
+		/// <param name="value1">A value.</param>
+		/// <param name="value2">Another value.</param>
+		/// <returns>
+		///   <c>True</c> if the values are equal up to epsilon; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsNotEqualTo(this double value1, double value2)
+		{
+			return !value1.IsEqualTo(value2);
+		}
+
+		#endregion
+		 
+	}
+}
