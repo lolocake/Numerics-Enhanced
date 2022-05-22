@@ -125,4 +125,65 @@ namespace Orbifold.Numerics
 			/*97*/96192759682482119853328425949563698712343813919172976158104477319333745612481875498805879175589072651261284189679678167647067832320000000000000000000000d,
 			/*98*/9426890448883247745626185743057242473809693764078951663494238777294707070023223798882976159207729119823605850588608460429412647567360000000000000000000000d,
 			/*99*/933262154439441526816992388562667004907159682643816214685929638952175999932299156089414639761565182862536979208272237582511852109168640000000000000000000000d,
-			/*100*/9332621544394415268169923885626670049071
+			/*100*/93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000d,
+		};
+		/// <summary>
+		/// The <see cref="FactorialLn"/> cache.
+		/// </summary>
+		private static double[] factorialLnCache;
+
+		/// <summary>
+		/// Returns the binomial coefficient of two integers as a double precision number.
+		/// </summary>
+		/// <param name="n">
+		/// A number.
+		/// </param>
+		/// <param name="k">
+		/// A number.
+		/// </param>
+		/// <remarks>http://en.wikipedia.org/wiki/Binomial_coefficient</remarks>
+		/// <seealso cref="BinomialCoefficientLn"/>
+		/// <seealso cref="BinomialDistribution"/>
+		public static double BinomialCoefficient(int n, int k)
+		{
+			return k < 0 || n < 0 || k > n ? 0d : Math.Floor(0.5 + Math.Exp(FactorialLn(n) - FactorialLn(k) - FactorialLn(n - k)));
+		}
+
+		/// <summary>
+		/// Returns the regularized lower incomplete beta function
+		/// The regularized incomplete beta function (or regularized beta function for short) is defined in terms of the incomplete beta function and the complete beta function. 
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Regularized_Beta_function</remarks>
+		public static double BetaRegularized(double a, double b, double x)
+		{
+			const int MaxIterations = 100;
+			if(a < 0.0)
+				throw new ArgumentOutOfRangeException("a");
+			if(b < 0.0)
+				throw new ArgumentOutOfRangeException("b");
+			if(x < 0.0 || x > 1.0)
+				throw new ArgumentOutOfRangeException("x", "0d");
+			var bt = (Math.Abs(x) < Constants.Epsilon || Math.Abs(x - 1d) < Constants.Epsilon) ? 0.0 : Math.Exp(GammaLn(a + b) - GammaLn(a) - GammaLn(b) + a * Math.Log(x) + b * Math.Log(1.0 - x));
+			var symmetryTransformation = x >= (a + 1.0) / (a + b + 2.0);
+			var eps = Constants.RelativeAccuracy;
+			var fpmin = Constants.SmallestNumberGreaterThanZero / eps;
+			if(symmetryTransformation) {
+				x = 1.0 - x;
+				var swap = a;
+				a = b;
+				b = swap;
+			}
+
+			var qab = a + b;
+			var qap = a + 1.0;
+			var qam = a - 1.0;
+			var c = 1.0;
+			var d = 1.0 - qab * x / qap;
+			if(Math.Abs(d) < fpmin)
+				d = fpmin;
+			d = 1.0 / d;
+			var h = d;
+
+			for(int m = 1, m2 = 2; m <= MaxIterations; m++, m2 += 2) {
+				var aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+				d = 1.0 + aa * d;
