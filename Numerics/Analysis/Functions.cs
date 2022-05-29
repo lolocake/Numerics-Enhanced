@@ -281,4 +281,87 @@ namespace Orbifold.Numerics
 			if(n == 0)
 				return 1d;
 			if(n == 1)
-				
+				return 1d;
+			return n >= FactorialPrecompSize ? Math.Exp(GammaLn(n + 1.0)) : FactorialPrecomp[n];
+		}
+
+		/// <summary>
+		/// Returns the natural logarithm of the factorial (n!) for an integer value &gt; 0.
+		/// </summary>
+		/// <param name="value">
+		/// The value.
+		/// </param>
+		/// <returns>
+		/// A value ln(value!) for value &gt; 0.
+		/// </returns>
+		public static double FactorialLn(int value)
+		{
+			if(value < 0)
+				throw new ArgumentOutOfRangeException("value");
+			if(value <= 1)
+				return 0d;
+			if(value >= FactorialLnCacheSize)
+				return GammaLn(value + 1d);
+			if(factorialLnCache == null)
+				factorialLnCache = new double[FactorialLnCacheSize];
+			return Math.Abs(factorialLnCache[value] - 0.0) > Constants.Epsilon ? factorialLnCache[value] : (factorialLnCache[value] = GammaLn(value + 1.0));
+		}
+
+		/// <summary>
+		/// Returns the natural logarithm of Gamma for a real value &gt; 0.
+		/// </summary>
+		/// <param name="x">
+		/// The value.
+		/// </param>
+		/// <returns>
+		/// A value ln|Gamma(value))| for value &gt; 0.
+		/// </returns>
+		public static double GammaLn(double x)
+		{
+			// if (x <= 0) throw new Exception("Input value must be > 0");
+
+			var coef = new[] {57.1562356658629235,
+				-59.5979603554754912,
+				14.1360979747417471,
+				-0.491913816097620199,
+				0.339946499848118887E-4,
+				0.465236289270485756E-4,
+				-0.983744753048795646E-4,
+				0.158088703224912494E-3,
+				-0.210264441724104883E-3,
+				0.217439618115212643E-3,
+				-0.164318106536763890E-3,
+				0.844182239838527433E-4,
+				-0.261908384015814087E-4,
+				0.368991826595316234E-5
+			};
+
+			var denominator = x;
+			var series = 0.999999999999997092;
+			var temp = x + 5.24218750000000000;
+			temp = (x + 0.5) * Math.Log(temp) - temp;
+			for(var j = 0; j < 14; j++)
+				series += coef[j] / ++denominator;
+			return (temp + Math.Log(2.5066282746310005 * series / x));
+		}
+        /// <summary>
+        ///   Evaluates polynomial of degree N
+        /// </summary>
+        /// 
+        public static double Polevl(double x, double[] coef, int n)
+        {
+            double ans;
+
+            ans = coef[0];
+
+            for (int i = 1; i <= n; i++)
+                ans = ans * x + coef[i];
+
+            return ans;
+        }
+
+        /// <summary>
+        ///   Evaluates polynomial of degree N with assumption that coef[N] = 1.0
+        /// </summary>
+        /// 
+        public static double P1evl(d
