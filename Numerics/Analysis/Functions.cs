@@ -187,3 +187,98 @@ namespace Orbifold.Numerics
 			for(int m = 1, m2 = 2; m <= MaxIterations; m++, m2 += 2) {
 				var aa = m * (b - m) * x / ((qam + m2) * (a + m2));
 				d = 1.0 + aa * d;
+
+				if(Math.Abs(d) < fpmin)
+					d = fpmin;
+
+				c = 1.0 + aa / c;
+				if(Math.Abs(c) < fpmin)
+					c = fpmin;
+
+				d = 1.0 / d;
+				h *= d * c;
+				aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+				d = 1.0 + aa * d;
+
+				if(Math.Abs(d) < fpmin)
+					d = fpmin;
+
+				c = 1.0 + aa / c;
+
+				if(Math.Abs(c) < fpmin)
+					c = fpmin;
+
+				d = 1.0 / d;
+				var del = d * c;
+				h *= del;
+
+				if(Math.Abs(del - 1.0) <= eps)
+					return symmetryTransformation ? 1.0 - bt * h / a : bt * h / a;
+			}
+			throw new ArgumentException("a,b");
+		}
+
+		/// <summary>
+		/// Returns the natural logarithm of the binomial coefficient of n and k.
+		/// </summary>
+		/// <param name="n">
+		/// A number
+		/// </param>
+		/// <param name="k">
+		/// A number
+		/// </param>
+		public static double BinomialCoefficientLn(int n, int k)
+		{
+			if(k < 0 || n < 0 || k > n)
+				return 1.0;
+			return FactorialLn(n) - FactorialLn(k) - FactorialLn(n - k);
+		}
+
+		/// <summary>
+		/// Evaluates the minimum distance to the next distinguishable number near the argument value.
+		/// </summary>
+		/// <param name="value">
+		/// The value.
+		/// </param>
+		/// <returns>
+		/// Relative Epsilon (positive double or NaN).
+		/// </returns>
+		/// <remarks>
+		/// Evaluates the <b>Negative</b> epsilon. The more common positive epsilon is equal to two times this negative epsilon.
+		/// </remarks>
+		public static double EpsilonOf(double value)
+		{
+			if(double.IsInfinity(value) || double.IsNaN(value))
+				return double.NaN;
+
+			var signed64 = BitConverter.DoubleToInt64Bits(value);
+			if(signed64 == 0) {
+				signed64++;
+				return BitConverter.Int64BitsToDouble(signed64) - value;
+			}
+			if(signed64-- < 0)
+				return BitConverter.Int64BitsToDouble(signed64) - value;
+			return value - BitConverter.Int64BitsToDouble(signed64);
+		}
+
+		/// <summary>
+		/// Returns the factorial (n!) of an integer number &gt; 0. Consider using <see cref="FactorialLn"/> instead.
+		/// </summary>
+		/// <param name="n">
+		/// The argument.
+		/// </param>
+		/// <returns>
+		/// A value value! for value &gt; 0.
+		/// </returns>
+		/// <remarks>
+		/// http://en.wikipedia.org/wiki/Factorial
+		/// </remarks>
+		/// <seealso cref="FactorialLn"/>
+		public static double Factorial(int n)
+		{
+			if(n < 0)
+				throw new ArgumentOutOfRangeException("n");
+			if(n == 0)
+				return 1d;
+			if(n == 1)
+				
