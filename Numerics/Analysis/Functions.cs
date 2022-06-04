@@ -458,4 +458,122 @@ namespace Orbifold.Numerics
 			throw new ArgumentException("a");
 		}
 
-		/// 
+		/// <summary>
+		/// Returns the inverse P^(-1) of the regularized lower incomplete gamma function
+		/// P(a,x) = 1/Gamma(a) * int(exp(-t)t^(a-1),t=0..x) for real a &gt; 0, x &gt; 0,
+		/// such that P^(-1)(a,P(a,x)) == x.
+		/// </summary>
+		public static double InverseGammaRegularized(double a, double y0)
+		{
+			const double Epsilon = 0.000000000000001;
+			const double BigNumber = 4503599627370496.0;
+			const double Threshold = 5 * Epsilon;
+
+			// TODO: Consider to throw an out-of-range exception instead of NaN
+			if(a < 0 || a.IsZero() || y0 < 0 || y0 > 1) {
+				return Double.NaN;
+			}
+
+			if(y0.IsZero()) {
+				return 0d;
+			}
+
+			if(y0.IsEqualTo(1)) {
+				return Double.PositiveInfinity;
+			}
+
+			y0 = 1 - y0;
+
+			var xUpper = BigNumber;
+			double xLower = 0;
+			double yUpper = 1;
+			double yLower = 0;
+
+			// Initial Guess
+			double d = 1 / (9 * a);
+			double y = 1 - d - (0.98 * Constants.Sqrt2 * ErfInverse((2.0 * y0) - 1.0) * Math.Sqrt(d));
+			double x = a * y * y * y;
+			double lgm = GammaLn(a);
+
+			for(var i = 0; i < 10; i++) {
+				if(x < xLower || x > xUpper) {
+					d = 0.0625;
+					break;
+				}
+
+				y = 1 - GammaRegularized(a, x);
+				if(y < yLower || y > yUpper) {
+					d = 0.0625;
+					break;
+				}
+
+				if(y < y0) {
+					xUpper = x;
+					yLower = y;
+				} else {
+					xLower = x;
+					yUpper = y;
+				}
+
+				d = ((a - 1) * Math.Log(x)) - x - lgm;
+				if(d < -709.78271289338399) {
+					d = 0.0625;
+					break;
+				}
+
+				d = -Math.Exp(d);
+				d = (y - y0) / d;
+				if(Math.Abs(d / x) < Epsilon) {
+					return x;
+				}
+
+				if((d > (x / 4)) && (y0 < 0.05)) {
+					// Naive heuristics for cases near the singularity
+					d = x / 10;
+				}
+
+				x -= d;
+			}
+
+			if(xUpper == BigNumber) {
+				if(x <= 0) {
+					x = 1;
+				}
+
+				while(xUpper == BigNumber) {
+					x = (1 + d) * x;
+					y = 1 - GammaRegularized(a, x);
+					if(y < y0) {
+						xUpper = x;
+						yLower = y;
+						break;
+					}
+
+					d = d + d;
+				}
+			}
+
+			int dir = 0;
+			d = 0.5;
+			for(var i = 0; i < 400; i++) {
+				x = xLower + (d * (xUpper - xLower));
+				y = 1 - GammaRegularized(a, x);
+				lgm = (xUpper - xLower) / (xLower + xUpper);
+				if(Math.Abs(lgm) < Threshold) {
+					return x;
+				}
+
+				lgm = (y - y0) / y0;
+				if(Math.Abs(lgm) < Threshold) {
+					return x;
+				}
+
+				if(x <= 0d) {
+					return 0d;
+				}
+
+				if(y >= y0) {
+					xLower = x;
+					yUpper = y;
+					if(dir < 0) {
+	
