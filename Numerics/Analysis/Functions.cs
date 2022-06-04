@@ -364,4 +364,98 @@ namespace Orbifold.Numerics
         ///   Evaluates polynomial of degree N with assumption that coef[N] = 1.0
         /// </summary>
         /// 
-        public static double P1evl(d
+        public static double P1evl(double x, double[] coef, int n)
+        {
+            double ans;
+
+            ans = x + coef[0];
+
+            for (int i = 1; i < n; i++)
+                ans = ans * x + coef[i];
+
+            return ans;
+        }
+
+		/// <summary>
+		/// Returns the gamma function.
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Gamma_function</remarks>
+		/// <param name="x"></param>
+		/// <returns></returns>
+		public static double Gamma(double x)
+		{
+			if(Math.Abs(x - 1) < Constants.Epsilon)
+				return 1d;
+			if(x < 0)
+				throw new Exception("The Gamma function implementation does not negative arguments.");
+			int n;
+			if(int.TryParse(x.ToString(CultureInfo.InvariantCulture), out n) && n > 0) {
+				return Factorial(n - 1);
+			}
+			return Math.Exp(GammaLn(x));
+		}
+
+		/// <summary>
+		/// Returns the regularized lower incomplete gamma function
+		/// P(a,x) = 1/Gamma(a) * int(exp(-t)t^(a-1),t=0..x) for real a &gt; 0, x &gt; 0.
+		/// </summary>
+		/// <param name="a">
+		/// The a.
+		/// </param>
+		/// <param name="x">
+		/// The x.
+		/// </param>
+		/// <remarks>Note that some packages like Mathematica define the regularized gamma function differently.</remarks>
+		public static double GammaRegularized(double a, double x)
+		{
+			const int MaxIterations = 100;
+			var eps = Constants.RelativeAccuracy;
+			var fpmin = Constants.SmallestNumberGreaterThanZero / eps;
+
+			if(a < 0.0 || x < 0.0)
+				throw new ArgumentOutOfRangeException("a");
+
+			var gln = GammaLn(a);
+			if(x < a + 1.0) {
+				if(x <= 0.0)
+					return 0.0;
+				var ap = a;
+				double del, sum = del = 1.0 / a;
+
+				for(var n = 0; n < MaxIterations; n++) {
+					++ap;
+					del *= x / ap;
+					sum += del;
+					if(Math.Abs(del) < Math.Abs(sum) * eps)
+						return sum * Math.Exp(-x + a * Math.Log(x) - gln);
+				}
+			} else {
+				// Continued fraction representation
+				var b = x + 1.0 - a;
+				var c = 1.0 / fpmin;
+				var d = 1.0 / b;
+				var h = d;
+
+				for(var i = 1; i <= MaxIterations; i++) {
+					var an = -i * (i - a);
+					b += 2.0;
+					d = an * d + b;
+					if(Math.Abs(d) < fpmin)
+						d = fpmin;
+
+					c = b + an / c;
+					if(Math.Abs(c) < fpmin)
+						c = fpmin;
+					d = 1.0 / d;
+					var del = d * c;
+					h *= del;
+
+					if(Math.Abs(del - 1.0) <= eps)
+						return 1.0 - Math.Exp(-x + a * Math.Log(x) - gln) * h;
+				}
+			}
+
+			throw new ArgumentException("a");
+		}
+
+		/// 
