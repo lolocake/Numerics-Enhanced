@@ -758,4 +758,88 @@ namespace Orbifold.Numerics
 			if(x < 0.0)
 				throw new Exception("ErfcCheb requires nonnegative argument");
 
-		
+			var coef = new[] {-1.3026537197817094, 
+				6.4196979235649026e-1, 1.9476473204185836e-2,
+				-9.561514786808631e-3, -9.46595344482036e-4,
+				3.66839497852761e-4, 4.2523324806907e-5,
+				-2.0278578112534e-5, -1.624290004647e-6,
+				1.303655835580e-6, 1.5626441722e-8, -8.5238095915e-8,
+				6.529054439e-9, 5.059343495e-9, -9.91364156e-10,
+				-2.27365122e-10, 9.6467911e-11, 2.394038e-12,
+				-6.886027e-12, 8.94487e-13, 3.13092e-13,
+				-1.12708e-13, 3.81e-16, 7.106e-15, -1.523e-15,
+				-9.4e-17, 1.21e-16, -2.8e-17
+			};
+
+			var t = 2.0 / (2.0 + x);
+			var ty = 4.0 * t - 2.0;
+
+			for(j = coef.Length - 1; j > 0; j--) {
+				var tmp = d;
+				d = ty * d - dd + coef[j];
+				dd = tmp;
+			}
+			return t * Math.Exp(-x * x + 0.5 * (coef[0] + ty * d) - dd);
+		}
+
+		/// <summary>
+		/// The Laguerres polynomial value for the specified number and order.
+		/// </summary>
+		/// <param name="x">A number.</param>
+		/// <param name="order">The order of the Laguerre polynomial.</param>
+		/// <remarks>http://en.wikipedia.org/wiki/Laguerre_polynomials</remarks>
+		public static double Laguerre(double x, int order)
+		{
+			var L0 = 1.0;
+			var L1 = 1.0 - x;
+			var L2 = (x * x - 4 * x + 2.0) / 2.0;
+			var n = 1;
+			if(order < 0)
+				throw new Exception("Bad Laguerre polynomial: deg < 0");
+			if(order == 0)
+				return L0;
+			if(order == 1)
+				return L1;
+			while(n < order) {
+				L2 = ((2.0 * n + 1.0 - x) * L1 - n * L0) / (n + 1);
+				L0 = L1;
+				L1 = L2;
+				n++;
+			}
+			return L2;
+		}
+
+		/// <summary>
+		/// The Hermite polynomial value for the specified number and order.
+		/// </summary>
+		/// <param name="x">A number.</param>
+		/// <param name="order">The order of the Hermite polynomial.</param>
+		/// <remarks>http://en.wikipedia.org/wiki/Hermite_polynomials</remarks>
+		public static double Hermite(double x, int order)
+		{
+			var H_0 = 1.0;
+			var H_1 = 2 * x;
+			var H_2 = 4 * x * x - 2;
+			var n = 1;
+			if(order < 0)
+				throw new Exception("The order of the Hermite polynomial cannot be less than zero.");
+			if(order == 0)
+				return H_0;
+			if(order == 1)
+				return H_1;
+			if(order == 2)
+				return H_2;
+			while(n < order) {
+				H_2 = 2d * (x * H_1 - n * H_0);
+				H_0 = H_1;
+				H_1 = H_2;
+				n++;
+			}
+			return H_2;
+		}
+
+		/// <summary>
+		/// The Legendre polynomial value for the specified number and order.
+		/// </summary>
+		/// <param name="x">A number.</param>
+		//
