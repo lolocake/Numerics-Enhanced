@@ -576,4 +576,117 @@ namespace Orbifold.Numerics
 					xLower = x;
 					yUpper = y;
 					if(dir < 0) {
-	
+						dir = 0;
+						d = 0.5;
+					} else {
+						if(dir > 1) {
+							d = (0.5 * d) + 0.5;
+						} else {
+							d = (y0 - yLower) / (yUpper - yLower);
+						}
+					}
+
+					dir = dir + 1;
+				} else {
+					xUpper = x;
+					yLower = y;
+					if(dir > 0) {
+						dir = 0;
+						d = 0.5;
+					} else {
+						if(dir < -1) {
+							d = 0.5 * d;
+						} else {
+							d = (y0 - yLower) / (yUpper - yLower);
+						}
+					}
+
+					dir = dir - 1;
+				}
+			}
+
+			return x;
+		}
+
+		/// <summary>
+		/// Returns the square of the given value.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <returns></returns>
+		public static double Squared(double value)
+		{
+			return value * value;
+		}
+
+		/// <summary>
+		/// Returns the square of the given value.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <returns></returns>
+		public static double Sqr(double value)
+		{
+			return value * value;
+		}
+
+		/// <summary>
+		/// The sine integral function.
+		/// </summary>
+		/// <param name="x">A number.</param>
+		public static double Si(double x)
+		{
+			var sum = 0.0;
+			double t;
+
+			var n = 0;
+			do {
+				t = Math.Pow(-1, n) * Math.Pow(x, 2 * n + 1) / (2 * n + 1) / Gamma(2 * n + 2);
+				sum += t;
+				n++;
+			} while (Math.Abs(t) > Constants.Epsilon);
+			return sum;
+		}
+
+		/// <summary>
+		/// The cosine integral function.
+		/// </summary>
+		/// <param name="x">A number.</param>
+		public static double Ci(double x)
+		{
+			var sum = 0.0;
+			double t;
+			var n = 1;
+			do {
+				t = Math.Pow(-1, n) * Math.Pow(x, 2 * n) / (2 * n) / Gamma(2 * n + 1);
+				sum += t;
+				n++;
+			} while (Math.Abs(t) > Constants.Epsilon);
+			return 0.57721566490153286060 + Math.Log(x) + sum;
+		}
+
+		/// <summary>
+		/// Returns the error function.
+		/// </summary>
+		public static double Erf(double x)
+		{
+			return x >= 0 ? 1.0 - ErfcCheb(x) : ErfcCheb(-x) - 1.0;
+		}
+
+		/// <summary>
+		/// Returns the complementary or inverse error function.
+		/// </summary>
+		public static double ErfC(double x)
+		{
+			return x >= 0 ? ErfcCheb(x) : 2.0 - ErfcCheb(-x);
+		}
+
+		/// <summary>
+		/// Returns the inverse error function erf^-1(x).
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The algorithm uses a minimax approximation by rational functions
+		/// and the result has a relative error whose absolute value is less
+		/// than 1.15e-9.
+		/// </para>
+		/// <para>
+		/// See the page <see href="http://home.on
