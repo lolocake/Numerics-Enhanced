@@ -842,4 +842,88 @@ namespace Orbifold.Numerics
 		/// The Legendre polynomial value for the specified number and order.
 		/// </summary>
 		/// <param name="x">A number.</param>
-		//
+		/// <param name="order">The order of the Legendre polynomial.</param>
+		/// <remarks>http://en.wikipedia.org/wiki/Legendre_polynomials</remarks>
+		public static double Legendre(double x, int order)
+		{
+			var L_0 = 1d;
+			var L_1 = x;
+			var L_2 = (3d * x * x - 1) / 2d;
+			var n = 1;
+			if(order < 0)
+				throw new Exception("The order of the Legendre polynomial cannot be less than zero.");
+			if(order == 0)
+				return L_0;
+			if(order == 1)
+				return L_1;
+			if(order == 2)
+				return L_2;
+
+			// using the recursion relation for Legendre polynomials
+			while(n < order) {
+				L_2 = ((2d * n + 1) * x * L_1 - n * L_0) / (n + 1);
+				L_0 = L_1;
+				L_1 = L_2;
+				n++;
+			}
+			return L_2;
+		}
+
+		/// <summary>
+		/// Gets whether the value is double or infinity.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static bool IsNanOrInfinity(this double value)
+		{
+			return double.IsNaN(value) || double.IsInfinity(value);
+		}
+
+		/// <summary>
+		/// Returns whether the given double is not infinite and an actual number (not NaN).
+		/// </summary>
+		/// <param name="x">The x.</param>
+		/// <returns>
+		///   <c>True</c> if the value is true number; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsFinitedouble(double x)
+		{
+			return !double.IsInfinity(x) && !double.IsNaN(x);
+		}
+
+		/// <summary>
+		/// Returns the greatest common divisor of two numbers.
+		/// </summary>
+		/// <param name="value1">The first number.</param>
+		/// <param name="value2">The second number.</param>
+		/// <returns>The greatest common divisor.</returns>
+		private static long GCD(long value1, long value2)
+		{
+			long remainder;
+			do {
+				remainder = value1 % value2;
+				value1 = value2;
+				value2 = remainder;
+			} while (remainder != 0);
+
+			return value1;
+		}
+
+		/// <summary>
+		/// Returns the greatest common divisor of the given numbers.
+		/// </summary>
+		/// <param name="numbers">Some numbers.</param>
+		/// <returns>
+		/// The greatest common divisor.
+		/// </returns>
+		public static long GCD(params long[] numbers)
+		{
+			if(numbers == null)
+				throw new ArgumentNullException("numbers");
+			// let's assume that the GCD of one number is itself
+			if(numbers.Length == 1)
+				return numbers[0];
+			var result = GCD(numbers[0], numbers[1]);
+			if(numbers.Length > 2) {
+				for(var i = 2; i < numbers.Length; i++)
+					result = GCD(result, numbers[i])
