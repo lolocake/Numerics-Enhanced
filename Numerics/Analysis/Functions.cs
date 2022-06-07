@@ -926,4 +926,97 @@ namespace Orbifold.Numerics
 			var result = GCD(numbers[0], numbers[1]);
 			if(numbers.Length > 2) {
 				for(var i = 2; i < numbers.Length; i++)
-					result = GCD(result, numbers[i])
+					result = GCD(result, numbers[i]);
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// The Bessel function of the first kind.
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Bessel_function</remarks>
+		/// <param name="x">The argument.</param>
+		/// <param name="n">The order of the Bessel function.</param>
+		public static double BesselJ(double x, double order)
+		{
+			int n;
+			if((order % 1) == 0) // integer order
+                n = (int)order;
+			else {
+				// if fractional we need to use another algorithm
+				double res = 0d, y = 0d, jp = 0d, yp = 0d;
+				bessjy(x, order, out res, out y, out jp, out yp);
+				return res;
+			}
+
+			if(n == 0)
+				return BesselJ0(x);
+			if(n == 1)
+				return BesselJ1(x);
+
+			const double Accuracy = 40;
+			const double BigNo = 1E10;
+			const double BigNi = 1E-10;
+			int j, jsum, m;
+			double ax, bj, bjm, bjp, sum, tox, ans;
+
+			ax = Math.Abs(x);
+			if(Math.Abs(ax) < Constants.Epsilon)
+				return 0.0;
+			if(ax > n) {
+
+				tox = 2.0 / ax;
+				bjm = BesselJ0(ax);
+				bj = BesselJ1(ax);
+				for(j = 1; j < n; j++) {
+					bjp = j * tox * bj - bjm;
+					bjm = bj;
+					bj = bjp;
+				}
+				ans = bj;
+			} else {
+				tox = 2.0 / ax;
+				m = (int)(2 * ((n + (int)Math.Sqrt(Accuracy * n)) / 2));
+				jsum = 0;
+				bjp = ans = sum = 0.0;
+				bj = 1.0;
+				for(j = m; j > 0; j--) {
+					bjm = j * tox * bj - bjp;
+					bjp = bj;
+					bj = bjm;
+					if(Math.Abs(bj) > BigNo) {
+						bj *= BigNi;
+						bjp *= BigNi;
+						ans *= BigNi;
+						sum *= BigNi;
+					}
+					if(jsum == 1)
+						sum += bj;
+					jsum = jsum == 0 ? 1 : 0;
+					if(j == n)
+						ans = bjp;
+				}
+				sum = 2.0 * sum - bj;
+				ans /= sum;
+			}
+			return x < 0.0 && (((int)n & 1) == 1)/* n is odd*/ ? -ans : ans;
+		}
+
+		public static double BesselY1(double x)
+		{
+			double z;
+			double xx, y, ans, ans1, ans2;
+			if(x < 8.0) {
+				y = x * x;
+				ans1 = x * (-0.4900604943e13 + y * (0.1275274390e13
+				+ y * (-0.5153438139e11 + y * (0.7349264551e9
+				+ y * (-0.4237922726e7 + y * 0.8511937935e4)))));
+				ans2 = 0.2499580570e14 + y * (0.4244419664e12
+				+ y * (0.3733650367e10 + y * (0.2245904002e8
+				+ y * (0.1020426050e6 + y * (0.3549632885e3 + y)))));
+				ans = (ans1 / ans2) + 0.636619772 * (BesselJ1(x) * Math.Log(x) - 1.0 / x);
+			} else {
+				z = 8.0 / x;
+				y = z * z;
+				xx = x - 2.356194491;
+				ans1
