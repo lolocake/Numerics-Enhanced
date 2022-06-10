@@ -1090,4 +1090,82 @@ namespace Orbifold.Numerics
 			if((ax = Math.Abs(x)) < 8.0) { 
 				y = x * x;
 				ans1 = 57568490574.0 + y * (-13362590354.0 + y * (651619640.7
-				+ 
+				+ y * (-11214424.18 + y * (77392.33017 + y * (-184.9052456)))));
+				ans2 = 57568490411.0 + y * (1029532985.0 + y * (9494680.718
+				+ y * (59272.64853 + y * (267.8532712 + y * 1.0))));
+				ans = ans1 / ans2;
+			} else { 
+				z = 8.0 / ax;
+				y = z * z;
+				xx = ax - 0.785398164;
+				ans1 = 1.0 + y * (-0.1098628627e-2 + y * (0.2734510407e-4
+				+ y * (-0.2073370639e-5 + y * 0.2093887211e-6)));
+				ans2 = -0.1562499995e-1 + y * (0.1430488765e-3
+				+ y * (-0.6911147651e-5 + y * (0.7621095161e-6
+				- y * 0.934945152e-7)));
+				ans = Math.Sqrt(0.636619772 / ax) * (Math.Cos(xx) * ans1 - z * Math.Sin(xx) * ans2);
+			}
+			return ans;
+		}
+
+		/// <summary>
+		/// The modified Bessel function of the first kind.
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Bessel_function</remarks>
+		/// <param name="x">The argument.</param>
+		/// <param name="order">The order.</param>
+		public static double BesselI(double x, double order)
+		{
+			int n;
+			if((order % 1) == 0) // integer order
+                n = (int)order;
+			else {
+				// if fractional we need to use another algorithm
+				double res, y, jp, yp;
+				bessik(x, order, out res, out y, out jp, out yp);
+				return res;
+			}
+			if(n == 0)
+				return BesselI0(x);
+			if(n == 1)
+				return BesselI1(x);
+			const double Accuracy = 40;
+			const double BigNo = 1E10;
+			const double BigNi = 1E-10;
+			int j;
+			double ans;
+
+			if(Math.Abs(x) < Constants.Epsilon)
+				return 0.0;
+			var tox = 2.0 / Math.Abs(x);
+			var bip = ans = 0.0;
+			var bi = 1.0;
+			for(j = 2 * (n + (int)Math.Sqrt(Accuracy * n)); j > 0; j--) {
+				var bim = bip + j * tox * bi;
+				bip = bi;
+				bi = bim;
+				if(Math.Abs(bi) > BigNo) {
+					ans *= BigNi;
+					bi *= BigNi;
+					bip *= BigNi;
+				}
+				if(j == n)
+					ans = bip;
+			}
+			ans *= BesselI0(x) / bi;
+			return x < 0.0 && ((n & 1) == 1)/* n is odd*/ ? -ans : ans;
+		}
+
+		private static double BesselK0(double x)
+		{
+			double y, ans;
+			if(x <= 2.0) {
+				y = x * x / 4.0;
+				ans = (-Math.Log(x / 2.0) * BesselI0(x)) + (-0.57721566 + y * (0.42278420
+				+ y * (0.23069756 + y * (0.3488590e-1 + y * (0.262698e-2
+				+ y * (0.10750e-3 + y * 0.74e-5))))));
+			} else {
+				y = 2.0 / x;
+				ans = (Math.Exp(-x) / Math.Sqrt(x)) * (1.25331414 + y * (-0.7832358e-1
+				+ y * (0.2189568e-1 + y * (-0.1062446e-1 + y * (0.587872e-2
+				+ y * (-0.251540e-2 + y * 0
