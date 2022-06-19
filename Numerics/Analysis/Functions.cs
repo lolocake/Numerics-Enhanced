@@ -1250,3 +1250,99 @@ namespace Orbifold.Numerics
 				return BesselK0(x);
 			if(n == 1)
 				return BesselK1(x);
+			int j;
+
+			var tox = 2.0 / x;
+			var bkm = BesselK0(x);
+			var bk = BesselK1(x);
+			for(j = 1; j < n; j++) {
+				var bkp = bkm + j * tox * bk;
+				bkm = bk;
+				bk = bkp;
+			}
+			return bk;
+		}
+
+		/// <summary>
+		/// The Bessel function of the second kind.
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Bessel_function</remarks>
+		/// <param name="x">The argument.</param>
+		/// <param name="order">The order.</param>
+		public static double BesselY(double x, double order)
+		{
+			int n;
+			if((order % 1) == 0) // integer order
+                n = (int)order;
+			else {
+				// if fractional we need to use another algorithm
+				double res, jn, jp, yp;
+				bessjy(x, order, out jn, out res, out jp, out yp);
+				return res;
+			}
+			// Numerical recipes in C p.234
+			if(n == 0)
+				return BesselY0(x);
+			if(n == 1)
+				return BesselY1(x);
+
+			int j;
+			double bym, byp, tox;
+
+			tox = 2.0 / x;
+			double @by = BesselY1(x);
+			bym = BesselY0(x);
+			for(j = 1; j < n; j++) {
+				byp = j * tox * by - bym;
+				bym = by;
+				by = byp;
+			}
+			return by;
+		}
+
+		/// <summary>
+		/// The spherical Bessel function of the first kind.
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Bessel_function</remarks>
+		/// <param name="x">The argument.</param>
+		/// <param name="n">The order.</param>
+		public static double SphericalBesselJ(double x, int n)
+		{
+			double sy;
+			double res;
+			double sjp;
+			double syp;
+			sphbes(n, x, out res, out sy, out sjp, out syp);
+			return res;
+		}
+
+		/// <summary>
+		/// The spherical Bessel function of the second kind.
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Bessel_function</remarks>
+		/// <param name="x">The argument.</param>
+		/// <param name="n">The order.</param>
+		public static double SphericalBesselY(double x, int n)
+		{
+			double sj;
+			double res;
+			double sjp;
+			double syp;
+			sphbes(n, x, out sj, out res, out sjp, out syp);
+			return res;
+		}
+
+		/// <summary>
+		/// The sign of the second argument set the sign of the returned first argument.
+		/// </summary>
+		/// <param name="a">A number.</param>
+		/// <param name="b">A number.</param>
+		static double Sign2(double a, double b)
+		{
+			return b >= 0.0 ? Math.Abs(a) : -Math.Abs(a);
+		}
+
+		static double chebev(double a, double b, double[] c, int m, double x)
+		{
+
+			double d = 0.0, dd = 0
