@@ -1168,4 +1168,85 @@ namespace Orbifold.Numerics
 				y = 2.0 / x;
 				ans = (Math.Exp(-x) / Math.Sqrt(x)) * (1.25331414 + y * (-0.7832358e-1
 				+ y * (0.2189568e-1 + y * (-0.1062446e-1 + y * (0.587872e-2
-				+ y * (-0.251540e-2 + y * 0
+				+ y * (-0.251540e-2 + y * 0.53208e-3))))));
+			}
+			return ans;
+		}
+
+		private static double BesselK1(double x)
+		{
+
+			double y, ans;
+			if(x <= 2.0) {
+				y = x * x / 4.0;
+				ans = (Math.Log(x / 2.0) * BesselI1(x)) + (1.0 / x) * (1.0 + y * (0.15443144
+				+ y * (-0.67278579 + y * (-0.18156897 + y * (-0.1919402e-1
+				+ y * (-0.110404e-2 + y * (-0.4686e-4)))))));
+			} else {
+				y = 2.0 / x;
+				ans = (Math.Exp(-x) / Math.Sqrt(x)) * (1.25331414 + y * (0.23498619
+				+ y * (-0.3655620e-1 + y * (0.1504268e-1 + y * (-0.780353e-2
+				+ y * (0.325614e-2 + y * (-0.68245e-3)))))));
+			}
+			return ans;
+		}
+
+		private static double BesselI1(double x)
+		{
+			double ax, ans;
+			double y;
+			if((ax = Math.Abs(x)) < 3.75) {
+				y = x / 3.75;
+				y *= y;
+				ans = ax * (0.5 + y * (0.87890594 + y * (0.51498869 + y * (0.15084934
+				+ y * (0.2658733e-1 + y * (0.301532e-2 + y * 0.32411e-3))))));
+			} else {
+				y = 3.75 / ax;
+				ans = 0.2282967e-1 + y * (-0.2895312e-1 + y * (0.1787654e-1
+				- y * 0.420059e-2));
+				ans = 0.39894228 + y * (-0.3988024e-1 + y * (-0.362018e-2
+				+ y * (0.163801e-2 + y * (-0.1031555e-1 + y * ans))));
+				ans *= (Math.Exp(ax) / Math.Sqrt(ax));
+			}
+			return x < 0.0 ? -ans : ans;
+		}
+
+		private static double BesselI0(double x)
+		{
+			double ax, ans;
+			double y;
+			if((ax = Math.Abs(x)) < 3.75) {
+				y = x / 3.75;
+				y *= y;
+				ans = 1.0 + y * (3.5156229 + y * (3.0899424 + y * (1.2067492 + y * (0.2659732 + y * (0.360768e-1 + y * 0.45813e-2)))));
+			} else {
+				y = 3.75 / ax;
+				ans = (Math.Exp(ax) / Math.Sqrt(ax)) * (0.39894228 + y * (0.1328592e-1
+				+ y * (0.225319e-2 + y * (-0.157565e-2 + y * (0.916281e-2
+				+ y * (-0.2057706e-1 + y * (0.2635537e-1 + y * (-0.1647633e-1
+				+ y * 0.392377e-2))))))));
+			}
+			return ans;
+		}
+
+		/// <summary>
+		/// The modified Bessel function of the second kind.
+		/// </summary>
+		/// <remarks>http://en.wikipedia.org/wiki/Bessel_function</remarks>
+		/// <param name="x">The argument.</param>
+		/// <param name="order">The order.</param>
+		public static double BesselK(double x, double order)
+		{
+			int n;
+			if((order % 1) == 0) // integer order
+                n = (int)order;
+			else {
+				// if fractional we need to use another algorithm
+				double res, ink, jp, yp;
+				bessik(x, order, out ink, out res, out jp, out yp);
+				return res;
+			}
+			if(n == 0)
+				return BesselK0(x);
+			if(n == 1)
+				return BesselK1(x);
