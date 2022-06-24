@@ -1424,4 +1424,93 @@ namespace Orbifold.Numerics
 				if(Math.Abs(d) < FPMIN)
 					d = FPMIN;
 				c = b - 1.0 / c;
-				if(Ma
+				if(Math.Abs(c) < FPMIN)
+					c = FPMIN;
+				d = 1.0 / d;
+				del = c * d;
+				h = del * h;
+				if(d < 0.0)
+					isign = -isign;
+				if(Math.Abs(del - 1.0) < EPS)
+					break;
+			}
+			if(i > MAXIT)
+				throw new Exception("x too large in bessjy; try asymptotic expansion");
+			rjl = isign * FPMIN;
+			rjpl = h * rjl;
+			rjl1 = rjl;
+			rjp1 = rjpl;
+			fact = xnu * xi;
+			for(l = nl; l >= 1; l--) {
+				rjtemp = fact * rjl + rjpl;
+				fact -= xi;
+				rjpl = fact * rjtemp - rjl;
+				rjl = rjtemp;
+			}
+			if(rjl == 0.0)
+				rjl = EPS;
+			f = rjpl / rjl;
+			if(x < XMIN) {
+				x2 = 0.5 * x;
+				pimu = Math.PI * xmu;
+				fact = (Math.Abs(pimu) < EPS ? 1.0 : pimu / Math.Sin(pimu));
+				d = -Math.Log(x2);
+				e = xmu * d;
+				fact2 = (Math.Abs(e) < EPS ? 1.0 : Math.Sinh(e) / e);
+				beschb(xmu, out gam1, out  gam2, out gampl, out  gammi);
+				ff = 2.0 / Math.PI * fact * (gam1 * Math.Cosh(e) + gam2 * fact2 * d);
+				e = Math.Exp(e);
+				p = e / (gampl * Math.PI);
+				q = 1.0 / (e * Math.PI * gammi);
+				pimu2 = 0.5 * pimu;
+				fact3 = (Math.Abs(pimu2) < EPS ? 1.0 : Math.Sin(pimu2) / pimu2);
+				r = Math.PI * pimu2 * fact3 * fact3;
+				c = 1.0;
+				d = -x2 * x2;
+				sum = ff + r * q;
+				sum1 = p;
+				for(i = 1; i <= MAXIT; i++) {
+					ff = (i * ff + p + q) / (i * i - xmu2);
+					c *= (d / i);
+					p /= (i - xmu);
+					q /= (i + xmu);
+					del = c * (ff + r * q);
+					sum += del;
+					del1 = c * p - i * del;
+					sum1 += del1;
+					if(Math.Abs(del) < (1.0 + Math.Abs(sum)) * EPS)
+						break;
+				}
+				if(i > MAXIT)
+					throw new Exception("bessy series failed to converge");
+				rymu = -sum;
+				ry1 = -sum1 * xi2;
+				rymup = xmu * xi * rymu - ry1;
+				rjmu = w / (rymup - f * rymu);
+			} else {
+				a = 0.25 - xmu2;
+				p = -0.5 * xi;
+				q = 1.0;
+				br = 2.0 * x;
+				bi = 2.0;
+				fact = a * xi / (p * p + q * q);
+				cr = br + q * fact;
+				ci = bi + p * fact;
+				den = br * br + bi * bi;
+				dr = br / den;
+				di = -bi / den;
+				dlr = cr * dr - ci * di;
+				dli = cr * di + ci * dr;
+				temp = p * dlr - q * dli;
+				q = p * dli + q * dlr;
+				p = temp;
+				for(i = 2; i <= MAXIT; i++) {
+					a += 2 * (i - 1);
+					bi += 2.0;
+					dr = a * dr + br;
+					di = a * di + bi;
+					if(Math.Abs(dr) + Math.Abs(di) < FPMIN)
+						dr = FPMIN;
+					fact = a / (cr * cr + ci * ci);
+					cr = br + cr * fact;
+					ci = bi - 
