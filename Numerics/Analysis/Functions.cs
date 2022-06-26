@@ -1513,4 +1513,92 @@ namespace Orbifold.Numerics
 						dr = FPMIN;
 					fact = a / (cr * cr + ci * ci);
 					cr = br + cr * fact;
-					ci = bi - 
+					ci = bi - ci * fact;
+					if(Math.Abs(cr) + Math.Abs(ci) < FPMIN)
+						cr = FPMIN;
+					den = dr * dr + di * di;
+					dr /= den;
+					di /= -den;
+					dlr = cr * dr - ci * di;
+					dli = cr * di + ci * dr;
+					temp = p * dlr - q * dli;
+					q = p * dli + q * dlr;
+					p = temp;
+					if(Math.Abs(dlr - 1.0) + Math.Abs(dli) < EPS)
+						break;
+				}
+				if(i > MAXIT)
+					throw new Exception("cf2 failed in bessjy");
+				gam = (p - f) / q;
+				rjmu = Math.Sqrt(w / ((p - f) * gam + q));
+				rjmu = Sign2(rjmu, rjl);
+				rymu = rjmu * gam;
+				rymup = rymu * (p + q / gam);
+				ry1 = xmu * xi * rymu - rymup;
+			}
+			fact = rjmu / rjl;
+			rj = rjl1 * fact;
+			rjp = rjp1 * fact;
+			for(i = 1; i <= nl; i++) {
+				rytemp = (xmu + i) * xi2 * ry1 - rymu;
+				rymu = ry1;
+				ry1 = rytemp;
+			}
+			ry = rymu;
+			ryp = xnu * xi * rymu - ry1;
+		}
+
+		/// <summary>
+		/// Bessel I and K for fractional order.
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="xnu"></param>
+		/// <param name="ri"></param>
+		/// <param name="rk"></param>
+		/// <param name="rip"></param>
+		/// <param name="rkp"></param>
+		static void bessik(double x, double xnu, out double ri, out double rk, out double rip, out  double rkp)
+		{
+			const double XMIN = 2.0;
+			const int MAXIT = 10000;
+			const double FPMIN = 1.0e-30;
+			const double EPS = 1.0e-10;
+
+			int i, l, nl;
+			double a, a1, b, c, d, del, del1, delh, dels, e, f, fact, fact2, ff, gam1, gam2,
+			gammi, gampl, h, p, pimu, q, q1, q2, qnew, ril, ril1, rimu, rip1, ripl,
+			ritemp, rk1, rkmu, rkmup, rktemp, s, sum, sum1, x2, xi, xi2, xmu, xmu2;
+
+			if(x <= 0.0 || xnu < 0.0)
+				throw new Exception("bad arguments in bessik");
+			nl = (int)(xnu + 0.5);
+			xmu = xnu - nl;
+			xmu2 = xmu * xmu;
+			xi = 1.0 / x;
+			xi2 = 2.0 * xi;
+			h = xnu * xi;
+			if(h < FPMIN)
+				h = FPMIN;
+			b = xi2 * xnu;
+			d = 0.0;
+			c = h;
+			for(i = 1; i <= MAXIT; i++) {
+				b += xi2;
+				d = 1.0 / (b + d);
+				c = b + 1.0 / c;
+				del = c * d;
+				h = del * h;
+				if(Math.Abs(del - 1.0) < EPS)
+					break;
+			}
+			if(i > MAXIT)
+				throw new Exception("x too large in bessik; try asymptotic expansion");
+			ril = FPMIN;
+			ripl = h * ril;
+			ril1 = ril;
+			rip1 = ripl;
+			fact = xnu * xi;
+			for(l = nl; l >= 1; l--) {
+				ritemp = fact * ril + ripl;
+				fact -= xi;
+				ripl = fact * ritemp 
