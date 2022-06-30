@@ -1691,4 +1691,129 @@ namespace Orbifold.Numerics
 			if(n < 0 || x <= 0.0)
 				throw new Exception("bad arguments in sphbes");
 			order = n + 0.5;
-			bessjy(x, order, out rj, out ry, out r
+			bessjy(x, order, out rj, out ry, out rjp, out ryp);
+			factor = RTPIO2 / Math.Sqrt(x);
+			sj = factor * rj;
+			sy = factor * ry;
+			sjp = factor * rjp - (sj) / (2.0 * x);
+			syp = factor * ryp - (sy) / (2.0 * x);
+		}
+	}
+
+	public interface IFunctional
+	{
+	
+		double Compute(double x);
+
+		double Derivative(double x);
+
+		Vector Compute(Vector x);
+
+		Vector Derivative(Vector x);
+	}
+
+	public abstract class Functional : IFunctional
+	{
+
+		public abstract double Compute(double x);
+
+		public abstract double Derivative(double x);
+
+		public Vector Compute(Vector x)
+		{
+			return  x.Each(Compute, true);
+		}
+
+		public Vector Derivative(Vector x)
+		{
+			return  x.Each(Derivative, true);
+		}
+	}
+
+	public class Tanh : Functional
+	{
+		private static Tanh instance;
+
+		private Tanh()
+		{
+		}
+
+		public static Tanh Instance {
+			get {
+				if(instance == null) {
+					instance = new Tanh();
+				}
+				return instance;
+			}
+		}
+
+		/// <summary>Computes the given x coordinate.</summary>
+		/// <param name="x">The Vector to process.</param>
+		/// <returns>A Vector.</returns>
+		public override double Compute(double x)
+		{
+			return Trigonometry.HyperbolicTangent(x);
+		}
+
+		/// <summary>Derivatives the given x coordinate.</summary>
+		/// <param name="x">The Vector to process.</param>
+		/// <returns>A Vector.</returns>
+		public override double Derivative(double x)
+		{
+			return 1 - Math.Pow(Compute(x), 2);
+		}
+	}
+
+	public class Identity : Functional
+	{
+		private static Identity instance;
+
+		private Identity()
+		{
+		}
+
+		public static Identity Instance {
+			get {
+				if(instance == null) {
+					instance = new Identity();
+				}
+				return instance;
+			}
+		}
+
+		/// <summary>Computes the given x coordinate.</summary>
+		/// <param name="x">The Vector to process.</param>
+		/// <returns>A Vector.</returns>
+		public override double Compute(double x)
+		{
+			return x;
+		}
+
+		/// <summary>Derivatives the given x coordinate.</summary>
+		/// <param name="x">The Vector to process.</param>
+		/// <returns>A Vector.</returns>
+		public override double Derivative(double x)
+		{
+			return 1;
+		}
+	}
+
+	public class Logistic : Functional
+	{
+		private static Logistic instance;
+
+		private Logistic()
+		{
+		}
+
+		public static Logistic Instance {
+			get {
+				if(instance == null) {
+					instance = new Logistic();
+				}
+				return instance;
+			}
+		}
+
+		/// <summary>Computes the given x coordinate.</summary>
+		/// <param name=
