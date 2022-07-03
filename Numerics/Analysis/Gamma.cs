@@ -156,4 +156,97 @@ namespace Orbifold.Numerics
                 -3.88016315134637840924E4,
                 -3.31612992738871184744E5,
                 -1.16237097492762307383E6,
-                -1.7
+                -1.72173700820839662146E6,
+                -8.53555664245765465627E5
+            };
+
+            double[] C =
+            {
+                -3.51815701436523470549E2,
+                -1.70642106651881159223E4,
+                -2.20528590553854454839E5,
+                -1.13933444367982507207E6,
+                -2.53252307177582951285E6,
+                -2.01889141433532773231E6
+            };
+
+            if (x < -34.0)
+            {
+                q = -x;
+                w = Log(q);
+                p = Math.Floor(q);
+
+                if (p == q)
+                    throw new OverflowException();
+
+                z = q - p;
+                if (z > 0.5)
+                {
+                    p += 1.0;
+                    z = p - q;
+                }
+                z = q * Math.Sin(Math.PI * z);
+
+                if (z == 0.0)
+                    throw new OverflowException();
+
+                z = Constants.LnPi - Math.Log(z) - w;
+                return z;
+            }
+
+            if (x < 13.0)
+            {
+                z = 1.0;
+                while (x >= 3.0)
+                {
+                    x -= 1.0;
+                    z *= x;
+                }
+                while (x < 2.0)
+                {
+                    if (x == 0.0)
+                        throw new OverflowException();
+
+                    z /= x;
+                    x += 1.0;
+                }
+
+                if (z < 0.0)
+                    z = -z;
+
+                if (x == 2.0)
+                    return Math.Log(z);
+
+                x -= 2.0;
+
+                p = x * Functions.Polevl(x, B, 5) / Functions.P1evl(x, C, 6);
+
+                return (Math.Log(z) + p);
+            }
+
+            if (x > 2.556348e305)
+                throw new OverflowException();
+
+            q = (x - 0.5) * Math.Log(x) - x + 0.91893853320467274178;
+
+            if (x > 1.0e8)
+                return (q);
+
+            p = 1.0 / (x * x);
+
+            if (x >= 1000.0)
+            {
+                q += ((7.9365079365079365079365e-4 * p
+                    - 2.7777777777777777777778e-3) * p
+                    + 0.0833333333333333333333) / x;
+            }
+            else
+            {
+                q += Functions.Polevl(p, A, 4) / x;
+            }
+
+            return q;
+        }
+
+        /// <summary>
+        /// 
