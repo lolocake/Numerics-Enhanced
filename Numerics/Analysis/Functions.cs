@@ -1816,4 +1816,20 @@ namespace Orbifold.Numerics
 		}
 
 		/// <summary>Computes the given x coordinate.</summary>
-		/// <param name=
+		/// <param name="x">The Vector to process.</param>
+		/// <returns>A Vector.</returns>
+		public override double Compute(double x)
+		{
+			return 1d / (1d + Math.Exp(-x));
+		}
+
+		/// <summary>Derivatives the given x coordinate.</summary>
+		/// <param name="x">The Vector to process.</param>
+		/// <returns>A Vector.</returns>
+		public override double Derivative(double x)
+		{
+			var c = Compute(x);
+			return c * (1d - c);
+		}
+	}
+}
