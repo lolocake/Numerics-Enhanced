@@ -249,4 +249,88 @@ namespace Orbifold.Numerics
         }
 
         /// <summary>
+        ///   Upper incomplete regularized Gamma function Q
+        ///   (a.k.a the incomplete complemented Gamma function)
+        /// </summary>
         /// 
+        /// <remarks>
+        ///   This function is equivalent to Q(x) = Γ(s, x) / Γ(s).
+        /// </remarks>
+        /// 
+        public static double UpperIncomplete(double a, double x)
+        {
+            const double big = 4.503599627370496e15;
+            const double biginv = 2.22044604925031308085e-16;
+            double ans, ax, c, yc, r, t, y, z;
+            double pk, pkm1, pkm2, qk, qkm1, qkm2;
+
+            if (x <= 0 || a <= 0)
+                return 1.0;
+
+            if (x < 1.0 || x < a)
+                return 1.0 - LowerIncomplete(a, x);
+
+            if (Double.IsPositiveInfinity(x))
+                return 0;
+
+            ax = a * Math.Log(x) - x - Log(a);
+
+            if (ax < -Constants.LogMax)
+                return 0.0;
+
+            ax = Math.Exp(ax);
+
+            // continued fraction
+            y = 1.0 - a;
+            z = x + y + 1.0;
+            c = 0.0;
+            pkm2 = 1.0;
+            qkm2 = x;
+            pkm1 = x + 1.0;
+            qkm1 = z * x;
+            ans = pkm1 / qkm1;
+
+            do
+            {
+                c += 1.0;
+                y += 1.0;
+                z += 2.0;
+                yc = y * c;
+                pk = pkm1 * z - pkm2 * yc;
+                qk = qkm1 * z - qkm2 * yc;
+                if (qk != 0)
+                {
+                    r = pk / qk;
+                    t = Math.Abs((ans - r) / r);
+                    ans = r;
+                }
+                else
+                    t = 1.0;
+
+                pkm2 = pkm1;
+                pkm1 = pk;
+                qkm2 = qkm1;
+                qkm1 = qk;
+                if (Math.Abs(pk) > big)
+                {
+                    pkm2 *= biginv;
+                    pkm1 *= biginv;
+                    qkm2 *= biginv;
+                    qkm1 *= biginv;
+                }
+            } while (t > Constants.DoubleEpsilon);
+
+            return ans * ax;
+        }
+
+        /// <summary>
+        ///   Gamma function of the specified value.
+        /// </summary>
+        /// 
+        public static double Function(double x)
+        {
+            double[] P =
+            {
+                1.60119522476751861407E-4,
+                1.19135147006586384913E-3,
+                1.042137975
