@@ -333,4 +333,92 @@ namespace Orbifold.Numerics
             {
                 1.60119522476751861407E-4,
                 1.19135147006586384913E-3,
-                1.042137975
+                1.04213797561761569935E-2,
+                4.76367800457137231464E-2,
+                2.07448227648435975150E-1,
+                4.94214826801497100753E-1,
+                9.99999999999999996796E-1
+            };
+
+            double[] Q =
+            {
+               -2.31581873324120129819E-5,
+                5.39605580493303397842E-4,
+               -4.45641913851797240494E-3,
+                1.18139785222060435552E-2,
+                3.58236398605498653373E-2,
+               -2.34591795718243348568E-1,
+                7.14304917030273074085E-2,
+                1.00000000000000000320E0
+            };
+
+            double p, z;
+
+            double q = Math.Abs(x);
+
+            if (q > 33.0)
+            {
+                if (x < 0.0)
+                {
+                    p = Math.Floor(q);
+
+                    if (p == q)
+                        throw new OverflowException();
+
+                    z = q - p;
+                    if (z > 0.5)
+                    {
+                        p += 1.0;
+                        z = q - p;
+                    }
+                    z = q * Math.Sin(Math.PI * z);
+
+                    if (z == 0.0)
+                        throw new OverflowException();
+
+                    z = Math.Abs(z);
+                    z = Math.PI / (z * Stirling(q));
+
+                    return -z;
+                }
+                else
+                {
+                    return Stirling(x);
+                }
+            }
+
+            z = 1.0;
+            while (x >= 3.0)
+            {
+                x -= 1.0;
+                z *= x;
+            }
+
+            while (x < 0.0)
+            {
+                if (x == 0.0)
+                {
+                    throw new ArithmeticException();
+                }
+                else if (x > -1.0E-9)
+                {
+                    return (z / ((1.0 + 0.5772156649015329 * x) * x));
+                }
+                z /= x;
+                x += 1.0;
+            }
+
+            while (x < 2.0)
+            {
+                if (x == 0.0)
+                {
+                    throw new ArithmeticException();
+                }
+                else if (x < 1.0E-9)
+                {
+                    return (z / ((1.0 + 0.5772156649015329 * x) * x));
+                }
+
+                z /= x;
+                x += 1.0;
+       
