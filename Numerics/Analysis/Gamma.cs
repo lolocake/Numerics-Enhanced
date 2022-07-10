@@ -421,4 +421,16 @@ namespace Orbifold.Numerics
 
                 z /= x;
                 x += 1.0;
-       
+            }
+
+            if ((x == 2.0) || (x == 3.0))
+                return z;
+
+            x -= 2.0;
+            p = Functions.Polevl(x, P, 6);
+            q = Functions.Polevl(x, Q, 7);
+            return z * p / q;
+
+        }
+    }
+}
