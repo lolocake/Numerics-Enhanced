@@ -96,4 +96,83 @@ namespace Orbifold.Numerics
 		}
 
 		/// <summary>
-		/// Returns a random (English) male or fem
+		/// Returns a random (English) male or female first name.
+		/// </summary>
+		/// <returns>The first name.</returns>
+		public static string RandomFirstName()
+		{
+			return Rand.NextDouble() < .5 ? RandomFemaleName() : RandomMaleName();
+		}
+
+		/// <summary>
+		/// Returns a random (English) male name (first name).
+		/// </summary>
+		/// <returns>The male name.</returns>
+		public static string RandomMaleName()
+		{
+			return DataStore.EnglishMaleNames[Rand.Next(DataStore.EnglishMaleNames.Length)];
+		}
+
+		public static List<string> RandomMaleNames(int count = 15)
+		{
+			if(count < 1)
+				throw new Exception("The amount of names to generate should be bigger than one.");
+
+			if(count == 1)
+				return new List<string> { RandomMaleName() };
+			var list = new List<string>();
+			Range.Create(1, count).ForEach(() => list.Add(RandomMaleName()));
+			return list;
+		}
+
+		public static string RandomFemaleName()
+		{
+			if(markovFemaleNameGenerator == null)
+				markovFemaleNameGenerator = new MarkovNameGenerator(DataStore.EnglishFemaleNames);
+			return markovFemaleNameGenerator.NextName;
+		}
+
+		public static string RandomSalesTerm()
+		{
+			return DataStore.SalesTerms[Rand.Next(DataStore.SalesTerms.Length), 0];
+		}
+
+		public static Concept RandomSalesConcept()
+		{
+			var i = Rand.Next(DataStore.SalesTerms.GetUpperBound(0));
+			return new Concept {
+				Name = DataStore.SalesTerms[i, 0],
+				Description = DataStore.SalesTerms[i, 1]
+			};
+		}
+
+		public static string RandomTaskName()
+		{
+			if(markovTaskNameGenerator == null)
+				markovTaskNameGenerator = new MarkovNameGenerator(DataStore.TaskNames);
+			return markovTaskNameGenerator.NextName;
+		}
+
+
+		public static List<string> RandomTaskNames(int count = 15)
+		{
+			if(count < 1)
+				throw new Exception("The amount of names to generate should be bigger than one.");
+			if(count == 1)
+				return new List<string> { RandomTaskName() };
+
+			if(markovTaskNameGenerator == null)
+				markovTaskNameGenerator = new MarkovNameGenerator(DataStore.TaskNames);
+			var list = new List<string>();
+			Range.Create(1, count).ForEach(() => list.Add(markovTaskNameGenerator.NextName));
+			return list;
+		}
+
+		/// <summary>
+		/// Returns a random family name.
+		/// </summary>
+		/// <returns>The family name.</returns>
+		public static string RandomFamilyName()
+		{
+			if(markovFamilyNameGenerator == null)
+				markovFamilyNameGenerator = new MarkovNameGenerator(DataStore.FamilyNam
