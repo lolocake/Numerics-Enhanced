@@ -175,4 +175,93 @@ namespace Orbifold.Numerics
 		public static string RandomFamilyName()
 		{
 			if(markovFamilyNameGenerator == null)
-				markovFamilyNameGenerator = new MarkovNameGenerator(DataStore.FamilyNam
+				markovFamilyNameGenerator = new MarkovNameGenerator(DataStore.FamilyNames);
+			return markovFamilyNameGenerator.NextName;
+		}
+
+		public static List<string> RandomFemaleNames(int count = 15)
+		{
+			if(count < 1)
+				throw new Exception("The amount of names to generate should be bigger than one.");
+			if(count == 1)
+				return new List<string> { RandomFemaleName() };
+
+			if(markovFemaleNameGenerator == null)
+				markovFemaleNameGenerator = new MarkovNameGenerator(DataStore.EnglishFemaleNames);
+			var list = new List<string>();
+			Range.Create(1, count).ForEach(() => list.Add(markovFemaleNameGenerator.NextName));
+			return list;
+		}
+
+		/// <summary>
+		/// Resets the markov chains and re-initializes on the basis of the data in the <see cref="DataStore"/>.
+		/// Use this method if you have defined your own custom arrays in the <see cref="DataStore"/>.
+		/// </summary>
+		public static void ResetMarkovChains()
+		{
+			markovFamilyNameGenerator = null;
+			markovFemaleNameGenerator = null;
+		}
+
+		public static string RandomLetter(CaseType type)
+		{
+			char start;
+			switch(type) {
+			case CaseType.UpperCase:
+				start = 'A';
+				break;
+			case CaseType.LowerCase:
+				start = 'A';
+				break;
+			default:
+				throw new ArgumentOutOfRangeException("type");
+			}
+			var num = Rand.Next(0, 26);
+			var result = (char)((short)start + num);
+			return result.ToString();
+		}
+
+		/// <summary>
+		/// Returns a random city name.
+		/// </summary>
+		/// <returns></returns>
+		public static string RandomCityName()
+		{
+			return DataStore.CityNames[Rand.Next(DataStore.CityNames.Length)];
+		}
+
+		/// <summary>
+		/// Returns a random zip code.
+		/// </summary>
+		/// <returns></returns>
+		public static string RandomZipCode()
+		{
+			return DataStore.ZipCodes[Rand.Next(DataStore.ZipCodes.Length)];
+		}
+
+		/// <summary>
+		/// Returns a random state name.
+		/// </summary>
+		/// <returns></returns>
+		public static string RandomStateName()
+		{
+			return DataStore.StateNames[Rand.Next(DataStore.StateNames.Length)];
+		}
+
+		/// <summary>
+		/// Returns a random country name.
+		/// </summary>
+		/// <returns></returns>
+		public static string RandomCountryName()
+		{
+			return DataStore.CountryNames[Rand.Next(DataStore.CountryNames.Length)];
+		}
+
+		/// <summary>
+		/// Returns a random company name.
+		/// </summary>
+		/// <returns></returns>
+		public static string RandomCompanyName()
+		{
+			return Rand.NextDouble() < .4
+					? String.Format
