@@ -264,4 +264,63 @@ namespace Orbifold.Numerics
 		public static string RandomCompanyName()
 		{
 			return Rand.NextDouble() < .4
-					? String.Format
+					? String.Format(
+				"{0} {1}",
+				DataStore.CompanyNames[Rand.Next(DataStore.CompanyNames.Length)],
+				DataStore.CompanySuffixes[Rand.Next(DataStore.CompanySuffixes.Length)])
+					: DataStore.CompanyNames[Rand.Next(DataStore.CompanyNames.Length)];
+		}
+
+		/// <summary>
+		/// Generates a collection of random document titles.
+		/// </summary>
+		/// <param name="count">The amount of items to generate.</param>
+		/// <returns></returns>
+		public static List<string> RandomDocumentTitleCollection(int count)
+		{
+			var rx = new Regex(@"(\S.+?[.!?])(?=\s+|$)");
+			var list = new List<string>();
+			while(list.Count < count) {
+				list.AddRange((from Match match in rx.Matches(MarkovTextGenerator.Generate(DataStore.DocumentTitleSample, 140, 3))
+				               let i = match.Index
+				               select match).Select(match => StringExtensions.ToSentenceCase(match.Value)));
+			}
+			return list.Take(count).ToList();
+		}
+
+
+
+		/// <summary>
+		/// Returns a random street name.
+		/// </summary>
+		/// <returns></returns>
+		public static string RandomStreetName(bool includeHouseNumber = true)
+		{
+			return includeHouseNumber ? String.Format("{0} {1}", DataStore.StreetNames[Rand.Next(DataStore.StreetNames.Length)], Rand.Next(542)) : DataStore.StreetNames[Rand.Next(DataStore.StreetNames.Length)];
+		}
+
+		/// <summary>
+		/// Generates a random address.
+		/// </summary>
+		/// <remarks>The address type if a flag type so you can combine the options. The default includes all options.</remarks>
+		/// <param name="type">The address type.</param>
+		/// <returns></returns>
+		public static string RandomAddress(AddressType type = AddressType.CompanyName | AddressType.CountryName | AddressType.StateName)
+		{
+			var sb = new StringBuilder();
+			if((type & AddressType.CompanyName) == AddressType.CompanyName)
+				sb.AppendLine(RandomCompanyName());
+			sb.AppendLine(RandomStreetName());
+			sb.AppendLine(String.Format("{0} {1}", RandomZipCode(), RandomCityName()));
+			if((type & AddressType.StateName) == AddressType.StateName)
+				sb.AppendLine(String.Format("{0}, {1}", RandomStateName(), RandomCountryName()));
+			else
+				sb.AppendLine(RandomCountryName());
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Returns a collection of address.
+		/// </summary>
+		/// <param name="type">The option specifying the format of the returned addresses.</param>
+		/// <param name="count">The amount of addresses to be returned.</param>
