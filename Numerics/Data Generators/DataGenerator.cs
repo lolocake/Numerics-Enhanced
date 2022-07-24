@@ -324,3 +324,72 @@ namespace Orbifold.Numerics
 		/// </summary>
 		/// <param name="type">The option specifying the format of the returned addresses.</param>
 		/// <param name="count">The amount of addresses to be returned.</param>
+		/// <returns></returns>
+		public static IEnumerable<string> RandomAddressCollection(AddressType type = AddressType.CompanyName | AddressType.StateName | AddressType.CountryName, int count = 15)
+		{
+			if(count < 1)
+				throw new Exception("The amount of addresses to generate should be bigger than one.");
+			if(count == 1)
+				return new List<string> { RandomAddress(type) };
+			var list = new List<string>();
+			Range.Create(1, count).ForEach(() => list.Add(RandomAddress(type)));
+			return list;
+		}
+
+		/// <summary>
+		/// Generates a random variation of a philosophical text.
+		/// </summary>
+		/// <param name="style">The style of text to base the variation on.</param>
+		/// <param name="size">The size of the text to generate.</param>
+		/// <returns></returns>
+		public static string RandomTextVariation(TextSamples style, int size = 1000)
+		{
+			string sample;
+			switch(style) {
+			case TextSamples.Latin:
+				sample = DataStore.LatinSample;
+				break;
+			case TextSamples.Spanish:
+				sample = DataStore.SpanishSample;
+				break;
+			case TextSamples.Bulgarian:
+				sample = DataStore.BulgarianSample;
+				break;
+			case TextSamples.Medical:
+				sample = DataStore.MedicalSymptoms;
+				break;
+			case TextSamples.Biology:
+				sample = DataStore.BiologySample;
+				break;
+			case TextSamples.Philosophy:
+				sample = DataStore.PhilosophySample;
+				break;
+			case TextSamples.English1:
+				sample = DataStore.English1Sample;
+				break;
+			case TextSamples.English2:
+				sample = DataStore.English2Sample;
+				break;
+			default:
+				throw new ArgumentOutOfRangeException("style");
+			}
+			return MarkovTextGenerator.Generate(sample, size);
+		}
+
+		/// <summary>
+		/// Returns a random file extension.
+		/// </summary>
+		/// <remarks>The optional <see cref="FileExtensionType"/> is a flag enumeration and you can combine different types.</remarks>
+		/// <param name="type">The type.</param>
+		/// <returns></returns>
+		public static string RandomFileExtension(FileExtensionType type = FileExtensionType.CommonFiles | FileExtensionType.MsOffice)
+		{
+			var list = new List<string>();
+			if((type & FileExtensionType.CommonFiles) == FileExtensionType.CommonFiles)
+				list.AddRange(DataStore.CommonExtensions.Keys);
+			if((type & FileExtensionType.MsOffice) == FileExtensionType.MsOffice)
+				list.AddRange(DataStore.OfficeExtensions.Keys);
+			return list[Rand.Next(list.Count)].ToLower();
+		}
+
+	
