@@ -392,4 +392,64 @@ namespace Orbifold.Numerics
 			return list[Rand.Next(list.Count)].ToLower();
 		}
 
-	
+		/// <summary>
+		/// Gets the file extension description, if available.
+		/// </summary>
+		/// <param name="extension">The extension to look up.</param>
+		/// <returns></returns>
+		public static string GetFileExtensionDescription(string extension)
+		{
+			if(DataStore.CommonExtensions.ContainsKey(extension))
+				return DataStore.CommonExtensions[extension];
+			if(DataStore.OfficeExtensions.ContainsKey(extension))
+				return DataStore.OfficeExtensions[extension];
+			return "Unknown file extensions.";
+		}
+
+		/// <summary>
+		/// Generates a variation on the given text sample.
+		/// </summary>
+		/// <param name="sample">The sample on which the variation is based.</param>
+		/// <param name="size">The size of the generated text.</param>
+		/// <seealso cref="MarkovTextGenerator"/>
+		/// <returns></returns>
+		public static string RandomTextVariation(string sample, int size = 1000)
+		{
+			if(String.IsNullOrEmpty(sample))
+				throw new Exception("The sample cannot be empty.");
+			if(size < 1)
+				throw new Exception("The variation's length cannot be zero.");
+			return MarkovTextGenerator.Generate(sample, size);
+
+		}
+
+		/// <summary>
+		/// Returns a random letter.
+		/// </summary>
+		/// <param name="charType">The types of characters to include in the pool.</param>
+		/// <returns></returns>
+		public static string RandomLetter(CharType charType = CharType.UpperCaseLetters)
+		{
+			return RandomString(1, charType);
+		}
+
+		/// <summary>
+		/// Generates a random string.
+		/// </summary>
+		/// <param name="size">The length of the generated string.</param>
+		/// <param name="charType">The types of characters to include in the pool.</param>
+		/// <returns></returns>
+		public static string RandomString(int size, CharType charType = (CharType.French | CharType.Brackets | CharType.Numbers | CharType.Special | CharType.LowerCaseLetters | CharType.UpperCaseLetters))
+		{
+			var input = "";
+			if((charType & CharType.UpperCaseLetters) == CharType.UpperCaseLetters)
+				input += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			if((charType & CharType.LowerCaseLetters) == CharType.LowerCaseLetters)
+				input += "abcdefghijklmnopqrstuvwxyz";
+			if((charType & CharType.Numbers) == CharType.Numbers)
+				input += "0123456789";
+			if((charType & CharType.French) == CharType.French)
+				input += "éèçà";
+			if((charType & CharType.Brackets) == CharType.Brackets)
+				input += "()[]{}";
+			if((charType & CharType.Special) == CharTyp
