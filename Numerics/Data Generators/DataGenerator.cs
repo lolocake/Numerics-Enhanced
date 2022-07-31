@@ -452,4 +452,65 @@ namespace Orbifold.Numerics
 				input += "éèçà";
 			if((charType & CharType.Brackets) == CharType.Brackets)
 				input += "()[]{}";
-			if((charType & CharType.Special) == CharTyp
+			if((charType & CharType.Special) == CharType.Special)
+				input += "&@#§!-_°*$µ£ù%;:,?=<>/";
+
+			var chars = Enumerable.Range(0, size).Select(x => input[Rand.Next(0, input.Length)]);
+			return new string(chars.ToArray());
+		}
+
+		/// <summary>
+		/// Generates a random string on the basis of the given input string.
+		/// </summary>
+		/// <param name="size">The length of the generated string.</param>
+		/// <param name="input">The string from which a new random string will be generated.</param>
+		/// <returns></returns>
+		public static string RandomString(int size, string input)
+		{
+			if(size < 1)
+				throw new ArgumentException("The size cannot be smaller than one.", "size");
+			if(string.IsNullOrEmpty(input))
+				throw new ArgumentNullException("input");
+			var chars = Enumerable.Range(0, size).Select(x => input[Rand.Next(0, input.Length)]);
+			return new string(chars.ToArray());
+		}
+
+		/// <summary>
+		/// Generates a random date within the specified interval.
+		/// </summary>
+		/// <param name="minDate">The start date of the interval.</param>
+		/// <param name="maxDate">The end date of the interval.</param>
+		/// <returns></returns>
+		public static DateTime RandomDate(DateTime minDate, DateTime maxDate)
+		{
+			var totalDays = (int)DateTimeUtil.DateDiff(DateIntervalType.Day, minDate, maxDate);
+			var randomDays = Rand.Next(0, totalDays);
+
+			// set the time to zero and add a random time within the same day
+			return (minDate.AddDays(randomDays) + new TimeSpan(0, 0, 0)).AddMilliseconds(Rand.Next(72000000));
+		}
+
+		/// <summary>
+		/// Returns a random <c>TimeSpan</c> within the given interval.
+		/// </summary>
+		/// <param name="minDate">The min date.</param>
+		/// <param name="maxDate">The max date.</param>
+		/// <returns></returns>
+		public static TimeSpan RandomTimeSpan(DateTime minDate, DateTime maxDate)
+		{
+			var diff = (int)System.Math.Floor((maxDate - minDate).TotalMilliseconds);
+			return minDate.AddMilliseconds(Rand.Next(diff)) - minDate;
+		}
+
+		/// <summary>
+		/// Returns a random date within the full span of the <c>DateTime</c> range.
+		/// </summary>
+		/// <returns></returns>
+		public static DateTime RandomDate()
+		{
+			return RandomDate(DateTime.MinValue, DateTime.MaxValue);
+		}
+
+
+	}
+}
