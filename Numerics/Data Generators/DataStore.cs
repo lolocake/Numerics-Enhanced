@@ -60,4 +60,15 @@ namespace Orbifold.Numerics
                                                 {"Withholding tax","the money that an employer pays directly to the U.S. government as a payment of the income tax on the employee "},
                                                 {"Patent","a type of copyright granted as a fixed-term monopoly to an inventor by the state to prevent others copying an invention, or improvement  of a product or process"},
                                                 {"Point of purchase","the place at which a product is purchased by the customer. The point of sale can be a retail outlet, a display case, or even a  legal business relationship of two or more people who share responsibilities, resources, profits and liabilities."},
-                                                {"Price floor","The lowest amount a business owner can charge for a
+                                                {"Price floor","The lowest amount a business owner can charge for a prod­uct or service and still meet all expenses"},
+                                                {"Product mix","All of the products in a seller's total product line."},
+                                                {"Psychographics","The system of explaining market behavior in terms of attitudes and life styles."},
+                                                {"Added value ","the element(s) of service or product that a sales person or selling organization provides, that a customer is prepared to pay for because of the benefit(s) obtained. "},
+                                                {"Advantage","the aspect of a product or service that makes it better than another, especially the one in-situ or that of a competitor"},
+                                                {"Benefit","the gain (usually a tangible cost, but can be intangible) that accrues to the customer from the product or service."},
+                                                {"Buying warmth","behavioural, non-verbal and other signs that a prospect likes what he sees; very positive from the sales person's perspective, but not an invitation to jump straight to the close"},
+                                                {"Commodities","typically a term applied to describe products which are mature in development, produced and sold in vast scale, involving little or no uniqueness between variations of different suppliers; high volume, low price, low profit margin, de-skilled ('ease of use' in consumption, application, installation, etc)."},
+                                                {"Deal ","common business parlance for the sale or purchase (agreement or arrangement). It is rather a colloquial term so avoid using it in serious company as it can sound flippant and unprofessional."},
+                                                {"Deliverable","an aspect of a proposal that the provider commits to do or supply, usually and preferably clearly measurable."},
+                                                {"Influencer ","a person in the prospect organization who has the power to influence and persuade a decision-maker."},
+                                                {"Intangible ","in a selling context this describes, or is, an aspect of the product or service offering that has a value but is difficult to see or quantify (for instance, peace-of-mind, reliab
