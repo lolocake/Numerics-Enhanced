@@ -71,4 +71,39 @@ namespace Orbifold.Numerics
                                                 {"Deal ","common business parlance for the sale or purchase (agreement or arrangement). It is rather a colloquial term so avoid using it in serious company as it can sound flippant and unprofessional."},
                                                 {"Deliverable","an aspect of a proposal that the provider commits to do or supply, usually and preferably clearly measurable."},
                                                 {"Influencer ","a person in the prospect organization who has the power to influence and persuade a decision-maker."},
-                                                {"Intangible ","in a selling context this describes, or is, an aspect of the product or service offering that has a value but is difficult to see or quantify (for instance, peace-of-mind, reliab
+                                                {"Intangible ","in a selling context this describes, or is, an aspect of the product or service offering that has a value but is difficult to see or quantify (for instance, peace-of-mind, reliability, consistency). "},
+                                                {"Lead-time","time between order and delivery, installation or commencement of a product or service"},
+                                                {"Open plan selling","a modern form of selling, heavily dependent on the sales person understanding and interpreting the prospect's organizational and personal needs, issues, processes, constraints and strategic aims, which generally extends the selling discussion far beyond the obvious product application"},
+                                                {"Referral ","a recommendation or personal introduction or permission/suggestion made by someone, commonly but not necessarily a buyer, which enables the seller to approach or begin dialogue with a new perspective buyer or decision"},
+                                                {"Sales funnel","describes the pattern, plan or actual achievement of conversion of prospects into sales, pre-enquiry and then through the sales cycle."},
+                                           
+                                            };
+        public static Dictionary<string, string> CommonExtensions = new Dictionary<string, string>
+			{
+				{"ace", "ACE Archiver compression file."},
+				{"aif", "Audio Interchange File used with SGI and Macintosh applications."},
+				{"ani", "Animated cursors used in Microsoft Windows."},
+				{"api", "Application Program Interface."},
+				{"art", "Clipart."},
+				{"asc", "ASCII text file."},
+				{"asm", "Assembler code."},
+				{"asp", "Microsoft Active Server Page."},
+				{"avi", "Audio/Video Interleaved used for Windows based movies."},
+				{"bak", "Backup Files."},
+				{"bas", "BASIC programming language sourcecode."},
+				{"bat", "MS-DOS batch file."},
+				{"bfc", "Briefcase document used in Windows."},
+				{"bin", "Binary File."},
+			
+				{"bmp", "Bitmap format."},
+				{"bud", "Backup Disk for Quicken by Intuit."},
+				{"bz2", "Bzip2-compressed files."},
+				{"c", "C source file."},
+				{"cat", "Security Catalog file."},
+				{"cbl", "Cobol code."},
+				{"cbt", "Computer Based Training."},
+				{"cda", "Compact Disc Audio Track."},
+				{"cdt", "Corel Draw Template file."},
+				{"cfml", "ColdFusion Markup Language."},
+				{"cgi", "Common Gateway Interface. Web based programs and scripts."},
+				{"chm", "Compiled HTML Help f
