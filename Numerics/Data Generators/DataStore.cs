@@ -338,4 +338,32 @@ namespace Orbifold.Numerics
 				{"xlc","Microsoft Excel Chart file"},
 				{"xll","Microsoft Excel add-in file"},
 				{"xlm","Microsoft Excel Macro file"},
-	
+				{"xls","Microsoft Excel 97 to 2003 workbook file"},
+				{"xlsb","Microsoft Excel 2007/2010 binary workbook file"},
+				{"xlsm","Microsoft Excel 2007/2010 Open XML macro-enabled workbook file"},
+				{"xlsx","Microsoft Excel 2007/2010 Open XML workbook file"},
+				{"xlt","Microsoft Excel Microsoft Excel 97 to 2003 Workbook template file"},
+				{"xltm","Microsoft Excel 2007/2010 Open XML macro-enabled workbook template file"},
+				{"xltx","Microsoft Excel 2007/2010 Open XML workbook template file"},
+				{"xlw","Microsoft Excel Workspace file"},
+				{"xsf","Microsoft Office InfoPath file"},
+				{"xsn","Microsoft Office InfoPath template form file"},				
+			};
+
+        public static readonly string[] LipsumData = new[]
+			{
+				"consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod", "tempor", "invidunt", "ut", "labore", "et",
+				"dolore", "magna", "aliquyam", "erat", "sed", "diam", "voluptua", "at", "vero", "eos", "et", "accusam", "et",
+				"justo", "duo", "dolores", "et", "ea", "rebum", "stet", "clita", "kasd", "gubergren", "no", "sea", "takimata",
+				"sanctus", "est", "lorem", "ipsum", "dolor", "sit", "amet", "lorem", "ipsum", "dolor", "sit", "amet", "consetetur",
+				"sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod", "tempor", "invidunt", "ut", "labore", "et", "dolore",
+				"magna", "aliquyam", "erat", "sed", "diam", "voluptua", "at", "vero", "eos", "et", "accusam", "et", "justo", "duo",
+				"dolores", "et", "ea", "rebum", "stet", "clita", "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est",
+				"lorem", "ipsum", "dolor", "sit", "amet", "lorem", "ipsum", "dolor", "sit", "amet", "consetetur", "sadipscing",
+				"elitr", "sed", "diam", "nonumy", "eirmod", "tempor", "invidunt", "ut", "labore", "et", "dolore", "magna",
+				"aliquyam", "erat", "sed", "diam", "voluptua", "at", "vero", "eos", "et", "accusam", "et", "justo", "duo",
+				"dolores", "et", "ea", "rebum", "stet", "clita", "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est",
+				"lorem", "ipsum", "dolor", "sit", "amet", "duis", "autem", "vel", "eum", "iriure", "dolor", "in", "hendrerit", "in"
+				, "vulputate", "velit", "esse", "molestie", "consequat", "vel", "illum", "dolore", "eu", "feugiat", "nulla",
+				"facilisis", "at", "vero", "eros", "et", "accumsan", "et", "iusto", "odio", "dignissim", "qui", "blandit",
+				"
