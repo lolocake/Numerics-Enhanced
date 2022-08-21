@@ -386,4 +386,30 @@ namespace Orbifold.Numerics
 				"gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum", "dolor", "sit", "amet", "lorem", "ipsum",
 				"dolor", "sit", "amet", "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod", "tempor",
 				"invidunt", "ut", "labore", "et", "dolore", "magna", "aliquyam", "erat", "sed", "diam", "voluptua", "at", "vero",
-				"eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "e
+				"eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea", "rebum", "stet", "clita", "kasd", "gubergren",
+				"no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum", "dolor", "sit", "amet", "lorem", "ipsum", "dolor",
+				"sit", "amet", "consetetur", "sadipscing", "elitr", "at", "accusam", "aliquyam", "diam", "diam", "dolore",
+				"dolores", "duo", "eirmod", "eos", "erat", "et", "nonumy", "sed", "tempor", "et", "et", "invidunt", "justo",
+				"labore", "stet", "clita", "ea", "et", "gubergren", "kasd", "magna", "no", "rebum", "sanctus", "sea", "sed",
+				"takimata", "ut", "vero", "voluptua", "est", "lorem", "ipsum", "dolor", "sit", "amet", "lorem", "ipsum", "dolor",
+				"sit", "amet", "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy", "eirmod", "tempor", "invidunt", "ut",
+				"labore", "et", "dolore", "magna", "aliquyam", "erat", "consetetur", "sadipscing", "elitr", "sed", "diam", "nonumy"
+				, "eirmod", "tempor", "invidunt", "ut", "labore", "et", "dolore", "magna", "aliquyam", "erat", "sed", "diam",
+				"voluptua", "at", "vero", "eos", "et", "accusam", "et", "justo", "duo", "dolores", "et", "ea", "rebum", "stet",
+				"clita", "kasd", "gubergren", "no", "sea", "takimata", "sanctus", "est", "lorem", "ipsum"
+			};
+
+        public static string[] ZipCodes = new[]
+			{
+				"D4Y 1X3", "2963LM", "O6P 5W6", "D5 8YH", "48947", "2538VT", "99553", "N2J 1B3", "H7K 1GF", 
+				"K9X 2UR", "QO2 2YR", "8748CW", "6858AA", "9467CI", "X6Y 8IJ", "E7B 3P4", "H2D 3F6", "B4X 2T3", 
+				"BW4K 2RO", "6600IH", "K6S 0JW", "72411", "B5P 3G1", "TJ78 6ZD", "7941UN", "UK7Z 5YA", "H2 6AZ", 
+				"6206KG", "E4I 9Z2", "62712", "T1M 4A4", "1147MT", "XF98 1FJ", "66983", "L6 0LC", "29394", 
+				"19918", "2028TE", "I3O 9G0", "X3C 3H5", "S4B 8E1", "2420PX", "17948", "S3 6ZR", "7867TW", 
+				"22343", "5952XX", "48307", "1718NX", "8972LC", "62391", "B6V 4T6", "U1E 6O0", "Z3V 3S8", 
+				"NT8 4WB", "72249", "6662FS", "6809PZ", "N3Y 9D0", "S6I 2O9", "5258ZE", "B1 6RE", "63764", 
+				"54686", "24450", "E31 2NU", "XR4H 4AT", "I6R 2H8", "I4 0JR", "ZU7 5OR", "3677RN", "VP3A 8FB", 
+				"M5W 1DK", "16489", "O7Y 2F9", "N2B 4K1", "53875", "33582", "39431", "0672TF", "05443", 
+				"69394", "X9P 8L9", "F1U 1H5", "32487", "64904", "R4E 3F6", "S4F 5L5", "K4 9XH", "22223", 
+				"NL06 7FI", "0365UD", "5034JZ", "H58 5IL", "47560", "D8R 7Q8", "J4L 8T4", "6612ZP", "01272", 
+				"35402", "3577KM", "7819DD", "XO6 2HW", "F6N 3U7", "J4W 7U0", "X45 0NB",
