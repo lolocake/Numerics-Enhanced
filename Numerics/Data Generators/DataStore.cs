@@ -457,4 +457,24 @@ namespace Orbifold.Numerics
 				"Edwin", "Efrain", "Efren", "Eli", "Elian", "Elias", "Eliezer", "Elijah", "Eliseo", "Elisha", "Elliot", "Elliott",
 				"Ellis", "Elmer", "Elvin", "Elvis", "Emanuel", "Emerson", "Emiliano", "Emilio", "Emmanuel", "Emmett", "Enrique",
 				"Eric", "Erick", "Erik", "Ernest", "Ernesto", "Esteban", "Estevan", "Ethan", "Ethen", "Eugene", "Evan", "Everett",
-				"Ezekiel", "Ezequiel", "Ezr
+				"Ezekiel", "Ezequiel", "Ezra", "Fabian", "Felipe", "Felix", "Fernando", "Fidel", "Finn", "Forrest", "Francis",
+				"Francisco", "Frank", "Frankie", "Franklin", "Fred", "Freddie", "Freddy", "Frederick", "Fredrick", "Gabriel",
+				"Gael", "Gage", "Gaige", "Gannon", "Garett", "Garret", "Garrett", "Garrison", "Gary", "Gaven", "Gavin", "Gavyn",
+				"Geoffrey", "George", "Gerald", "Gerard", "Gerardo", "German", "Gian", "Giancarlo", "Gianni", "Gideon", "Gilbert",
+				"Gilberto", "Gino", "Giovanni", "Giovanny", "Glen", "Glenn", "Gonzalo", "Gordon", "Grady", "Graham", "Grant",
+				"Grayson", "Gregory", "Greyson", "Griffin", "Guadalupe", "Guillermo", "Gunnar", "Gunner", "Gustavo", "Guy", "Haden"
+				, "Hamza", "Harley", "Harold", "Harrison", "Harry", "Hassan", "Hayden", "Heath", "Hector", "Henry", "Herbert",
+				"Heriberto", "Holden", "Houston", "Howard", "Hudson", "Hugh", "Hugo", "Humberto", "Hunter", "Ian", "Ibrahim",
+				"Ignacio", "Immanuel", "Irvin", "Irving", "Isaac", "Isaak", "Isai", "Isaiah", "Isaias", "Isiah", "Ismael", "Israel"
+				, "Issac", "Ivan", "Izaiah", "Jabari", "Jace", "Jack", "Jackson", "Jacob", "Jacoby", "Jaden", "Jadon", "Jadyn",
+				"Jaeden", "Jagger", "Jaheem", "Jaheim", "Jahiem", "Jaiden", "Jaime", "Jair", "Jairo", "Jake", "Jakob", "Jakobe",
+				"Jalen", "Jamal", "Jamar", "Jamari", "Jamel", "James", "Jameson", "Jamie", "Jamil", "Jamir", "Jamison", "Jan",
+				"Jaquan", "Jaquez", "Jared", "Jaren", "Jarod", "Jaron", "Jarred", "Jarrett", "Jarrod", "Jarvis", "Jase", "Jason",
+				"Jasper", "Javen", "Javier", "Javion", "Javon", "Jaxon", "Jaxson", "Jay", "Jayce", "Jayden", "Jaydon", "Jaylan",
+				"Jaylen", "Jaylin", "Jaylon", "Jayson", "Jean", "Jeff", "Jefferson", "Jeffery", "Jeffrey", "Jeremiah", "Jeremy",
+				"Jermaine", "Jerome", "Jerry", "Jesse", "Jessie", "Jesus", "Jett", "Jevon", "Jimmy", "Joan", "Joaquin", "Joe",
+				"Joel", "Joey", "Johan", "John", "Johnathan", "Johnathon", "Johnny", "Jon", "Jonah", "Jonas", "Jonatan", "Jonathan"
+				, "Jonathon", "Jordan", "Jorden", "Jordon", "Jordy", "Jorge", "Jose", "Josef", "Joseph", "Josh", "Joshua", "Josiah"
+				, "Josue", "Jovan", "Jovani", "Jovany", "Juan", "Judah", "Jude", "Julian", "Julien", "Julio", "Julius", "Junior",
+				"Justice", "Justin", "Justus", "Justyn", "Kade", "Kaden", "Kadin", "Kai", "Kaiden", "Kale", "Kaleb", "Kameron",
+				"Kamron", "Kane", "Kareem"
