@@ -477,4 +477,24 @@ namespace Orbifold.Numerics
 				, "Jonathon", "Jordan", "Jorden", "Jordon", "Jordy", "Jorge", "Jose", "Josef", "Joseph", "Josh", "Joshua", "Josiah"
 				, "Josue", "Jovan", "Jovani", "Jovany", "Juan", "Judah", "Jude", "Julian", "Julien", "Julio", "Julius", "Junior",
 				"Justice", "Justin", "Justus", "Justyn", "Kade", "Kaden", "Kadin", "Kai", "Kaiden", "Kale", "Kaleb", "Kameron",
-				"Kamron", "Kane", "Kareem"
+				"Kamron", "Kane", "Kareem", "Karl", "Karson", "Kasey", "Kayden", "Keagan", "Keanu", "Keaton", "Keegan", "Keenan",
+				"Keith", "Kellen", "Kelly", "Kelton", "Kelvin", "Kendall", "Kendrick", "Kennedy", "Kenneth", "Kenny", "Kent",
+				"Kenyon", "Keon", "Keshawn", "Keven", "Kevin", "Kevon", "Keyon", "Keyshawn", "Khalid", "Khalil", "Kian", "Kieran",
+				"Kirk", "Kobe", "Koby", "Kody", "Kolby", "Kole", "Kolton", "Korbin", "Korey", "Kory", "Kristian", "Kristofer",
+				"Kristopher", "Kurt", "Kurtis", "Kylan", "Kyle", "Kyler", "Kyree", "Lamar", "Lamont", "Lance", "Landen", "Landon",
+				"Lane", "Larry", "Latrell", "Lawrence", "Lawson", "Layne", "Layton", "Lee", "Leo", "Leon", "Leonard", "Leonardo",
+				"Leonel", "Leroy", "Levi", "Lewis", "Liam", "Lincoln", "Lisandro", "Logan", "London", "Lonnie", "Lorenzo", "Louis",
+				"Luc", "Luca", "Lucas", "Luciano", "Luis", "Lukas", "Luke", "Malachi", "Malakai", "Malcolm", "Malik", "Manuel",
+				"Marc", "Marcel", "Marcelo", "Marco", "Marcos", "Marcus", "Mariano", "Mario", "Mark", "Markus", "Marlon", "Marquez"
+				, "Marquis", "Marquise", "Marshall", "Martin", "Marvin", "Mason", "Mateo", "Mathew", "Matteo", "Matthew", "Maurice"
+				, "Mauricio", "Maverick", "Max", "Maxim", "Maximilian", "Maximillian", "Maximo", "Maximus", "Maxwell", "Mekhi",
+				"Melvin", "Micah", "Michael", "Micheal", "Miguel", "Mike", "Mikel", "Miles", "Milo", "Milton", "Misael", "Mitchel",
+				"Mitchell", "Mohamed", "Mohammad", "Mohammed", "Moises", "Morgan", "Moses", "Moshe", "Muhammad", "Mustafa", "Myles"
+				, "Nash", "Nasir", "Nathan", "Nathanael", "Nathanial", "Nathaniel", "Nathen", "Neal", "Nehemiah", "Neil", "Nelson",
+				"Nestor", "Nicholas", "Nick", "Nickolas", "Nico", "Nicolas", "Nigel", "Nikhil", "Nikolas", "Noah", "Noe", "Noel ",
+				"Nolan", "Norman", "Octavio", "Oliver", "Omar", "Omari", "Omarion", "Orion", "Orlando", "Osbaldo", "Oscar",
+				"Osvaldo", "Oswaldo", "Owen", "Pablo", "Parker", "Patrick", "Paul", "Paxton", "Payton", "Pedro", "Perry", "Peter",
+				"Peyton", "Philip", "Phillip", "Phoenix", "Pierce", "Pierre", "Porter", "Pranav", "Preston", "Prince", "Quentin",
+				"Quincy", "Quinn", "Quinten", "Quintin", "Quinton", "Rafael", "Rahul", "Ralph", "Ramiro", "Ramon", "Randall",
+				"Randy", "Raphael", "Rashad", "Raul", "Ray", "Raymond", "Raymundo", "Reagan", "Reece", "Reed", "Reese", "Reginald",
+				"Reid",
