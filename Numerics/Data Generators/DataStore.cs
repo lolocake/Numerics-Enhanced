@@ -437,4 +437,24 @@ namespace Orbifold.Numerics
 				, "Avery", "Axel", "Ayden", "Baby", "Bailey", "Barrett", "Barry", "Beau", "Ben", "Benjamin", "Bennett", "Benny",
 				"Bernard", "Bernardo", "Bilal", "Billy", "Blaine", "Blaise", "Blake", "Blaze", "Bo", "Bobby", "Brad", "Braden",
 				"Bradley", "Brady", "Bradyn", "Braeden", "Braedon", "Braiden", "Branden", "Brandon", "Braulio", "Braxton", "Brayan"
-				, "Brayden", "Braydon", "Brendan", "Brend
+				, "Brayden", "Braydon", "Brendan", "Brenden", "Brendon", "Brennan", "Brennen", "Brent", "Brenton", "Bret", "Brett",
+				"Brian", "Brice", "Brock", "Brodie", "Brody", "Brooks", "Bruce", "Bruno", "Bryan", "Bryant", "Bryce", "Brycen",
+				"Bryson", "Byron", "Cade", "Caden", "Cael", "Caiden", "Cale", "Caleb", "Calvin", "Camden", "Cameron", "Camren",
+				"Camron", "Carl", "Carlo", "Carlos", "Carlton", "Carson", "Carter", "Casey", "Cason", "Cayden", "Cedric", "Cesar",
+				"Chad", "Chaim", "Chance", "Chandler", "Charles", "Charlie", "Chase", "Chaz", "Chris", "Christian", "Christopher",
+				"Clarence", "Clark", "Clay", "Clayton", "Clifford", "Clifton", "Clinton", "Coby", "Cody", "Colby", "Cole",
+				"Coleman", "Colin", "Collin", "Colt", "Colten", "Colton", "Conner", "Connor", "Conor", "Conrad", "Cooper", "Corbin"
+				, "Cordell", "Corey", "Cornelius", "Cortez", "Cory", "Craig", "Cristian", "Cristobal", "Cristopher", "Cruz",
+				"Cullen", "Curtis", "Cyrus", "Dakota", "Dale", "Dallas", "Dallin", "Dalton", "Damian", "Damien", "Damion", "Damon",
+				"Dandre", "Dane", "Dangelo", "Daniel", "Danny", "Dante", "Daquan", "Darian", "Darien", "Darin", "Dario", "Darion",
+				"Darius", "Darnell", "Darrell", "Darren", "Darrin", "Darrion", "Darrius", "Darryl", "Darwin", "Daryl", "Dashawn",
+				"David", "Davin", "Davion", "Davis", "Davon", "Dawson", "Dayton", "Dean", "Deandre", "Deangelo", "Declan",
+				"Demarcus", "Demetrius", "Dennis", "Denzel", "Deon", "Deonte", "Derek", "Derick", "Derrick", "Deshaun", "Deshawn",
+				"Desmond", "Destin", "Devan", "Devante", "Deven", "Devin", "Devon", "Devonte", "Devyn", "Dexter", "Diego", "Dillan"
+				, "Dillon", "Dimitri", "Dion", "Domenic", "Dominic", "Dominick", "Dominik", "Dominique", "Donald", "Donavan",
+				"Donovan", "Dontae", "Donte", "Dorian", "Douglas", "Drake", "Draven", "Drew", "Duane", "Duncan", "Dustin", "Dwayne"
+				, "Dwight", "Dylan", "Dylon", "Ean", "Earl", "Easton", "Eddie", "Eddy", "Edgar", "Edgardo", "Eduardo", "Edward",
+				"Edwin", "Efrain", "Efren", "Eli", "Elian", "Elias", "Eliezer", "Elijah", "Eliseo", "Elisha", "Elliot", "Elliott",
+				"Ellis", "Elmer", "Elvin", "Elvis", "Emanuel", "Emerson", "Emiliano", "Emilio", "Emmanuel", "Emmett", "Enrique",
+				"Eric", "Erick", "Erik", "Ernest", "Ernesto", "Esteban", "Estevan", "Ethan", "Ethen", "Eugene", "Evan", "Everett",
+				"Ezekiel", "Ezequiel", "Ezr
