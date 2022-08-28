@@ -497,4 +497,27 @@ namespace Orbifold.Numerics
 				"Peyton", "Philip", "Phillip", "Phoenix", "Pierce", "Pierre", "Porter", "Pranav", "Preston", "Prince", "Quentin",
 				"Quincy", "Quinn", "Quinten", "Quintin", "Quinton", "Rafael", "Rahul", "Ralph", "Ramiro", "Ramon", "Randall",
 				"Randy", "Raphael", "Rashad", "Raul", "Ray", "Raymond", "Raymundo", "Reagan", "Reece", "Reed", "Reese", "Reginald",
-				"Reid",
+				"Reid", "Reilly", "Remington", "Rene", "Reuben", "Rey", "Reynaldo", "Rhett", "Ricardo", "Richard", "Rickey",
+				"Ricky", "Rigoberto", "Riley", "River", "Robert", "Roberto", "Rocco", "Roderick", "Rodney", "Rodolfo", "Rodrigo",
+				"Rogelio", "Roger", "Rohan", "Roland", "Rolando", "Roman", "Romeo", "Ronald", "Ronaldo", "Ronan", "Ronnie", "Rory",
+				"Ross", "Rowan", "Roy", "Ruben", "Rudy", "Russell", "Ryan", "Ryder", "Rylan", "Rylee", "Ryley", "Sabastian", "Sage"
+				, "Salvador", "Salvatore", "Sam", "Samir", "Sammy", "Samson", "Samuel", "Santiago", "Santino", "Santos", "Saul",
+				"Savion", "Sawyer", "Scott", "Seamus", "Sean", "Sebastian", "Semaj", "Sergio", "Seth", "Shamar", "Shane", "Shannon"
+				, "Shaun", "Shawn", "Shayne", "Shea", "Sheldon", "Shemar", "Sidney", "Silas", "Simon", "Sincere", "Skylar",
+				"Skyler", "Solomon", "Sonny", "Spencer", "Stanley", "Stefan", "Stephan", "Stephen", "Stephon", "Sterling", "Steve",
+				"Steven", "Stone", "Stuart", "Sullivan", "Syed", "Talon", "Tanner", "Tariq", "Tate", "Tavion", "Taylor", "Terrance"
+				, "Terrell", "Terrence", "Terry", "Thaddeus", "Theodore", "Thomas", "Timothy", "Titus", "Tobias", "Toby", "Todd",
+				"Tomas", "Tommy", "Tony", "Trace", "Travis", "Travon", "Tre", "Trent", "Trenton", "Trever", "Trevin", "Trevion",
+				"Trevon", "Trevor", "Trey", "Treyton", "Tristan", "Tristen", "Tristian", "Tristin", "Triston", "Troy", "Trystan",
+				"Tucker", "Turner", "Ty", "Tyler", "Tylor", "Tyree", "Tyrell", "Tyrese", "Tyrone", "Tyshawn", "Tyson", "Ulises",
+				"Ulysses", "Uriel", "Vance", "Vaughn", "Vernon", "Vicente", "Victor", "Vincent", "Wade", "Walker", "Walter",
+				"Warren", "Waylon", "Wayne", "Wesley", "Weston", "Will", "William", "Willie", "Wilson", "Winston", "Wyatt",
+				"Xander", "Xavier", "Xzavier", "Yadiel", "Yahir", "Yosef", "Zachariah", "Zachary", "Zachery", "Zack", "Zackary",
+				"Zackery", "Zain", "Zaire", "Zakary", "Zander", "Zane", "Zavier", "Zayne", "Zechariah"
+			};
+
+        public static string[] EnglishFemaleNames = new[] { 
+				"Aaliyah", "Abagail", "Abbey", "Abbie", "Abbigail", "Abby", "Abigail", "Abigale", "Abigayle", "Abril",
+				"Addison", "Adeline", "Adriana", "Adrianna", "Adrienne", "Aileen", "Aimee", "Ainsley", "Aisha", "Aiyana",
+				"Aja", "Akira", "Alaina", "Alana", "Alanis", "Alanna", "Alayna", "Aleah", "Alejandra", "Alena",
+				"Alessandra", "Alex", "Alexa", "Alexandra", "Alexandrea", "Alexa
