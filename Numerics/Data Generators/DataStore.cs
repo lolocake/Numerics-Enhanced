@@ -683,4 +683,27 @@ namespace Orbifold.Numerics
 				"Bromley", "Bristol", "Carlisle", "Cambridge", "Cardiff", "Chester", "Chelmsford", "Colchester", "Croydon", 
 				"Canterbury", "Coventry", "Crewe", "Dartford", "Dundee", "Derby", "Dumfries", "Durham", "Darlington", 
 				"Doncaster", "Dorchester", "Dudley", "London", "Edinburgh", "Enfield", "Exeter", "Falkirk", "Blackpool", 
-				"Glasgow", "Gloucester", "Guildford", "Harrow", "Huddersfield", "Harrogate", "Hemel Hempstead",
+				"Glasgow", "Gloucester", "Guildford", "Harrow", "Huddersfield", "Harrogate", "Hemel Hempstead", "Hereford", "Outer Hebrides", 
+				"Hull", "Halifax", "Ilford", "Ipswich", "Inverness", "Kilmarnock", "Kingston upon Thames", "Kirkwall", "Kirkcaldy", 
+				"Liverpool", "Lancaster", "Llandrindod Wells", "Leicester", "Llandudno", "Lincoln", "Leeds", "Luton", "Manchester", 
+				"Rochester", "Milton Keynes", "Motherwell", "Newcastle upon Tyne", "Nottingham", "Northampton", "Newport", "Norwich", "Oldham", 
+				"Oxford", "Paisley", "Peterborough", "Perth", "Plymouth", "Portsmouth", "Preston", "Reading", "Redhill", 
+				"Romford", "Sheffield", "Swansea", "Stevenage", "Stockport", "Slough", "Sutton", "Swindon", "Southampton", 
+				"Salisbury", "Sunderland", "Southend-on-Sea", "Stoke-on-Trent", "Shrewsbury", "Taunton", "Galashiels", "Telford", "Tonbridge", 
+				"Torquay", "Truro", "Cleveland", "Twickenham", "Southall", "Warrington", "Watford", "Wakefield", "Wigan", 
+				"Worcester", "Walsall", "Wolverhampton", "York", "Lerwick", 
+				"Pendleton", "Oneonta", 
+			};
+
+        public static string[] CountryNames = new[]
+			{
+				"Saint Lucia", "Switzerland", "France", "Slovakia", "Swaziland", "Estonia", "Nicaragua", "Malaysia", "United Arab Emirates", 
+				"Indonesia", "Namibia", "Austria", "Wallis and Futuna", "Cambodia", "Marshall Islands", "Netherlands Antilles", "Bolivia", "Egypt", 
+				"Saint Lucia", "Poland", "Uganda", "Turkmenistan", "Saint Kitts and Nevis", "Mauritania", "Greenland", "Australia", "Gibraltar", 
+				"American Samoa", "Belgium", "Finland", "Tunisia", "Sudan", "Cameroon", "Comoros", "Niger", "Albania", 
+				"Kyrgyzstan", "Falkland Islands (Malvinas)", "Maldives", "India", "Paraguay", "Burundi", "Korea", "Palau", "Finland", 
+				"Algeria", "France", "Hungary", "Eritrea", "Australia", "Bosnia and Herzegovina", "Cocos (Keeling) Islands", "Viet Nam", "Switzerland", 
+				"Saint Lucia", "French Southern Territories", "Turkmenistan", "Belgium", "Georgia", "Zimbabwe", "Heard Island and Mcdonald Islands", "Cyprus", "Sudan", 
+				"Mali", "Israel", "Latvia", "Malta", "Tunisia", "Saint Vincent and The Grenadines", "Barbados", "French Southern Territories", "Kazakhstan", 
+				"Cyprus", "Saudi Arabia", "Brazil", "Macedonia", "Seychelles", "Ireland", "Tuvalu", "Austria", "Latvia", 
+				"Antarctica", "Ecuador", "Jordan", "Togo", "Afghanistan", "Saint Vincent and The Grenadines", "Singapore", "Belize", "Belar
