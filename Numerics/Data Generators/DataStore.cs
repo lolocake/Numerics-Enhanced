@@ -732,4 +732,30 @@ namespace Orbifold.Numerics
         public static string[] CompanyNames = new[]
 			{
 				"Ecolas", "Fetion", "Nautus", "Catat", "Kiloth", "Presite", "Digiving", "Magnux",
-				"Harth", "Nons", "Monaros", "Extiline", "Maesonet", "Damorph", "Zencer", "We
+				"Harth", "Nons", "Monaros", "Extiline", "Maesonet", "Damorph", "Zencer", "Weros", "Mitics", "Portable", "Getaur",
+				"GetronX", "Escact", "Herogue", "Mephos+", "Mrotort", "Homolyse", "Digtra", "Orangox", "Oraculepa", "Ramalynt",
+				"Macrogite", "Epilica", "Ramaweme ", "Figue", "Easthama", "Xephason", "Zosh", "Tensite", "Nyrast", "Pepa",
+				"Unicede", "Arcadic", "Neuronct", "Subster", "Fountace", "Analonsion", "Divilate", "Thornunt", "Goethax", "Gangure"
+				, "Saturnome", "Nix", "PaTact", "In@Teginet", "Bylite", "Audi Gong", "Xenom", "Xerolum", "Pyrost", "Xerodict",
+				"Unistre", "Gnomic", "Gracio", "Xylere",
+			};
+        public static string[] FamilyNames = new[]
+			{
+				"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson",
+				"Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark",
+				"Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez", "King", "Wright", "Lopez", "Hill",
+				"Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter", "Mitchell", "Perez", "Roberts", "Turner",
+				"Phillips", "Campbell", "Parker", "Evans", "Edwards", "Collins", "Stewart", "Sanchez", "Morris", "Rogers  ", "Reed"
+				, "Coook", "Morgan", "Bell", "Murphy", "Bailey", "Rivera", "Cooper", "Richardson", "Cox  ", "Howard", "Ward",
+				"Torres", "Peterson", "Gray", "Ramirez", "James", "Watson", "Brooks", "Kelly", "Sanders", "Price", "Bennett",
+				"Wood", "Barnes", "Ross", "Henderson", "Coleman", "Jenkins", "Perry", "Powell", "Long", "Patterson", "Hughes",
+				"Flores", "Washington", "Butler", "Simmons", "Foster", "Gonzales", "Bryant ", "Alexander", "ussell", "Griffin",
+				"Diaz", "Hayes",
+				"Smih", "Jones", "Williams", "Brown", "Taylor", "Davies", "Wilson", "Evans", "Thomas", 
+				"Johnson", "Roberts", "Walker", "Wright", "Robinson", "Thompson", "White", "Hughes", "Edwards    ", 
+				"Green", "Hall", "Wood", "Harris", "Lewis", "Martin", "Jackson", "Clarke", "Clark", 
+				"Turner", "Hill", "Scott", "Cooper", "Morris", "Ward", "Moore", "King", "Watson", 
+				"Baker", "Harrison", "Morgan", "Patel", "Young", "Allen", "Mitchell", "James", "Anderson", 
+				"Phillips", "Lee", "Bell", "Parker", "Davis", "Angelo", "Boulstridge", "Bungard", "Bursnell", 
+				"Cabrera", "Chaisty", "Clayworth", "Denial", "Dissanayake", "Domville", "Dua", "Edeson", "Garrott", 
+				"Gaspar", "Gauge"
