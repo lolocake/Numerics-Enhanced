@@ -706,4 +706,30 @@ namespace Orbifold.Numerics
 				"Saint Lucia", "French Southern Territories", "Turkmenistan", "Belgium", "Georgia", "Zimbabwe", "Heard Island and Mcdonald Islands", "Cyprus", "Sudan", 
 				"Mali", "Israel", "Latvia", "Malta", "Tunisia", "Saint Vincent and The Grenadines", "Barbados", "French Southern Territories", "Kazakhstan", 
 				"Cyprus", "Saudi Arabia", "Brazil", "Macedonia", "Seychelles", "Ireland", "Tuvalu", "Austria", "Latvia", 
-				"Antarctica", "Ecuador", "Jordan", "Togo", "Afghanistan", "Saint Vincent and The Grenadines", "Singapore", "Belize", "Belar
+				"Antarctica", "Ecuador", "Jordan", "Togo", "Afghanistan", "Saint Vincent and The Grenadines", "Singapore", "Belize", "Belarus", 
+				"Singapore", "Kuwait", "French Southern Territories", "New Zealand", "Algeria", "Saint Helena", "Bosnia and Herzegovina", "Martinique", "Nigeria", 
+				"Tanzania, United Republic of", "New Zealand", "Vanuatu", "Georgia", "Switzerland", "Russian Federation", "Jordan", "Haiti", "Madagascar", 
+				"Tanzania, United Republic of", "France", "Monaco", "Guadeloupe", "Ghana", "Sudan", "Singapore", "Croatia", "Sudan", 
+				"Mauritius", "Andorra", "Uganda", "Nigeria", "Somalia", "Hungary", "Uzbekistan", "Kazakhstan", "Indonesia", 
+				"Peru", "Mayotte", "Viet Nam", "Greenland", "Jamaica", "Myanmar", "French Guiana", "Saint Vincent and The Grenadines", "Korea", 
+				"Argentina", "Cook Islands", "Suriname", "Mayotte", "Belgium", "Burkina Faso", "Burundi", "Jamaica", "Kuwait", 
+				"Western Sahara", "Djibouti", "Paraguay", "South Africa", "Singapore", "Portugal", "Saint Kitts and Nevis", "Japan", "Malawi", 
+				"Burundi", "Hungary", "Wallis and Futuna", "Mauritania", "Bermuda", "Malta", "Malawi", "Japan", "Wallis and Futuna", 
+				"British Indian Ocean Territory", "Saint Kitts and Nevis", "Saint Helena", "Montserrat", "Serbia and Montenegro", "Uzbekistan", "Israel", "Grenada", "Argentina", 
+				"Micronesia", "Libyan Arab Jamahiriya", "Latvia", "Armenia", "Latvia", "Puerto Rico", "Rwanda", "France", "Macao", 
+				"Kazakhstan", "Aruba", "Vanuatu", "Wallis and Futuna", "Cocos (Keeling) Islands", "Guam", "Vanuatu", "Saint Lucia", "Kiribati", 
+				"Lithuania", "Ethiopia", "Trinidad and Tobago", "Lesotho", "Iceland", "Nigeria", "Czech Republic", "Zimbabwe", "Israel", 
+				"Christmas Island", "Ireland"
+			};
+
+        public static string[] CompanySuffixes = new[]
+			{
+				"Metals", "Sport","Software", "Manufacturing", "AG", "BVBA", "Ltd.","Inc.","Finance","Insurances","Clothing", "Lingerie", "Outerwear", "Sprl",  "International",
+				"Couture","Wear", "Worldwide", "Productions", "Sportswear", "Shirts", "Corp.", "XL", "NV", "CVBA", "AAT", "Pty.", "SE", "AD", "SD", "KDA", "E.I.R.L.", "Hardware",
+				"Language Services", "Services", "Logistics", "Constructions"
+
+			};
+        public static string[] CompanyNames = new[]
+			{
+				"Ecolas", "Fetion", "Nautus", "Catat", "Kiloth", "Presite", "Digiving", "Magnux",
+				"Harth", "Nons", "Monaros", "Extiline", "Maesonet", "Damorph", "Zencer", "We
