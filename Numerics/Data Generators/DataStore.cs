@@ -758,4 +758,22 @@ namespace Orbifold.Numerics
 				"Baker", "Harrison", "Morgan", "Patel", "Young", "Allen", "Mitchell", "James", "Anderson", 
 				"Phillips", "Lee", "Bell", "Parker", "Davis", "Angelo", "Boulstridge", "Bungard", "Bursnell", 
 				"Cabrera", "Chaisty", "Clayworth", "Denial", "Dissanayake", "Domville", "Dua", "Edeson", "Garrott", 
-				"Gaspar", "Gauge"
+				"Gaspar", "Gauge", "Gelson", "Happer", "Hawa", "Helling", "Hollingberry", "Howsham", "Husher", 
+				"Huth", "Khambaita", "Kinlan", "Le Feuvre", "Leatherby", "Lowsley", "Mardling", "Mc Cart", "McCalman", 
+				"McKiddie", "McQuillen", "Meath", "Mustow", "Nana", "Pepall", "Perdue", "Ravensdale", "Rukin", 
+				"Selvaratnam", "Shelsher", "Silsbury", "Southway", "Upadhyad", "Valji", "Virji", "Wadd", "Weild", 
+				"Witte", 
+			};
+
+		public static string MedicalSymptoms = @"
+					Baseline pulmonary questionnaires were completed by 907 HIV-infected and 989 HIV-uninfected participants in the MACS cohort and by 1405 HIV-infected 
+					and 571 HIV-uninfected participants in the WIHS cohort. In MACS, dyspnea, cough, wheezing, sleep apnea, and incident chronic obstructive pulmonary disease (COPD)
+					were more common in HIV-infected participants. In WIHS, wheezing and sleep apnea were more common in HIV-infected participants. Smoking (MACS and WIHS) and greater 
+					body mass index (WIHS) were associated with more respiratory symptoms and diagnoses. While sputum studies, bronchoscopies, and chest computed tomography scans were 
+					more likely to be performed in HIV-infected participants, pulmonary function tests were no more common in HIV-infected individuals. Respiratory symptoms in HIV-infected
+					individuals were associated with history of pneumonia, cardiovascular disease, or use of HAART. A diagnosis of asthma or COPD was associated with previous pneumonia.
+					Fraction of exhaled nitric oxide (Feno) has been proposed to be a noninvasive marker of airway inflammation. Levels of Feno are elevated in subjects with asthma1and 
+					atopy,2and have been positively associated with eosinophils in BAL,3with eosinophils in bronchial biopsy specimens,4and with eosinophils in induced sputum.5 However,
+					in addition to atopy, asthma, and respiratory symptoms, there are several other determinants of Feno. Their importance and interactions as determinant of Feno are 
+					incompletely understood.
+					Perceived control of asthma, which is defined as individuals’ perceptions of their ability to deal with asthma and its exacerbations, is a psychological factor that may have an important impact on adult asthma outcomes.7 Its effect could theoretically be mediated by self-management behaviors, such as the use of peak flow monitoring or inhaled c
