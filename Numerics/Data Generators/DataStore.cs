@@ -776,4 +776,33 @@ namespace Orbifold.Numerics
 					atopy,2and have been positively associated with eosinophils in BAL,3with eosinophils in bronchial biopsy specimens,4and with eosinophils in induced sputum.5 However,
 					in addition to atopy, asthma, and respiratory symptoms, there are several other determinants of Feno. Their importance and interactions as determinant of Feno are 
 					incompletely understood.
-					Perceived control of asthma, which is defined as individuals’ perceptions of their ability to deal with asthma and its exacerbations, is a psychological factor that may have an important impact on adult asthma outcomes.7 Its effect could theoretically be mediated by self-management behaviors, such as the use of peak flow monitoring or inhaled c
+					Perceived control of asthma, which is defined as individuals’ perceptions of their ability to deal with asthma and its exacerbations, is a psychological factor that may have an important impact on adult asthma outcomes.7 Its effect could theoretically be mediated by self-management behaviors, such as the use of peak flow monitoring or inhaled corticosteroids, that can attenuate the severity of asthma. The perceived control of asthma construct, which is related to the general theories of self-efficacy, locus of control, and learned helplessness, has been associated with asthma severity and quality of life but has not been well studied in association with asthma outcomes like health-care utilization.7 If higher perceived control were associated with improved health outcomes, programs designed to increase perceived control may be useful targets for intervention. In the present study, we examined the impact of perceived control of asthma on a broad array of health outcomes, including asthma severity, health status, and emergency health-care utilization for asthma in a large cohort of adults with severe asthma.
+				";
+        public static string DocumentTitleSample = @"
+				Software services as a problem solver.
+				Eliminating risk in China using modern techniques
+				The greatest improvements in contemporary analytics.
+				WCF services for SOA architecture.
+				Sequence analysis using modern algebraic approaches.
+				Graph databases for server-side intelligence.
+				Great tricks to develop a simple appliance using VMWare on Linux.
+				Diverging trends in computing using iPad technology.
+				Global economy on a micro-scale using indexing and searching mechanisms.
+				Marketing of clinical trials in developing countries.
+				Risks and opportunities through middle-management in Western Europe.
+				Abstract patterns of JavaScript development.
+				Invariant systems with generic parametrization.
+				Automatic processing of arbitrary large data sets.
+				Data visualization of large datasets.
+				Geographic visualization of multi-point data at extreme height.
+				Personalization and emotions in computer games.
+				Articificial intelligence of pseudo-variant systems in relation to assurance margins.
+				Content management system for knowledge transfer.
+				Fluid motion graphics in manufacturing.
+				Data transformation challenges using Sharepoint.
+				Google search infrastructure at low altitude.
+				Minor changes in fluid motion of blue gas.
+				Algorithmic beauty of natural disasters at low temperature.
+				Infinite resource scheduling with constraints.
+				Variable scaling of metallic structures through reuse of basic methods.
+				Bivalent traffic proble
