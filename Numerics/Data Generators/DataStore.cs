@@ -866,4 +866,51 @@ namespace Orbifold.Numerics
           Първо либе, първа севдо, не копней, недей се вайка,
           че каил за нас не стават моя татко, твойта майка.
 
-          Верни думи, верна обич, има ли за
+          Верни думи, верна обич, има ли за тях развала?
+          За сърцата що се любят и смъртта не е раздяла.
+
+          Думите му бяха сладки - бяха мъките горчиви -
+          писано било та ние да се не сбереме живи...
+
+          Привечер веднъж се връщах с бели менци от чешмата
+          и навалица заварих да се трупа от махлата,
+
+          тъкмо пред високи порти, там на Ивовите двори, -
+          Клетника - дочух между им да се шушне и говори: -
+
+          право се убол в сърцето - ножчето му още тамо!
+          Аз изтръпнах и изпуснах бели медници от рамо.
+
+          През навалицата виком полетях и се промъкнах,
+          видях Ива, видях кърви... и не сетих как измъкнах
+
+          остро ножче из сърце му и в сърцето си забих го,
+          върху Ива мъртва паднах и в прегръдки си обвих го...
+
+          Нек' сега ни се нарадват, мене майка, нему татко:
+          мъртви ние пак се любим и смъртта за нас е сладка!
+
+          Не в черковний двор зариха на любовта двете жъртви -
+          тамо ровят само тия, дето истински са мъртви -
+
+          а погребаха ни тука, на брегът край таз долина...
+          Той израстна кичест Явор, а до него аз Калина; -
+
+          той ме е прегърнал с клони, аз съм в него вейки свряла,
+          За сърцата що се любят и смъртта не е раздяла.
+
+          Дълго аз стоях и слушах, там под сянката унесен,
+          и това що чух, изпях го в тази моя тъжна песен.";
+
+        public static string BiologySample = @"No doubt many instincts of very difficult explanation could be opposed to
+the theory of natural selection,--cases, in which we cannot see how an
+instinct could possibly have originated; cases, in which no intermediate
+gradations are known to exist; cases of instinct of apparently such
+trifling importance, that they could {236} hardly have been acted on by
+natural selection; cases of instincts almost identically the same in
+animals so remote in the scale of nature, that we cannot account for their
+similarity by inheritance from a common parent, and must therefore believe
+that they have been acquired by independent acts of natural selection. I
+will not here enter on these several cases, but will confine myself to one
+special difficulty, which at first appeared to me insuperable, and actually
+fatal to my whole theory. I allude to the neuters or sterile females in
