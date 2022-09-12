@@ -914,3 +914,37 @@ that they have been acquired by independent acts of natural selection. I
 will not here enter on these several cases, but will confine myself to one
 special difficulty, which at first appeared to me insuperable, and actually
 fatal to my whole theory. I allude to the neuters or sterile females in
+insect-communities: for these neuters often differ widely in instinct and
+in structure from both the males and fertile females, and yet, from being
+sterile, they cannot propagate their kind.
+
+The subject well deserves to be discussed at great length, but I will here
+take only a single case, that of working or sterile ants. How the workers
+have been rendered sterile is a difficulty; but not much greater than that
+of any other striking modification of structure; for it can be shown that
+some insects and other articulate animals in a state of nature occasionally
+become sterile; and if such insects had been social, and it had been
+profitable to the community that a number should have been annually born
+capable of work, but incapable of procreation, I can see no very great
+difficulty in this being effected by natural selection. But I must pass
+over this preliminary difficulty. The great difficulty lies in the working
+ants differing widely from both the males and the fertile females in
+structure, as in the shape of the thorax and in being destitute of wings
+and sometimes of eyes, and in instinct. As far as instinct alone is
+concerned, the prodigious difference in this respect between the workers
+and the perfect females, would have been far better exemplified by the
+hive-bee. If a working ant or other neuter insect had been an animal {237}
+in the ordinary state, I should have unhesitatingly assumed that all its
+characters had been slowly acquired through natural selection; namely, by
+an individual having been born with some slight profitable modification of
+structure, this being inherited by its offspring, which again varied and
+were again selected, and so onwards. But with the working ant we have an
+insect differing greatly from its parents, yet absolutely sterile; so that
+it could never have transmitted successively acquired modifications of
+structure or instinct to its progeny. It may well be asked how is it
+possible to reconcile this case with the theory of natural selection?
+
+First, let it be remembered that we have innumerable instances, both in our
+domestic productions and in those in a state of nature, of all sorts of
+differences of structure which have become correlated to certain ages, and
+to either sex. We have differences correlated not onl
