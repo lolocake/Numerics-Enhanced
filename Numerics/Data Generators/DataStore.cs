@@ -982,4 +982,39 @@ prodigious amount of difference between the fertile and sterile females of
 the same species has been produced, which we see in many social insects.
 
 But we have not as yet touched on the climax of the difficulty; namely, the
-fact that
+fact that the neuters of several ants differ, not only from the fertile
+females and males, but from each other, sometimes to an almost incredible
+degree, and are thus divided into two or even three castes. The castes,
+moreover, do not generally graduate into each other, but are perfectly well
+defined; being as distinct from each other, as are any two species of the
+same genus, or rather as any two genera of the same family. Thus in Eciton,
+there are working and soldier neuters, with jaws and instincts
+extraordinarily {239} different: in Cryptocerus, the workers of one caste
+alone carry a wonderful sort of shield on their heads, the use of which is
+quite unknown: in the Mexican Myrmecocystus, the workers of one caste never
+leave the nest; they are fed by the workers of another caste, and they have
+an enormously developed abdomen which secretes a sort of honey, supplying
+the place of that excreted by the aphides, or the domestic cattle as they
+may be called, which our European ants guard or imprison.";
+
+        public static string SpanishSample = @"Y los demás asintieron, despojándolo repentinamente de la ciudadanía que
+le habían atribuído poco antes. El consejero, con una rudeza militar, le
+había vuelto la espalda, y tomando la baraja, distribuía cartas. Se
+reanudó la partida. Desnoyers, viéndose aislado por este menosprecio
+silencioso, sintió deseos de interrumpir el juego con una violencia.
+Pero la oculta rodilla seguía aconsejándole la calma y una mano no menos
+invisible buscó su diestra, oprimiéndola dulcemente. Esto bastó para que
+recobrase la serenidad. La «señora consejera» seguía con ojos fijos la
+marcha del juego. El miró también, y una sonrisa maligna contrajo
+levemente los extremos de su boca, al mismo tiempo que se decía
+mentalmente, á guisa de consuelo: «¡Capitán, capitán!... No sabes lo que
+te espera.»
+
+En tierra firme no se habría acercado más á estos hombres; pero la vida
+en un trasatlántico, con su inevitable promiscuidad, obliga al olvido.
+Al otro día, el consejero y sus amigos fueron en busca de él,
+extremando sus amabilidades para borrar todo recuerdo enojoso. Era un
+joven «distinguido», pertenecía á una familia rica, y todos ellos
+poseían en su país tiendas y otros negocios. De lo único que cuidaron
+fué de no mencionar más su origen francés. Era argentino, y todos á coro
+se interesaban por la grandeza de su nación y de todas las nacio
