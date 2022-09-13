@@ -1017,4 +1017,41 @@ extremando sus amabilidades para borrar todo recuerdo enojoso. Era un
 joven «distinguido», pertenecía á una familia rica, y todos ellos
 poseían en su país tiendas y otros negocios. De lo único que cuidaron
 fué de no mencionar más su origen francés. Era argentino, y todos á coro
-se interesaban por la grandeza de su nación y de todas las nacio
+se interesaban por la grandeza de su nación y de todas las naciones de
+la América del Sur, donde tenían corresponsales y empresas, exagerando
+su importancia como si fuesen grandes potencias, comentando con gravedad
+los hechos y palabras de sus personajes políticos, dando á entender que
+en Alemania no había quien no se preocupase de su porvenir, prediciendo
+á todas ellas una gloria futura, reflejo de la del Imperio, siempre que
+se mantuviesen bajo la influencia germánica.
+Lo mismo que los otros!... La guerra había que pagarla con los bienes
+de los vencidos. Era el nuevo sistema alemán; la vuelta saludable á la
+guerra de los tiempos remotos: tributos impuestos á las ciudades y
+saqueo aislado de las casas. De este modo se vencían las resistencias
+del enemigo y la guerra terminaba antes. No debía entristecerse por el
+despojo. Sus muebles y alhajas serían vendidos en Alemania. Podía hacer
+una reclamación al gobierno francés para que le indemnizase después de
+la derrota: sus parientes de Berlín apoyarían la demanda.
+
+Las dos mujeres trasladaron ropas y colchones desde el pabellón al
+último piso. El conserje estaba ocupado en calentar el segundo baño de
+Su Excelencia. Su esposa lamentaba con gestos desesperados el saqueo del
+castillo. ¡Qué de cosas ricas desaparecidas!... Deseosa de salvar los
+últimos restos, buscaba al dueño para hacerle denuncias, como si éste
+pudiese impedir el robo individual y cauteloso. Los ordenanzas y
+escribientes del conde se metían en los bolsillos todo lo que resultaba
+fácil de ocultar. Decían sonriendo que eran recuerdos. Luego se aproximó
+con aire misterioso para hacerle una nueva revelación. Había visto á un
+jefe forzar los cajones donde guardaba la señora la ropa blanca, y cómo
+formaba un paquete con las prendas más finas y gran cantidad de blondas.
+
+A pesar de estos halagos, Desnoyers no se presentó con la misma
+asiduidad que antes á la hora del _poker_. La consejera se retiraba á su
+camarote más pronto que de costumbre. La proximidad de la línea
+equinoccial le proporcionaba un sueño irresistible, abandonando á su
+esposo, que seguía con los naipes en la mano. Julio, por su parte, tenía
+misteriosas ocupaciones que sólo le permitían subir á la cubierta
+después de media noche. Con la precipitación de un hombre que desea ser
+visto para evitar sospechas, entraba en el fumadero hablando alto y
+venía á sentarse junto al marido y sus camaradas. La partida había
+terminado, y
