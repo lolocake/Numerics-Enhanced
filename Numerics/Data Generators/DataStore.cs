@@ -1054,4 +1054,37 @@ misteriosas ocupaciones que sólo le permitían subir á la cubierta
 después de media noche. Con la precipitación de un hombre que desea ser
 visto para evitar sospechas, entraba en el fumadero hablando alto y
 venía á sentarse junto al marido y sus camaradas. La partida había
-terminado, y
+terminado, y un derroche de cerveza y gruesos cigarros de Hamburgo
+servía para festejar el éxito de los gananciosos. Era la hora de las
+expansiones germánicas, de la intimidad entre hombres, de las bromas
+lentas y pesadas, de los cuentos subidos de color. El consejero presidía
+con toda su grandeza estas diabluras de los amigos, sesudos negociantes
+de los puertos anseáticos que gozaban de grandes créditos en el
+_Deutsche Bank_ ó tenderos instalados en las repúblicas del Plata con
+una familia innumerable. El era un guerrero, un capitán, y al celebrar
+cada chiste lento con una risa que hinchaba su robusta cerviz, creía
+estar en el vivac entre sus compañeros de armas.";
+
+        public static string English2Sample = @"By no means. You could not make a greater mistake. If they are innocent
+it would be a cruel injustice, and if they are guilty we should be
+giving up all chance of bringing it home to them. No, no, we will
+preserve them upon our list of suspects. Then there is a groom at the
+Hall, if I remember right. There are two moorland farmers. There is our
+friend Dr. Mortimer, whom I believe to be entirely honest, and there is
+his wife, of whom we know nothing. There is this naturalist, Stapleton,
+and there is his sister, who is said to be a young lady of attractions.
+There is Mr. Frankland, of Lafter Hall, who is also an unknown factor,
+and there are one or two other neighbours. These are the folk who must
+be your very special study. By no means. You could not make a greater mistake. If they are innocent
+it would be a cruel injustice, and if they are guilty we should be
+giving up all chance of bringing it home to them. No, no, we will
+preserve them upon our list of suspects. Then there is a groom at the
+Hall, if I remember right. There are two moorland farmers. There is our
+friend Dr. Mortimer, whom I believe to be entirely honest, and there is
+his wife, of whom we know nothing. There is this naturalist, Stapleton,
+and there is his sister, who is said to be a young lady of attractions.
+There is Mr. Frankland, of Lafter Hall, who is also an unknown factor,
+and there are one or two other neighbours. These are the folk who must
+be your very special study. And yet he lied as he said it, for it chanced that after breakfast I met
+Mrs. Barrymore in the long corridor with the sun full upon her face. She
+was a large, impassive, heavy-featured woman with a stern 
