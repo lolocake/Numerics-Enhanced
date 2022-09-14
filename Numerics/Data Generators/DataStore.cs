@@ -1087,4 +1087,38 @@ There is Mr. Frankland, of Lafter Hall, who is also an unknown factor,
 and there are one or two other neighbours. These are the folk who must
 be your very special study. And yet he lied as he said it, for it chanced that after breakfast I met
 Mrs. Barrymore in the long corridor with the sun full upon her face. She
-was a large, impassive, heavy-featured woman with a stern 
+was a large, impassive, heavy-featured woman with a stern set expression
+of mouth. But her telltale eyes were red and glanced at me from between
+swollen lids. It was she, then, who wept in the night, and if she did so
+her husband must know it. Yet he had taken the obvious risk of discovery
+in declaring that it was not so. Why had he done this? And why did she
+weep so bitterly? Already round this pale-faced, handsome, black-bearded
+man there was gathering an atmosphere of mystery and of gloom. It was he
+who had been the first to discover the body of Sir Charles, and we had
+only his word for all the circumstances which led up to the old man's
+death. Was it possible that it was Barrymore, after all, whom we had
+seen in the cab in Regent Street? The beard might well have been the
+same. The cabman had described a somewhat shorter man, but such an
+impression might easily have been erroneous. How could I settle the
+point forever? Obviously the first thing to do was to see the Grimpen
+postmaster and find whether the test telegram had really been placed in
+Barrymore's own hands. Be the answer what it might, I should at least
+have something to report to Sherlock Holmes.";
+
+        public static string English1Sample = @"They were married; careful cultivation ripened the talents which nature
+had bestowed, and Melesigenes soon surpassed his schoolfellows in every
+attainment, and, when older, rivalled his preceptor in wisdom. Phemius
+died, leaving him sole heir to his property, and his mother soon followed.
+Melesigenes carried on his adopted father's school with great success,
+exciting the admiration not only of the inhabitants of Smyrna, but also of
+the strangers whom the trade carried on there, especially in the
+exportation of corn, attracted to that city. Among these visitors, one
+Mentes, from Leucadia, the modern Santa Maura, who evinced a knowledge and
+intelligence rarely found in those times, persuaded Melesigenes to close
+his school, and accompany him on his travels. He promised not only to pay
+his expenses, but to furnish him with a further stipend, urging, that,
+While he was yet young, it was fitting that he should see with his own
+eyes the countries and cities which might hereafter be the subjects of his
+discourses. Melesigenes consented, and set out with his patron,
+examining all the curiosities of the countries they visited, and
+informing himself of 
