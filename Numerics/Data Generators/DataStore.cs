@@ -1228,4 +1228,37 @@ distantiam filo intercedente connexi, revolverentur circa commune
 gravitatis centrum; innotesceret ex tensione fili conatus globorum
 recedendi ab axe motus, & inde quantitas motus circularis computari posset.
 Deinde si vires quælibet æquales in alternas globorum facies ad motum
-circularem augendum vel minuendum simul imprimerentur, innotesceret 
+circularem augendum vel minuendum simul imprimerentur, innotesceret ex
+aucta vel diminuta fili tensione augmentum vel decrementum motus; & inde
+tandem inveniri possent facies globorum in quas vires imprimi deberent, ut
+motus maxime augeretur, id est facies posticæ, sive quæ in motu circulari
+sequuntur. Cognitis autem faciebus quæ sequuntur & faciebus oppositis quæ
+præcedunt, cognosceretur determinatio motus. In hunc modum inveniri posset
+& quantitas & determinatio motus hujus circularis in vacuo quovis immenso,
+ubi nihil extaret externum & sensibile, quocum globi conferri possent. Si
+jam constituerentur in spatio illo corpora aliqua longinqua datam inter se
+positionem servantia, qualia sunt stellæ fixæ in regionibus nostris: sciri
+quidem non posset ex relativa globorum translatione inter corpora, utrum
+his an illis tribuendus esset motus. At si attenderetur ad filum &
+inveniretur tensionem ejus illam ipsam esse quam motus globorum requireret;
+concludere liceret motum esse globorum, & tum demum ex translatione
+globorum inter corpora, determinationem hujus motus colligere. Motus autem
+veros ex eorum causis, effectibus & apparentibus differentijs colligere, &
+contra, ex motibus seu veris seu apparentibus, eorum causas & effectus,
+docebitur fusius in sequentibus. Hunc enim in finem Tractatum sequentem
+composui.";
+        public static string PhilosophySample = @"We may carry this farther, and remark, not only that two objects are
+connected by the relation of cause and effect, when the one produces
+a motion or any action in the other, but also when it has a power
+of producing it. And this we may observe to be the source of all the
+relation, of interest and duty, by which men influence each other in
+society, and are placed in the ties of government and subordination. A
+master is such-a-one as by his situation, arising either from force or
+agreement, has a power of directing in certain particulars the actions
+of another, whom we call servant. A judge is one, who in all disputed
+cases can fix by his opinion the possession or property of any thing
+betwixt any members of the society. When a person is possessed of any
+power, there is no more required to convert it into action, but the
+exertion of the will; and that in every case is considered as possible,
+and in many as probable; especially in the case of authority, where the
+obedience of the subject is a pleasure and advantage to the superi
