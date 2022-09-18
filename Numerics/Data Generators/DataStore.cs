@@ -1191,4 +1191,41 @@ sedes physicas jam non expendo.
 Est igitur vis acceleratrix ad vim motricem ut celeritas ad motum. Oritur
 enim quantitas motus ex celeritate ducta in quantitatem Materiæ, & vis
 motrix ex vi acceleratrice ducta in quantitatem ejusdem materiæ. Nam summa
-actionum vis acceleratricis in singulas corporis particulas est vis mot
+actionum vis acceleratricis in singulas corporis particulas est vis motrix
+totius. Unde juxta Superficiem Terræ, ubi gravitas acceleratrix seu vis
+gravitans in corporibus universis eadem est, gravitas motrix seu pondus est
+ut corpus: at si in regiones ascendatur ubi gravitas acceleratrix fit
+minor, pondus pariter minuetur, eritq; semper ut corpus in gravitatem
+acceleratricem ductum. Sic in regionibus ubi gravitas acceleratrix duplo
+minor est, pondus corporis duplo vel triplo minoris erit quadruplo vel
+sextuplo minus.
+
+Porro attractiones et impulsus eodem sensu acceleratrices & motrices
+nomino. Voces autem attractionis, impulsus vel propensionis cujuscunq; in
+centrum, indifferenter et pro se mutuo promiscue usurpo, has vires non
+physice sed Mathematice tantum considerando. Unde caveat lector ne per
+hujusmodi voces cogitet me speciem vel modum actionis causamve aut rationem
+physicam alicubi definire, vel centris (quæ sunt puncta Mathematica) vires
+vere et physice tribuere, si forte aut centra trahere, aut vires centrorum
+esse dixero.
+Igitur quantitates relativæ non sunt eæ ipsæ quantitates quarum nomina præ
+se ferunt, sed earum mensuræ illæ sensibiles (veræ an errantes) quibus
+vulgus loco mensuratarum utitur. At si ex usu definiendæ sunt verborum
+significationes; per nomina illa Temporis, Spatij, Loci & Motus proprie
+intelligendæ erunt hæ mensuræ; & sermo erit insolens & pure Mathematicus si
+quantitates mensuratæ hic subintelligantur. Proinde vim inferunt Sacris
+literis qui voces hasce de quantitatibus mensuratis ibi interpretantur.
+Neq; minus contaminant Mathesin & Philosophiam qui quantitates veras cum
+ipsarum relationibus & vulgaribus mensuris confundunt.
+
+Motus quidem veros corporum singulorum cognoscere, & ab apparentibus actu
+discriminare, difficillimum est; propterea quod partes spatij illius
+immobilis in quo corpora vere moventur, non incurrunt in sensus. Causa
+tamen non est prorsus desperata. Nam suppetunt argumenta partim ex motibus
+apparentibus, qui sunt motuum verorum differentiæ, partim ex viribus quæ
+sunt motuum verorum causæ & effectus. Ut si globi duo ad datam ab invicem
+distantiam filo intercedente connexi, revolverentur circa commune
+gravitatis centrum; innotesceret ex tensione fili conatus globorum
+recedendi ab axe motus, & inde quantitas motus circularis computari posset.
+Deinde si vires quælibet æquales in alternas globorum facies ad motum
+circularem augendum vel minuendum simul imprimerentur, innotesceret 
