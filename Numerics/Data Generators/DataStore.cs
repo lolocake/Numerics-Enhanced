@@ -1154,4 +1154,41 @@ are by _four_ different authors.(34) Now, I will venture to assert, that
 these tragedies are so uniform, not only in their borrowed phraseology--a
 phraseology with which writers like Boethius and Saxo Grammaticus were
 more charmed than ourselves--in their freedom from real poetry, and last,
-but not least, in an ultra-refined and consistent a
+but not least, in an ultra-refined and consistent abandonment of good
+taste, that few writers of the present day would question the capabilities
+of the same gentleman, be he Seneca or not, to produce not only these, but
+a great many more equally bad. With equal sagacity, Father Hardouin
+astonished the world with the startling announcement that the Æneid of
+Virgil, and the satires of Horace, were literary deceptions. Now, without
+wishing to say one word of disrespect against the industry and
+learning--nay, the refined acuteness--which scholars, like Wolf, have
+bestowed upon this subject, I must express my fears, that many of our
+modern Homeric theories will become matter for the surprise and
+entertainment, rather than the instruction, of posterity. Nor can I help
+thinking, that the literary history of more recent times will account for
+many points of difficulty in the transmission of the Iliad and Odyssey to
+a period so remote from that of their first creation.";
+
+        public static string LatinSample = @"Uti pondus majus in majori corpore, minus in minore; inq; corpore eodem
+majus prope terram, minus in cælis. Hæc vis est corporis totius
+centripetentia seu propensio in centrum & (ut ita dicam) pondus, &
+innotescit semper per vim ipsi contrariam & æqualem, qua descensus corporis
+impediri potest.
+
+Hasce virium quantitates brevitatis gratia nominare licet vires absolutas,
+acceleratrices & motrices, & distinctionis gratia referre ad corpora, ad
+corporum loca, & ad centrum virium: Nimirum vim motricem ad corpus, tanquam
+conatum & propensionem totius in centrum, ex propensionibus omnium partium
+compositum; & vim acceleratricem ad locum corporis, tanquam efficaciam
+quandam, de centro per loca singula in circuitu diffusam, ad movenda
+corpora quæ in ipsis sunt; vim autem absolutam ad centrum, tanquam causa
+aliqua præditum, sine qua vires motrices non propagantur per regiones in
+circuitu; sive causa illa sit corpus aliquod centrale (quale est Magnes in
+centro vis Magneticæ vel Terra in centro vis gravitantis) sive alia aliqua
+quæ non apparet. Mathematicus saltem est hic conceptus. Nam virium causas &
+sedes physicas jam non expendo.
+
+Est igitur vis acceleratrix ad vim motricem ut celeritas ad motum. Oritur
+enim quantitas motus ex celeritate ducta in quantitatem Materiæ, & vis
+motrix ex vi acceleratrice ducta in quantitatem ejusdem materiæ. Nam summa
+actionum vis acceleratricis in singulas corporis particulas est vis mot
