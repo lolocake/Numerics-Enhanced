@@ -1121,4 +1121,37 @@ While he was yet young, it was fitting that he should see with his own
 eyes the countries and cities which might hereafter be the subjects of his
 discourses. Melesigenes consented, and set out with his patron,
 examining all the curiosities of the countries they visited, and
-informing himself of 
+informing himself of everything by interrogating those whom he met. We
+may also suppose, that he wrote memoirs of all that he deemed worthy of
+preservation Having set sail from Tyrrhenia and Iberia, they reached
+Ithaca. Here Melesigenes, who had already suffered in his eyes, became
+much worse, and Mentes, who was about to leave for Leucadia, left him to
+the medical superintendence of a friend of his, named Mentor, the son of
+Alcinor. Under his hospitable and intelligent host, Melesigenes rapidly
+became acquainted with the legends respecting Ulysses, which afterwards
+formed the subject of the Odyssey. The inhabitants of Ithaca assert, that
+it was here that Melesigenes became blind, but the Colophomans make their
+city the seat of that misfortune. He then returned to Smyrna, where he
+applied himself to the study of poetry.But it is not on words only that grammarians, mere grammarians, will
+exercise their elaborate and often tiresome ingenuity. Binding down an
+heroic or dramatic poet to the block upon which they have previously
+dissected his words and sentences, they proceed to use the axe and the
+pruning knife by wholesale, and inconsistent in everything but their wish
+to make out a case of unlawful affiliation, they cut out book after book,
+passage after passage, till the author is reduced to a collection of
+fragments, or till those, who fancied they possessed the works of some
+great man, find that they have been put off with a vile counterfeit got up
+at second hand. If we compare the theories of Knight, Wolf, Lachmann, and
+others, we shall feel better satisfied of the utter uncertainty of
+criticism than of the apocryphal position of Homer. One rejects what
+another considers the turning-point of his theory. One cuts a supposed
+knot by expunging what another would explain by omitting something else.
+
+Nor is this morbid species of sagacity by any means to be looked upon as a
+literary novelty. Justus Lipsius, a scholar of no ordinary skill, seems to
+revel in the imaginary discovery, that the tragedies attributed to Seneca
+are by _four_ different authors.(34) Now, I will venture to assert, that
+these tragedies are so uniform, not only in their borrowed phraseology--a
+phraseology with which writers like Boethius and Saxo Grammaticus were
+more charmed than ourselves--in their freedom from real poetry, and last,
+but not least, in an ultra-refined and consistent a
