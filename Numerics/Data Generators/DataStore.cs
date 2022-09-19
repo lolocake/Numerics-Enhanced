@@ -1261,4 +1261,39 @@ betwixt any members of the society. When a person is possessed of any
 power, there is no more required to convert it into action, but the
 exertion of the will; and that in every case is considered as possible,
 and in many as probable; especially in the case of authority, where the
-obedience of the subject is a pleasure and advantage to the superi
+obedience of the subject is a pleasure and advantage to the superior.
+
+These are therefore the principles of union or cohesion among our simple
+ideas, and in the imagination supply the place of that inseparable
+connexion, by which they are united in our memory. Here is a kind
+of ATTRACTION, which in the mental world will be found to have as
+extraordinary effects as in the natural, and to shew itself in as many
+and as various forms. Its effects are every where conspicuous; but as to
+its causes, they are mostly unknown, and must be resolved into original
+qualities of human nature, which I pretend not to explain. Nothing is
+more requisite for a true philosopher, than to restrain the intemperate
+desire of searching into causes, and having established any doctrine
+upon a sufficient number of experiments, rest contented with that, when
+he sees a farther examination would lead him into obscure and uncertain
+speculations. In that case his enquiry would be much better employed in
+examining the effects than the causes of his principle.
+
+Amongst the effects of this union or association of ideas, there are
+none more remarkable, than those complex ideas, which are the common
+subjects of our thoughts and reasoning, and generally arise from some
+principle of union among our simple ideas. These complex ideas may be
+divided into Relations, Modes, and Substances. We shall briefly examine
+each of these in order, and shall subjoin some considerations concerning
+our general and particular ideas, before we leave the present subject,
+which may be considered as the elements of this philosophy.
+Thirdly, it is a principle generally received in philosophy that
+everything in nature is individual, and that it is utterly absurd to
+suppose a triangle really existent, which has no precise proportion of
+sides and angles. If this therefore be absurd in fact and reality, it
+must also be absurd in idea; since nothing of which we can form a clear
+and distinct idea is absurd and impossible. But to form the idea of an
+object, and to form an idea simply, is the same thing; the reference
+of the idea to an object being an extraneous denomination, of which in
+itself it bears no mark or character. Now as it is impossible to form an
+idea of an object, that is possest of quantity and quality, and yet
+is possest of no precise degree of either; it follows that there is an
