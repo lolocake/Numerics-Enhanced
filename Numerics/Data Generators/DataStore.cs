@@ -1297,3 +1297,37 @@ of the idea to an object being an extraneous denomination, of which in
 itself it bears no mark or character. Now as it is impossible to form an
 idea of an object, that is possest of quantity and quality, and yet
 is possest of no precise degree of either; it follows that there is an
+equal impossibility of forming an idea, that is not limited and confined
+in both these particulars. Abstract ideas are therefore in themselves
+individual, however they may become general in their representation.
+The image in the mind is only that of a particular object, though the
+application of it in our reasoning be the same, as if it were universal.
+
+This application of ideas beyond their nature proceeds from our
+collecting all their possible degrees of quantity and quality in such an
+imperfect manner as may serve the purposes of life, which is the second
+proposition I proposed to explain. When we have found a resemblance
+[Footnote 2.] among several objects, that often occur to us, we apply
+the same name to all of them, whatever differences we may observe in the
+degrees of their quantity and quality, and whatever other differences
+may appear among them. After we have acquired a custom of this kind, the
+hearing of that name revives the idea of one of these objects, and makes
+the imagination conceive it with all its particular circumstances and
+proportions. But as the same word is supposed to have been frequently
+applied to other individuals, that are different in many respects from
+that idea, which is immediately present to the mind; the word not being
+able to revive the idea of all these individuals, but only touches the
+soul, if I may be allowed so to speak, and revives that custom, which we
+have acquired by surveying them. They are not really and in fact present
+to the mind, but only in power; nor do we draw them all out distinctly
+in the imagination, but keep ourselves in a readiness to survey any of
+them, as we may be prompted by a present design or necessity. The word
+raises up an individual idea, along with a certain custom; and that
+custom produces any other individual one, for which we may have
+occasion. But as the production of all the ideas, to which the name may
+be applied, is in most eases impossible, we abridge that work by a more
+partial consideration, and find but few inconveniences to arise in our
+reasoning from that abridgment.";
+    }
+
+}
