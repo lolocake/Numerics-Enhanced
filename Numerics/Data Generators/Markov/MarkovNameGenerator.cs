@@ -117,4 +117,11 @@ namespace Orbifold.Numerics
 		
 		private char GetLetter(string token)
 		{
-			if (!this.chains.ContainsKey(token))
+			if (!this.chains.ContainsKey(token)) return '?';
+			var letters = this.chains[token];
+			var n = this.rnd.Next(letters.Count);
+			return letters[n];
+		}
+	}
+
+}
