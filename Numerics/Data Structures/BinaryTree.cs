@@ -86,4 +86,107 @@ namespace Orbifold.Numerics
 			}
 		}
 
-		
+		/// <summary>
+		/// Gets whether both sides are occupied, i.e. the left and right positions are filled.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if this instance is full; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsComplete {
+			get {
+				return (this.leftSubtree != null) && (this.rightSubtree != null);
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this tree is empty.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsEmpty {
+			get {
+				return this.Count == 0;
+			}
+		}
+
+		/// <summary>
+		/// Gets whether this is a leaf node, i.e. it doesn't have children nodes.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is leaf node; otherwise, <c>false</c>.
+		/// </value>
+		public virtual bool IsLeafNode {
+			get {
+				return this.Degree == 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns <c>false</c>; this tree is never read-only.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsReadOnly {
+			get {
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the left subtree.
+		/// </summary>
+		/// <value>The left subtree.</value>
+		public virtual BinaryTree<TData> Left {
+			get {
+				return this.leftSubtree;
+			}
+			set {
+				if(this.leftSubtree != null)
+					this.RemoveLeft();
+				if(value != null) {
+					if(value.Parent != null)
+						value.Parent.Remove(value);
+					value.Parent = this;
+				}
+
+				this.leftSubtree = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the parent of the current node.
+		/// </summary>
+		/// <value>The parent of the current node.</value>
+		public BinaryTree<TData> Parent { get; set; }
+
+		/// <summary>
+		/// Gets or sets the right subtree.
+		/// </summary>
+		/// <value>The right subtree.</value>
+		public virtual BinaryTree<TData> Right {
+			get {
+				return this.rightSubtree;
+			}
+			set {
+				if(this.rightSubtree != null)
+					this.RemoveRight();
+				if(value != null) {
+					if(value.Parent != null)
+						value.Parent.Remove(value);
+					value.Parent = this;
+				}
+				this.rightSubtree = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets the root of the binary tree.
+		/// </summary>
+		public BinaryTree<TData> Root {
+			get {
+				var runner = this.Parent;
+				while(runner != null) {
+					if(runner.Parent != null)
+						runner
