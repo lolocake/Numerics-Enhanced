@@ -189,4 +189,94 @@ namespace Orbifold.Numerics
 				var runner = this.Parent;
 				while(runner != null) {
 					if(runner.Parent != null)
-						runner
+						runner = runner.Parent;
+					else
+						return runner;
+				}
+				return this;
+			}
+		}
+
+		/// <summary>
+		/// Gets the parent.
+		/// </summary>
+		ITree<TData> ITree<TData>.Parent {
+			get {
+				return this.Parent;
+			}
+		}
+
+		/// <summary>
+		/// Gets the <see cref="BinaryTree{T}"/> at the specified index.
+		/// </summary>
+		public BinaryTree<TData> this[int index] {
+			get {
+				return this.GetChild(index);
+			}
+		}
+
+		/// <summary>
+		/// Adds the given item to this tree.
+		/// </summary>
+		/// <param name="item">The item to add.</param>
+		public virtual void Add(TData item)
+		{
+			this.AddItem(new BinaryTree<TData>(item));
+		}
+
+		/// <summary>
+		/// Adds an item to the <see cref="ICollection{T}"/>.
+		/// </summary>
+		/// <param name="subtree">The subtree.</param>
+		/// <exception cref="NotSupportedException">The <see cref="ICollection{T}"/> is read-only.</exception>
+		/// <exception cref="InvalidOperationException">The <see cref="BinaryTree{T}"/> is full.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="subtree"/> is null (Nothing in Visual Basic).</exception>
+		public void Add(BinaryTree<TData> subtree)
+		{
+			this.AddItem(subtree);
+		}
+
+		/// <summary>
+		/// Performs a breadth first traversal on this tree with the specified visitor.
+		/// </summary>
+		/// <param name="visitor">The visitor.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="visitor"/> is a null reference (<c>Nothing</c> in Visual Basic).</exception>
+		public virtual void BreadthFirstTraversal(IVisitor<TData> visitor)
+		{
+			var queue = new Queue<BinaryTree<TData>>();
+
+			queue.Enqueue(this);
+
+			while(queue.Count > 0) {
+				if(visitor.HasCompleted) {
+					break;
+				}
+				var binaryTree = queue.Dequeue();
+				visitor.Visit(binaryTree.Data);
+
+				for(var i = 0; i < binaryTree.Degree; i++) {
+					var child = binaryTree.GetChild(i);
+					if(child != null) {
+						queue.Enqueue(child);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Clears this tree of its content.
+		/// </summary>
+		public virtual void Clear()
+		{
+			if(this.leftSubtree != null) {
+				this.leftSubtree.Parent = null;
+				this.leftSubtree = null;
+			}
+			if(this.rightSubtree != null) {
+				this.rightSubtree.Parent = null;
+				this.rightSubtree = null;
+			}
+		}
+
+		/// <summary>
+		/// Returns whether the given item
