@@ -532,4 +532,50 @@ namespace Orbifold.Numerics
 			return this.FindNode(condition);
 		}
 
-		ITree<TData> ITree<TData>.GetChild(int
+		ITree<TData> ITree<TData>.GetChild(int index)
+		{
+			return this.GetChild(index);
+		}
+
+		/// <summary>
+		/// Removes the specified child.
+		/// </summary>
+		/// <param name="child">The child.</param>
+		/// <returns></returns>
+		bool ITree<TData>.Remove(ITree<TData> child)
+		{
+			return this.Remove((BinaryTree<TData>)child);
+		}
+
+		/// <summary>
+		/// Finds the maximum height between the child nodes.
+		/// </summary>
+		/// <returns>The maximum height of the tree between all paths from this node and all leaf nodes.</returns>
+		protected virtual int FindMaximumChildHeight()
+		{
+			var leftHeight = this.leftSubtree != null ? this.leftSubtree.Height : 0;
+			var rightHeight = this.rightSubtree != null ? this.rightSubtree.Height : 0;
+			return leftHeight > rightHeight ? leftHeight : rightHeight;
+		}
+
+		/// <summary>
+		/// Adds an item to the <see cref="ICollection{T}"/>.
+		/// </summary>
+		/// <param name="subtree">The subtree.</param>
+		private void AddItem(BinaryTree<TData> subtree)
+		{
+			if(this.leftSubtree == null) {
+				if(subtree.Parent != null)
+					subtree.Parent.Remove(subtree);
+				this.leftSubtree = subtree;
+				subtree.Parent = this;
+			} else if(this.rightSubtree == null) {
+				if(subtree.Parent != null)
+					subtree.Parent.Remove(subtree);
+				this.rightSubtree = subtree;
+				subtree.Parent = this;
+			} else
+				throw new InvalidOperationException("This binary tree is full.");
+		}
+	}
+}
