@@ -353,4 +353,74 @@ namespace Orbifold.Numerics
 
 		/// <summary>
 		/// Finds the node with the specified condition.  If a node is not found matching
-		/// the specif
+		/// the specified condition, null is returned.
+		/// </summary>
+		/// <param name="condition">The condition to test.</param>
+		/// <returns>The first node that matches the condition supplied.  If a node is not found, null is returned.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="condition"/> is a null reference (<c>Nothing</c> in Visual Basic).</exception>
+		public BinaryTree<TData> FindNode(Predicate<TData> condition)
+		{
+			if(condition(this.Data)) {
+				return this;
+			}
+			if(this.leftSubtree != null) {
+				var ret = this.leftSubtree.FindNode(condition);
+				if(ret != null)
+					return ret;
+			}
+			if(this.rightSubtree != null) {
+				var ret = this.rightSubtree.FindNode(condition);
+				if(ret != null)
+					return ret;
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Gets the left (index zero) or right (index one) subtree.
+		/// </summary>
+		/// <param name="index">The index of the child in question.</param>
+		/// <returns>The child at the specified index.</returns>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/>There are at most two children at each level of a binary tree, the index can hence only be zero or one.</exception>
+		public BinaryTree<TData> GetChild(int index)
+		{
+			switch(index) {
+			case 0:
+				return this.leftSubtree;
+			case 1:
+				return this.rightSubtree;
+			default:
+				throw new ArgumentOutOfRangeException("index");
+			}
+		}
+
+		/// <summary>
+		/// Returns an enumerator that iterates through the collection.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+		/// </returns>
+		public IEnumerator<TData> GetEnumerator()
+		{
+			var stack = new Stack<BinaryTree<TData>>();
+			stack.Push(this);
+			while(stack.Count > 0) {
+				var tree = stack.Pop();
+				yield return tree.Data;
+				if(tree.leftSubtree != null) {
+					stack.Push(tree.leftSubtree);
+				}
+				if(tree.rightSubtree != null) {
+					stack.Push(tree.rightSubtree);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Removes the specified item from the tree.
+		/// </summary>
+		/// <param name="item">The item to remove.</param>
+		/// <returns></returns>
+		public virtual bool Remove(TData item)
+		{
+			if(this.left
