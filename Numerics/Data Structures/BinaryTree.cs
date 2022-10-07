@@ -423,4 +423,113 @@ namespace Orbifold.Numerics
 		/// <returns></returns>
 		public virtual bool Remove(TData item)
 		{
-			if(this.left
+			if(this.leftSubtree != null) {
+				if(this.leftSubtree.Data.Equals(item)) {
+					this.RemoveLeft();
+					return true;
+				}
+			}
+
+			if(this.rightSubtree != null) {
+				if(this.rightSubtree.Data.Equals(item)) {
+					this.RemoveRight();
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Removes the specified child.
+		/// </summary>
+		/// <param name="child">The child.</param>
+		/// <returns>Returns whether the child was found (and removed) from this tree.</returns>
+		public virtual bool Remove(BinaryTree<TData> child)
+		{
+			if(this.leftSubtree != null) {
+				if(this.leftSubtree == child) {
+					this.RemoveLeft();
+					return true;
+				}
+			}
+
+			if(this.rightSubtree != null) {
+				if(this.rightSubtree == child) {
+					this.RemoveRight();
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Removes the left child.
+		/// </summary>
+		public virtual void RemoveLeft()
+		{
+			if(this.leftSubtree == null) {
+				return;
+			}
+			this.leftSubtree.Parent = null;
+			this.leftSubtree = null;
+		}
+
+		/// <summary>
+		/// Removes the left child.
+		/// </summary>
+		public virtual void RemoveRight()
+		{
+			if(this.rightSubtree == null) {
+				return;
+			}
+			this.rightSubtree.Parent = null;
+			this.rightSubtree = null;
+		}
+
+		/// <summary>
+		/// Returns a <see cref="System.String"/> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.String"/> that represents this instance.
+		/// </returns>
+		public override string ToString()
+		{
+			string msg = null;
+			switch(this.Count) {
+			case 0:
+				msg = "No children";
+				break;
+			case 1:
+				msg = this.Left == null ? "One right child." : "One left child.";
+				break;
+			case 2:
+				msg = "Is full (two children).";
+				break;
+			}
+			return string.Format("{0}; {1}", this.Data, msg);
+		}
+
+		/// <summary>
+		/// Returns an enumerator that iterates through a collection.
+		/// </summary>
+		/// <returns>
+		/// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+		/// </returns>
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
+		}
+
+		void ITree<TData>.Add(ITree<TData> child)
+		{
+			this.AddItem((BinaryTree<TData>)child);
+		}
+
+		ITree<TData> ITree<TData>.FindNode(Predicate<TData> condition)
+		{
+			return this.FindNode(condition);
+		}
+
+		ITree<TData> ITree<TData>.GetChild(int
