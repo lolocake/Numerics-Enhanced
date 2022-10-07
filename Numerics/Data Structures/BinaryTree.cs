@@ -279,4 +279,78 @@ namespace Orbifold.Numerics
 		}
 
 		/// <summary>
-		/// Returns whether the given item
+		/// Returns whether the given item is contained in this collection.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <returns>
+		///   <c>true</c> if is contained in this collection; otherwise, <c>false</c>.
+		/// </returns>
+		public bool Contains(TData item)
+		{
+			return Enumerable.Contains(this, item);
+		}
+
+		/// <summary>
+		/// Copies the tree to the given array.
+		/// </summary>
+		/// <param name="array">The array.</param>
+		/// <param name="arrayIndex">Index of the array.</param>
+		public void CopyTo(TData[] array, int arrayIndex)
+		{
+			foreach(var item in this) {
+				if(arrayIndex >= array.Length) {
+					throw new ArgumentException(Resource.ArrayTooSmall, "array");
+				}
+				array[arrayIndex++] = item;
+			}
+		}
+
+		/// <summary>
+		/// Performs a depth first traversal on this tree with the specified visitor.
+		/// </summary>
+		/// <param name="visitor">The ordered visitor.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="visitor"/> is a null reference (<c>Nothing</c> in Visual Basic).</exception>
+		public virtual void DepthFirstTraversal(IVisitor<TData> visitor)
+		{
+			if(visitor.HasCompleted)
+				return;
+			var prepost = visitor as IPrePostVisitor<TData>;
+			if(prepost != null)
+				prepost.PreVisit(this.Data);
+			if(this.leftSubtree != null)
+				this.leftSubtree.DepthFirstTraversal(visitor);
+			visitor.Visit(this.Data);
+			if(this.rightSubtree != null)
+				this.rightSubtree.DepthFirstTraversal(visitor);
+			if(prepost != null)
+				prepost.PostVisit(this.Data);
+		}
+
+		/// <summary>
+		/// Seeks the tree node containing the given data.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <returns></returns>
+		public BinaryTree<TData> Find(TData value)
+		{
+			// we do it the easy way here and use an ad hoc BFT 
+			var queue = new Queue<BinaryTree<TData>>();
+			queue.Enqueue(this.Root);
+			while(queue.Count > 0) {
+				var binaryTree = queue.Dequeue();
+				if(EqualityComparer<TData>.Default.Equals(binaryTree.Data, value)) {
+					return binaryTree;
+				}
+				for(var i = 0; i < binaryTree.Degree; i++) {
+					var child = binaryTree.GetChild(i);
+					if(child != null) {
+						queue.Enqueue(child);
+					}
+				}
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Finds the node with the specified condition.  If a node is not found matching
+		/// the specif
