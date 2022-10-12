@@ -29,4 +29,10 @@ namespace Orbifold.Numerics
 		/// </summary>
 		/// <param name="x">The x.</param>
 		/// <param name="y">The y.</param>
-		/// <return
+		/// <returns></returns>
+		public int Compare(T x, T y)
+		{
+			return this.Comparison(x, y);
+		}
+	}
+}
