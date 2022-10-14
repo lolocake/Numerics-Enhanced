@@ -71,4 +71,98 @@ namespace Orbifold.Numerics
 			{
 				return this.GetConnectedComponents().Count() == 1;
 			}
-		
+		}
+
+		/// <summary>
+		/// Gets whether the graph is acyclic.
+		/// </summary>
+		/// <remarks>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>If there are no cycles in a graph it's acyclic. A cycle means a
+		/// closed path or loop.</description></item>
+		/// <item>
+		/// <description>See also the article;
+		/// http://en.wikipedia.org/wiki/Directed_acyclic_graph
+		/// .</description></item></list>
+		/// </remarks>
+		/// <value>
+		/// <c>true</c> if this instance is acyclic; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsAcyclic
+		{
+			get
+			{
+				return !this.FindCycles().Any();
+			}
+		}
+
+		/// <summary>
+		/// Gets whether the graph is hamiltonian.
+		/// </summary>
+		/// <remarks>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>An Hamitonian cycle is a cycle which contains all nodes of the
+		/// graph. If there is at least one such cycle the graph is called
+		/// Hamiltonian.</description></item>
+		/// <item>
+		/// <description>See also the article;http://en.wikipedia.org/wiki/Hamiltonian_graph
+		/// .</description></item></list>
+		/// </remarks>
+		/// <value>
+		/// <c>true</c> if this instance is acyclic; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsHamiltonian
+		{
+			get
+			{
+				throw new NotImplementedException("This is work in progress, please hold your horses.");
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the links of this graph.
+		/// </summary>
+		/// <value>
+		/// The links collection.
+		/// </value>
+		public List<TLink> Edges { get; protected set; }
+
+		/// <summary>
+		/// Gets whether this graph is directed.
+		/// </summary>
+		public bool IsDirected
+		{
+			get
+			{
+				return this.isDirected;
+			}
+			set
+			{
+				if (value == this.isDirected) return;
+
+				/*Here's the thing; our adjacency structure doesn't reside in a global entity but in each node's Incoming/Outgoing collections.
+				 So, if the graph becomes (un)direct the nodes need to know since they contain the linkage.
+				 */
+				this.Nodes.ForEach(n => n.IsDirected = value);
+				this.isDirected = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the nodes of this graph.
+		/// </summary>
+		/// <value>
+		/// The nodes collection.
+		/// </value>
+		public List<TNode> Nodes { get; protected set; }
+
+		/// <summary>
+		/// Adds a edge to this graph.
+		/// </summary>
+		/// <param name="source">
+		/// The source of the edge.
+		/// </param>
+		/// <param name="sink">
+		/// The sink of the 
