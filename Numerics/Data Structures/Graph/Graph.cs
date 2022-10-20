@@ -165,4 +165,73 @@ namespace Orbifold.Numerics
 		/// The source of the edge.
 		/// </param>
 		/// <param name="sink">
-		/// The sink of the 
+		/// The sink of the edge.
+		/// </param>
+		/// <returns>
+		/// The added edge.
+		/// </returns>
+		public TLink AddEdge(TNode source, TNode sink)
+		{
+			return this.AddEdge(new TLink { Source = source, Sink = sink });
+		}
+
+		/// <summary>
+		/// Adds the givven edge to the graph. It will add the sink and source nodes to the <see cref="Nodes"/> collection if they are not yet
+		/// part of it.
+		/// </summary>
+		/// <param name="edge">
+		/// The edge to add.
+		/// </param>
+		/// <returns>
+		/// The added edge.
+		/// </returns>
+		public TLink AddEdge(TLink edge)
+		{
+			if (edge == null) throw new ArgumentNullException("edge");
+			/* Allowing multigraphs...
+			 * if (this.AreConnected(edge.Source, edge.Sink, true)) throw new InvalidOperationException("The edge cannot be added; this structure does not support multigraphs and the given nodes are already connected.");*/
+			this.Edges.Add(edge);
+			edge.Source.AddOutgoingEdge(edge);
+			edge.Sink.AddIncomingEdge(edge);
+			if (!this.Nodes.Contains(edge.Source)) this.AddNode(edge.Source);
+			if (!this.Nodes.Contains(edge.Sink)) this.AddNode(edge.Sink);
+			return edge;
+		}
+
+		/// <summary>
+		/// Adds the given node to the graph.
+		/// </summary>
+		/// <param name="node">The node to add.</param>
+		public void AddNode(TNode node)
+		{
+			if (node == null) throw new ArgumentNullException("node");
+			this.Nodes.Add(node);
+			node.IsDirected = this.IsDirected;
+		}
+
+		/// <summary>
+		/// Adds a series of nodes to the graph.
+		/// </summary>
+		/// <param name="nodes">
+		/// The nodes.
+		/// </param>
+		public void AddNodes(params TNode[] nodes)
+		{
+			if (nodes == null) throw new ArgumentNullException("nodes");
+			nodes.ToList().ForEach(n => this.Nodes.Add(n));
+		}
+
+		/// <summary>
+		/// Returns whether the given nodes are connected in one direction or the other.
+		/// </summary>
+		/// <remarks>
+		/// Because the structure allows multigraphs the connectedness means there is at
+		/// least one edge between the given nodes.
+		/// </remarks>
+		/// <param name="n">A node.</param>
+		/// <param name="m">Another node.</param>
+		/// <param name="strict">If set to <c>true</c> the first node has to be the source of the edge and the second the sink..</param>
+		/// <returns>
+		/// <c>true</c> If there is a edge connecting the given nodes with the first one as source and the second as sink, <c>false</c> if both options have to be considered.
+		/// </returns>
+		public bool AreConnected(TNode n, TNode m,
