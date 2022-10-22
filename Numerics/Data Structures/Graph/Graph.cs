@@ -234,4 +234,65 @@ namespace Orbifold.Numerics
 		/// <returns>
 		/// <c>true</c> If there is a edge connecting the given nodes with the first one as source and the second as sink, <c>false</c> if both options have to be considered.
 		/// </returns>
-		public bool AreConnected(TNode n, TNode m,
+		public bool AreConnected(TNode n, TNode m, bool strict = false)
+		{
+			if (n == null) throw new ArgumentNullException("n");
+			if (m == null) throw new ArgumentNullException("m");
+			if (strict) return n.Outgoing.Any(l => l.GetComplementaryNode(n) == m);
+			return n.Outgoing.Any(l => l.GetComplementaryNode(n) == m) || n.Incoming.Any(l => l.GetComplementaryNode(n) == m);
+		}
+
+		/// <summary>
+		/// Returns whether the given nodes are connected in one direction or the other.
+		/// </summary>
+		/// <remarks>
+		/// Because the structure allows multigraphs the connectedness means there is at
+		/// least one edge between the given nodes.
+		/// </remarks>
+		/// <param name="i">The id of the first node.</param>
+		/// <param name="j">The id of the second node.</param>
+		/// <param name="strict">If set to <c>true</c> the first node has to be the source of the edge and the second the sink..</param>
+		/// <returns>
+		///   <c>true</c> If there is a edge connecting the given nodes with the first one as source and the second as sink, <c>false</c> if both options have to be considered.
+		/// </returns>
+		public bool AreConnected(int i, int j, bool strict = false)
+		{
+			var n = this.FindNode(i);
+			var m = this.FindNode(j);
+			if (n == null || m == null) return false;
+			return this.AreConnected(n, m, strict);
+		}
+
+		/// <summary>
+		/// Assigns to each edge and node an identifier based on their collection listIndex.
+		/// </summary>
+		public void AssignIdentifiers()
+		{
+			// guess some other way would work as well but let's keep it simple
+			this.Nodes.ForEach(n => n.Id = this.Nodes.IndexOf(n));
+			this.Edges.ForEach(l => l.Id = this.Edges.IndexOf(l));
+		}
+
+		/// <summary>
+		/// Clones this instance.
+		/// </summary>
+		/// <returns></returns>
+		public Graph<TNode, TLink> Clone()
+		{
+			var clone = new Graph<TNode, TLink>();
+			this.Nodes.ForEach(n => clone.AddNode(n.Clone()));
+			foreach (var edge in this.Edges)
+			{
+				var n = this.FindNode(edge.Source.Id);
+				var m = this.FindNode(edge.Sink.Id);
+				clone.AddEdge(new TLink { Id = edge.Id, Sink = m, Source = n });
+			}
+			return clone;
+		}
+
+		/// <summary>
+		/// Finds the edge with the specified identifiers.
+		/// </summary>
+		/// <param name="i">The id of the source.</param>
+		/// <param name="j">The id of the sink.</param>
+		/// <param name="strict">If set to <
