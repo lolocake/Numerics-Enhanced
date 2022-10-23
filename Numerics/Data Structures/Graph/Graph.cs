@@ -295,4 +295,68 @@ namespace Orbifold.Numerics
 		/// </summary>
 		/// <param name="i">The id of the source.</param>
 		/// <param name="j">The id of the sink.</param>
-		/// <param name="strict">If set to <
+		/// <param name="strict">If set to <c>true</c> the found edge has to go from i to j.</param>
+		/// <returns></returns>
+		public TLink FindEdge(int i, int j, bool strict)
+		{
+			if (!this.AreConnected(i, j, strict)) return null;
+
+			var n = this.FindNode(i);
+			if (n == null) return null;
+			var m = this.FindNode(j);
+			if (m == null) return null;
+			if (strict) return n.Outgoing.FirstOrDefault(l => l.GetComplementaryNode(n) == m);
+
+			var found = n.Outgoing.FirstOrDefault(l => l.GetComplementaryNode(n) == m);
+			return found ?? m.Outgoing.FirstOrDefault(l => l.GetComplementaryNode(m) == n);
+		}
+
+		/// <summary>
+		/// Finds the node with the specified identifier.
+		/// </summary>
+		/// <param name="id">The id to look for.</param>
+		/// <returns></returns>
+		public TNode FindNode(int id)
+		{
+			return this.Nodes.FirstOrDefault(n => n.Id == id);
+		}
+
+		/// <summary>
+		/// Attempts to find a tree root by looking at the longest paths in the graph.
+		/// </summary>
+		/// <remarks>The algorithms looks for all shortest paths between all vertices, which means it will also function for disconnected graphs but will return the root
+		/// of the tree with longest path.</remarks>
+		/// <returns>A tree root or <c>null</c> is none was found.
+		/// </returns>
+		public TNode FindTreeRoot()
+		{
+			if (this.Nodes == null || !this.Nodes.Any()) return null;
+			if (this.Nodes.Count == 1) return this.Nodes[0];
+			var shortestPaths = this.ShortestPaths();
+			TNode found = null;
+			var max = 0;
+			foreach (var node in this.Nodes)
+			{
+				var maxPathlengthStartingFromThisNode = this.Nodes.Select((otherNode, j) => shortestPaths[Tuple.Create(node, otherNode)]).Concat(new[] { int.MinValue }).Max();
+				if (maxPathlengthStartingFromThisNode <= max) continue;
+				max = maxPathlengthStartingFromThisNode;
+				found = node;
+			}
+			return found;
+		}
+
+		/// <summary>
+		/// Returns the connected components of this graph.
+		/// </summary>
+		/// <returns>
+		/// The list of connected components.
+		/// </returns>
+		public IEnumerable<Graph<TNode, TLink>> GetConnectedComponents()
+		{
+			this.HaveUniqueIdentifiers();
+			Dictionary<int, int> componentMap;
+			var componentsCount = this.NumberOfComponents(out componentMap);
+
+			// now convert it to a list of graphs
+			var components = new List<Graph<TNode, TLink>>();
+			for (var i = 0; i < componentsCount; ++i) components.Add(new Graph<TNode
