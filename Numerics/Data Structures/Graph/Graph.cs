@@ -359,4 +359,80 @@ namespace Orbifold.Numerics
 
 			// now convert it to a list of graphs
 			var components = new List<Graph<TNode, TLink>>();
-			for (var i = 0; i < componentsCount; ++i) components.Add(new Graph<TNode
+			for (var i = 0; i < componentsCount; ++i) components.Add(new Graph<TNode, TLink>());
+			foreach (var nodeId in componentMap.Keys)
+			{
+				var graph = components[componentMap[nodeId]];
+				var node = this.FindNode(nodeId);
+				graph.Nodes.Add(node);
+				foreach (var l in node.Outgoing) graph.Edges.Add(l);
+			}
+			return components;
+		}
+
+		/// <summary>
+		/// Gets the next identifier of the nodes sequence.
+		/// </summary>
+		/// <param name="id">The id.</param>
+		/// <returns></returns>
+		public int GetNextIdInNodes(int id)
+		{
+			var found = this.FindNode(id);
+			if (found == null) return -1;
+			return this.Nodes[this.Nodes.IndexOf(found) + 1].Id;
+		}
+
+		/// <summary>
+		/// Ensures the unique identifiers.
+		/// </summary>
+		public bool HaveUniqueIdentifiers()
+		{
+			var ids = new List<int>();
+			foreach (var node in this.Nodes)
+			{
+				if (ids.Contains(node.Id)) return false;
+				ids.Add(node.Id);
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Ensures that the graph nodes all have a unique identifier assigned.
+		/// </summary>
+		/// <remarks>If the nodes do have unique identifiers nothing will be altered.</remarks>
+		public void EnsureUniqueIdentifiers()
+		{
+			if (!this.HaveUniqueIdentifiers()) this.AssignIdentifiers();
+		}
+
+		/// <summary>
+		/// Returns the number of (connected) components.
+		/// </summary>
+		/// <example>
+		/// The following example create two components; 
+		/// <para> </para>
+		/// <code lang="C#">var g = new Graph&lt;Node, Edge&gt;();
+		/// for (var i = 0; i &lt; 4; i++) g.AddNode(new Node(1, true));
+		/// g.AddEdge(g.Nodes[0], g.Nodes[1]);
+		/// g.AddEdge(g.Nodes[2], g.Nodes[3]);
+		/// var count = g.NumberOfComponents();</code>
+		/// .</example>
+		public int NumberOfComponents()
+		{
+			Dictionary<int, int> componentMap;
+			return this.NumberOfComponents(out componentMap);
+		}
+
+		/// <summary>
+		/// Returns the number of connected components.
+		/// </summary>
+		/// <param name="componentMap">The component map as a dictionary where the key is the node identifier and the value is the number of the connected component to which the node belongs.</param>
+		/// <returns></returns>
+		public int NumberOfComponents(out Dictionary<int, int> componentMap)
+		{
+			this.EnsureUniqueIdentifiers();
+			var componentIndex = 0;
+
+			// the map tells to which component a node belongs
+			componentMap = new Dictionary<int, int>(this.Nodes.Count);
+			foreach (var t in thi
