@@ -435,4 +435,77 @@ namespace Orbifold.Numerics
 
 			// the map tells to which component a node belongs
 			componentMap = new Dictionary<int, int>(this.Nodes.Count);
-			foreach (var t in thi
+			foreach (var t in this.Nodes) componentMap.Add(t.Id, -1);
+
+			for (var i = 0; i < this.Nodes.Count; i++)
+			{
+				if (componentMap[this.Nodes[i].Id] != -1) continue; // means it already belongs to a component
+				this.AssignConnectedComponent(componentMap, i, componentIndex);
+				componentIndex++;
+			}
+			return componentIndex;
+		}
+
+		/// <summary>
+		/// Detaches all Edges from from the given node and removes them from the graph structure.
+		/// </summary>
+		/// <param name="node">The node.</param>
+		public void RemoveAllLinksFrom(TNode node)
+		{
+			if (node == null) throw new ArgumentNullException("node");
+
+			// one cannot change the collection in the looped collection, hence this construction
+			while (node.Incoming.Count > 0) this.RemoveLink(node.Incoming[0]);
+			while (node.Outgoing.Count > 0) this.RemoveLink(node.Outgoing[0]);
+		}
+
+		/// <summary>
+		/// Removes the edge from the graph.
+		/// </summary>
+		/// <param name="edge">
+		/// The edge.
+		/// </param>
+		public void RemoveLink(TLink edge)
+		{
+			if (edge == null) throw new ArgumentNullException("edge");
+			if (!this.Edges.Contains(edge)) return;
+			edge.Source.RemoveLink(edge);
+			edge.Sink.RemoveLink(edge);
+			this.Edges.Remove(edge);
+		}
+
+		/// <summary>
+		/// Removes the given node from this graph.
+		/// </summary>
+		/// <param name="node">The node to remove.</param>
+		public void RemoveNode(TNode node)
+		{
+			if (node == null) throw new ArgumentNullException("node");
+			if (!this.Nodes.Contains(node)) return;
+			this.RemoveAllLinksFrom(node);
+			this.Nodes.Remove(node);
+		}
+
+		/// <summary>
+		/// Assigns a new identifier to the nodes.
+		/// </summary>
+		/// <param name="startId">The number to start the numbering from.</param>
+		public void RenumberNodes(int startId = 0)
+		{
+			for (var i = 0; i < this.Nodes.Count; i++) this.Nodes[i].Id = startId + i;
+		}
+
+		/// <summary>
+		/// Returns a string representation of the incidence structure of this graph.
+		/// </summary>
+		/// <example>
+		/// A diagram with Edges between identifier 1 and 2, 2 and 3, 3 and 4 will result in
+		/// a string
+		/// <para><code lang="C#">{&quot;1,2&quot;, &quot;2,3&quot;,
+		/// &quot;3,4&quot;}</code></para>.
+		/// </example>
+		/// <seealso cref="ToLinksList">ToLinksList</seealso>
+		public string ToLinkListString()
+		{
+			var sb = new StringBuilder();
+			var list = this.T
