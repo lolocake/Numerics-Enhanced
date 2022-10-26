@@ -508,4 +508,79 @@ namespace Orbifold.Numerics
 		public string ToLinkListString()
 		{
 			var sb = new StringBuilder();
-			var list = this.T
+			var list = this.ToLinksList();
+			sb.Append("{");
+			list.ForEach(s => sb.AppendFormat(",\"{0}\"", s));
+			sb.Remove(0, 1);
+			sb.Append("}");
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Returns the Edges structure of this graph as a list of identifier tuples.
+		/// </summary>
+		/// <returns></returns>
+		/// <seealso cref="ToLinkListString"/>
+		public List<string> ToLinksList()
+		{
+			var list = new List<string>();
+			this.Edges.ForEach(l => list.Add(string.Format("{0},{1}", l.Source.Id, l.Sink.Id)));
+			return list;
+		}
+
+		/// <summary>
+		/// Returns a <see cref="System.String"/> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.String"/> that represents this instance.
+		/// </returns>
+		public override string ToString()
+		{
+			/*
+			var sb = new StringBuilder();
+			foreach (var v in this.Nodes)
+			{
+				sb.AppendFormat("{0} ", v.Id);
+				v.AllLinks.ForEach(e => sb.AppendFormat("{0}-{1}", e.Source.Id, e.Sink.Id));
+			}
+
+			return sb.ToString();
+			 */
+
+			return string.Format("Nodes: {0}, Edges: {1}", this.Nodes.Count, this.Edges.Count);
+		}
+
+		/// <summary>
+		/// Is a linear ordering of its vertices such that, for every edge uv, u comes
+		/// before v in the ordering. See Wikipedia for example;
+		/// http://en.wikipedia.org/wiki/Topological_sorting.
+		/// </summary>
+		/// <remarks>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>The sorting is not unique.</description></item>
+		/// <item>
+		/// <description>The graph has to be acyclic in order to have a topological
+		/// sort.</description></item>
+		/// <item>
+		/// <description>The sorting works on disconnected
+		/// graphs.</description></item></list>
+		/// </remarks>
+		/// <param name="forceNewIdentifier"></param>
+		/// <returns>
+		/// The topologically sorted sequence of node identifiers or <c>null</c> is the graph has cycles.
+		/// </returns>
+		public List<int> TopologicalSort(bool forceNewIdentifier = false)
+		{
+			if (!this.HaveUniqueIdentifiers() || forceNewIdentifier) this.AssignIdentifiers();
+
+			// this will store the id's of the nodes
+			var result = new List<int>();
+			var handledCounter = 0;
+
+			// the value is -1 if unvisited
+			var handledSequence = this.CreateDictionary(-1);
+			var visitSequence = this.CreateDictionary(-1);
+
+			// access to modified closure here, as usual
+			var sequence = visitSeq
