@@ -583,4 +583,73 @@ namespace Orbifold.Numerics
 			var visitSequence = this.CreateDictionary(-1);
 
 			// access to modified closure here, as usual
-			var sequence = visitSeq
+			var sequence = visitSequence;
+			if ((from node in this.Nodes where sequence[node.Id] == -1 select this.TopologicalSort(node.Id, result, handledSequence, ref visitSequence, ref handledCounter)).Any(acyclic => !acyclic)) return null;
+			result.Reverse();
+			return result;
+		}
+
+		/// <summary>
+		/// Gets the shortests path lengths between each two vertices.
+		/// </summary>
+		/// <returns>
+		/// A dictionary keyed with the node id's and value equal to the path lengths.
+		/// </returns>
+		public Dictionary<Tuple<TNode, TNode>, int> ShortestPaths()
+		{
+			this.EnsureUniqueIdentifiers();
+			var pathLengths = this.CreateBiDictionary(-1);
+			foreach (var node in this.Nodes)
+			{
+				var queue = new Queue<TNode>();
+				pathLengths[Tuple.Create(node, node)] = 0;
+
+				// now, just a standard BFS and adding +1 at each next level being visited
+				queue.Enqueue(node);
+				while (queue.Count > 0)
+				{
+					var v = queue.Dequeue();
+					var vertex1 = node;
+					foreach (var w in v.Neighbors.Where(w => pathLengths[Tuple.Create(vertex1, w)] == -1))
+					{
+						pathLengths[Tuple.Create(node, w)] = pathLengths[Tuple.Create(node, v)] + 1;
+						queue.Enqueue(w);
+					}
+				}
+			}
+
+			return pathLengths;
+		}
+
+		/// <summary>
+		/// Returns whether the two nodes with specified ide's are the in same component.
+		/// </summary>
+		/// <param name="id1">The id1.</param>
+		/// <param name="id2">The id2.</param>
+		/// <returns></returns>
+		public bool AreInSameComponent(int id1, int id2)
+		{
+			var comps = this.GetConnectedComponents().ToList();
+			if (comps.Count() <= 1) return true;
+			var one = this.FindNode(id1);
+			var two = this.FindNode(id2);
+			if (one == null)
+				throw new Exception("The first identifier could not be found in the given graph.");
+			if (two == null)
+				throw new Exception("The second identifier could not be found in the given graph.");
+			var indexOne = -1;
+			var indexTwo = -1;
+			foreach (var com in comps)
+			{
+				var foundone = com.FindNode(id1);
+				var foundtwo = com.FindNode(id2);
+				if (foundone != null) indexOne = comps.IndexOf(com);
+				if (foundtwo != null) indexTwo = comps.IndexOf(com);
+				if (indexOne > -1 && indexTwo > -1) return indexOne == indexTwo;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Returns the shortest path between two nodes using the Dijkstra algorithm.
+		/// </summ
