@@ -652,4 +652,53 @@ namespace Orbifold.Numerics
 
 		/// <summary>
 		/// Returns the shortest path between two nodes using the Dijkstra algorithm.
-		/// </summ
+		/// </summary>
+		/// <param name="source">The node from where to start.</param>
+		/// <param name="target">The node where the shortest path should end.</param>
+		/// <returns>The shortest path, if any.</returns>
+		public GraphPath<TNode, TLink> DijkstraShortestPath(TNode source, TNode target)
+		{
+			if (source == null) throw new ArgumentNullException("source");
+			if (target == null) throw new ArgumentNullException("target");
+
+			return DijkstraShortestPath(source.Id, target.Id);
+		}
+
+		/// <summary>
+		/// Returns the shortest path between two nodes using the Dijkstra algorithm.
+		/// </summary>
+		/// <param name="sourceId">The identifier of the node from where to start.</param>
+		/// <param name="targetId">The identifier of the node where the shortest path should end.</param>
+		/// <returns>The shortest path, if any.</returns>
+		public GraphPath<TNode, TLink> DijkstraShortestPath(int sourceId, int targetId)
+		{
+			this.EnsureUniqueIdentifiers();
+
+			// if they don't sit in the same component they certainly have no path from one to another
+			if (!this.AreInSameComponent(sourceId, targetId)) return null;
+
+			var source = this.FindNode(sourceId);
+			var target = this.FindNode(targetId);
+
+			if (source == null)
+				throw new Exception("The given source id is not part of the graph.");
+			if (target == null)
+				throw new Exception("The given target id is is not part of the graph.");
+
+			// note that we use the Ougoing, so it wont work with a setting which ignores the direction
+			// Also need to add the target in case it doesnt have outgoing Edges
+			var nodesWithOutgoingLinks = this.Nodes.Where(n => n.Outgoing.Any()).ToList();
+			if (!nodesWithOutgoingLinks.Contains(target))
+				nodesWithOutgoingLinks.Add(target);
+			var twigs = new List<Twig<TNode, TLink>>();
+			nodesWithOutgoingLinks.ForEach(n => twigs.Add(new Twig<TNode, TLink> { Node = n }));
+			var distance = nodesWithOutgoingLinks.ToDictionary(node => node, node => double.PositiveInfinity);
+
+			var targetTwig = twigs.Single(m => m.Node == target);
+			distance[source] = 0;
+			var localNodes = new List<TNode>(nodesWithOutgoingLinks);
+
+			while (localNodes.Count > 0)
+			{
+				// Return and remove best vertex (that is, connection with minimum distance
+				var minNode = localNodes.OrderBy(n => dist
