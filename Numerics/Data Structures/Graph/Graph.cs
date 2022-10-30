@@ -764,4 +764,72 @@ namespace Orbifold.Numerics
 						var lengthSource = dic[keySource];
 						var lengthTarget = dic[keyTarget];
 
-						// here the weight is +1 but one could generalize 
+						// here the weight is +1 but one could generalize easily
+						if (lengthTarget <= lengthSource + 1)
+						{
+							links.Add(edge);
+							dic[keyTarget] = lengthSource + 1;
+							keyTarget.Edge = edge;
+						}
+					}
+				}
+			}
+
+			var maxlength = dic.Max(kv => kv.Value);
+			var endnode = dic.First(kv => kv.Value == maxlength).Key;
+			var path = new GraphPath<TNode, TLink>();
+			path.AddNode(endnode.Node);
+			var runner = endnode;
+            while (runner.Edge != null)
+			{
+                path.AddNode(runner.Edge.Source);
+                path.AddEdge(runner.Edge);
+                runner = dic.Keys.Single(m => m.Node == runner.Edge.Source);
+			}
+
+			// it's bottomup, so let's reverse
+			path.Reverse();
+
+			return path;
+		}
+
+		/// <summary>
+		/// Iteratively assigns a component listIndex to the connected nodes of the given node.
+		/// </summary>
+		/// <remarks>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>Initially the Indices collection needs to
+		/// be initialized with -1 to set the nodes which haven't been
+		/// visited.</description>
+		/// </item>
+		/// <item>
+		/// <description>The visiting process is really a DFT of the connected nodes
+		/// starting from a given node and keeping track of the visited item via the
+		/// assigned component map.</description>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		/// <param name="componentMap">
+		/// The indices is the list of component indices mapped to the node indices.
+		/// </param>
+		/// <param name="listIndex">
+		/// The node id being assigned currently.
+		/// </param>
+		/// <param name="componentIndex">
+		/// Index of the current component.
+		/// </param>
+		private void AssignConnectedComponent(IDictionary<int, int> componentMap, int listIndex, int componentIndex)
+		{
+			var node = this.Nodes[listIndex];
+			componentMap[node.Id] = componentIndex;
+
+			// take the neighbor nodes and iterate
+			foreach (var unvisitedNode in node.AllLinks.Select(edge => edge.GetComplementaryNode(node)).Where(n => componentMap[n.Id] == -1)) this.AssignConnectedComponent(componentMap, this.Nodes.IndexOf(unvisitedNode), componentIndex);
+		}
+
+		/// <summary>
+		/// Iterative function helping with the topological sort, see the public overload of TopologicalSort.
+		/// </summary>
+		/// <param name="nodeId">The current node id.</param>
+		/// <param name="result">The result of the sorting (up to this point).</p
