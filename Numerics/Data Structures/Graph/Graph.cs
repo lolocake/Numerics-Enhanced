@@ -701,4 +701,67 @@ namespace Orbifold.Numerics
 			while (localNodes.Count > 0)
 			{
 				// Return and remove best vertex (that is, connection with minimum distance
-				var minNode = localNodes.OrderBy(n => dist
+				var minNode = localNodes.OrderBy(n => distance[n]).First();
+				localNodes.Remove(minNode);
+
+				// Loop all connected nodes
+				foreach (var edge in minNode.Outgoing)
+				{
+					var neighbor = edge.Sink;
+
+					// The positive distance between node and it's neighbor, added to the distance of the current node
+					var dist = distance[minNode] + 1;
+					if (dist >= distance[neighbor]) continue;
+					distance[neighbor] = dist;
+					twigs.Single(t => t.Node == neighbor).Edge = edge;
+				}
+
+				// If we're at the target node, break
+				if (minNode == target) break;
+			}
+
+			// Construct a list containing the complete path. We'll start by looking at the previous node of the target and then making our way to the beginning.
+			// We'll reverse it to get a source->target list instead of the other way around. The source node is manually added.
+			var path = new GraphPath<TNode, TLink>();
+
+			var runner = targetTwig;
+			path.AddNode(target);
+            while (runner.Edge != null)
+			{
+                path.AddNode(runner.Edge.Source);
+                path.AddEdge(runner.Edge);
+                runner = twigs.Single(m => m.Node == runner.Edge.Source);
+			}
+
+			// it's bottomup, so let's reverse
+			path.Reverse();
+			return path.PathLength > 1 ? path : null;
+		}
+
+		/// <summary>
+		/// Finds the longest path in this (directed acyclic) graph.
+		/// </summary>
+		/// <returns>A list of identifiers corresponding to the path, or <c>null</c> if the graph has cycles.</returns>
+		public GraphPath<TNode, TLink> FindLongestPath()
+		{
+			var toposort = this.TopologicalSort();
+
+			// a graph with a cycle cannot be topologically sorted and, hence, no longest path exists
+			if (toposort == null) return null;
+
+			var dic = this.Nodes.ToDictionary(node => new Twig<TNode, TLink> { Node = node }, node => 0);
+			var links = new List<TLink>();
+			foreach (var index in toposort)
+			{
+				var source = this.FindNode(index);
+				foreach (var edge in source.Outgoing)
+				{
+					var target = edge.Sink;
+					var keySource = dic.Keys.SingleOrDefault(k => k.Node == source);
+					var keyTarget = dic.Keys.SingleOrDefault(k => k.Node == target);
+					if (keySource != null && keyTarget != null)
+					{
+						var lengthSource = dic[keySource];
+						var lengthTarget = dic[keyTarget];
+
+						// here the weight is +1 but one could generalize 
