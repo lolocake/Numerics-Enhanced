@@ -832,4 +832,43 @@ namespace Orbifold.Numerics
 		/// Iterative function helping with the topological sort, see the public overload of TopologicalSort.
 		/// </summary>
 		/// <param name="nodeId">The current node id.</param>
-		/// <param name="result">The result of the sorting (up to this point).</p
+		/// <param name="result">The result of the sorting (up to this point).</param>
+		/// <param name="handledSequence">The handled sequence.</param>
+		/// <param name="visitSequence">The visit sequence.</param>
+		/// <param name="handledCounter">The handled counter.</param>
+		/// <returns></returns>
+		private bool TopologicalSort(int nodeId, ICollection<int> result, IDictionary<int, int> handledSequence, ref Dictionary<int, int> visitSequence, ref int handledCounter)
+		{
+			visitSequence[nodeId] = handledCounter++;
+			var node = this.FindNode(nodeId);
+
+			foreach (var sinkNodeId in node.Outgoing.Select(edge => edge.Sink).Select(sinkNode => sinkNode.Id))
+			{
+				if (visitSequence.ContainsKey(sinkNodeId) && visitSequence[sinkNodeId] == -1)
+				{
+					// not yet visited
+					var hasnoloops = this.TopologicalSort(
+						sinkNodeId,
+						result,
+						handledSequence,
+						ref visitSequence,
+						ref handledCounter);
+					if (!hasnoloops) return false;
+				}
+				else if (handledSequence.ContainsKey(sinkNodeId) && handledSequence[sinkNodeId] == -1)
+				{
+					// ai, a loop
+					return false;
+				}
+				else
+				{
+					// just a revisit but no loop
+				}
+			}
+
+			result.Add(nodeId);
+			handledSequence[nodeId] = handledCounter++;
+			return true;
+		}
+	}
+}
