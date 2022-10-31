@@ -1183,3 +1183,447 @@ namespace
         /// The current indices.
         /// </param>
         /// <param name="lowlinks">
+        /// The current lowlinks.
+        /// </param>
+        /// <param name="connected">
+        /// The connected components.
+        /// </param>
+        /// <param name="stack">
+        /// The stack.
+        /// </param>
+        /// <param name="index">
+        /// The current index.
+        /// </param>
+        public static void TarjansStronglyConnectedComponentsAlgorithm<TNode, TLink>(
+            bool excludeSinlgeItems,
+            TNode node,
+            IDictionary<TNode, int> indices,
+            IDictionary<TNode, int> lowlinks,
+            ICollection<TNode[]> connected,
+            Stack<TNode> stack,
+            int index)
+            where TNode : class, INode<TNode, TLink>, new()
+            where TLink : class, IEdge<TNode, TLink>, new()
+        {
+            indices[node] = index;
+            lowlinks[node] = index;
+            index++;
+
+            stack.Push(node);
+
+            foreach (var next in node.Outgoing.Select(edge => edge.Sink))
+            {
+                if (!indices.ContainsKey(next))
+                {
+                    TarjansStronglyConnectedComponentsAlgorithm<TNode, TLink>(excludeSinlgeItems, next, indices, lowlinks, connected, stack, index);
+                    lowlinks[node] = System.Math.Min(lowlinks[node], lowlinks[next]);
+                }
+                else if (stack.Contains(next))
+                {
+                    lowlinks[node] = System.Math.Min(lowlinks[node], lowlinks[next]);
+                }
+            }
+
+            if (lowlinks[node] == indices[node])
+            {
+                TNode next;
+                var component = new List<TNode>();
+
+                do
+                {
+                    next = stack.Pop();
+                    component.Add(next);
+                }
+                while (next != node);
+
+                if (!excludeSinlgeItems || (component.Count > 1))
+                {
+                    connected.Add(component.ToArray());
+                }
+            }
+        }
+
+        /*		/// <summary>
+                /// Returns a volatile graph from the given <see cref="Graph"/>.
+                /// </summary>
+                /// <param name="Graph">
+                /// The layout graph to convert.
+                /// </param>
+                /// <returns>
+                /// </returns>
+                public static Graph<Node<TNodeData, TLinkData>, Edge<TNodeData, TLinkData>> ToVolatileGraph<TNodeData, TLinkData>(this Graph<Node<TNodeData, TLinkData>, Edge<TNodeData, TLinkData>> Graph)
+                {
+                    var graph = new Graph<Node<TNodeData, TLinkData>, Edge<TNodeData, TLinkData>>();
+                    foreach (var node in Graph.Nodes)
+                    {
+                        graph.Nodes.Add(new Node<TNodeData, TLinkData>(node));
+                    }
+
+                    foreach (var edge in Graph.Edges)
+                    {
+                        var origin = graph.Nodes.FirstOrDefault(g => g.Node.Equals(edge.Source));
+                        var destination = graph.Nodes.FirstOrDefault(g => g.Node.Equals(edge.Sink));
+                        graph.Edges.Add(new Edge<TNodeData, TLinkData>(edge, origin, destination));
+                    }
+
+                    graph.AssignIdentifiers();
+
+                    return graph;
+                }*/
+
+        /// <summary>
+        /// If the first supplied rectangle has width or height zero the second rectangle will be returned. Otherwise the
+        /// standard union of two rectangles will be used.
+        /// </summary>
+        /// <param name="r1">
+        /// A rectangle.
+        /// </param>
+        /// <param name="r2">
+        /// Another rectangle.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static Rect UnionEmptyRects(Rect r1, Rect r2)
+        {
+            if (System.Math.Abs(r1.Width - 0) < Constants.Epsilon || System.Math.Abs(r1.Height - 0) < Constants.Epsilon)
+            {
+                return r2;
+            }
+
+            if (System.Math.Abs(r2.Width - 0) < Constants.Epsilon || System.Math.Abs(r2.Height - 0) < Constants.Epsilon)
+            {
+                return r1;
+            }
+
+            return UnionRects(r1, r2);
+        }
+
+        /// <summary>
+        /// Returns the smallest possible rectangle containing
+        /// both of the specified rectangles.
+        /// </summary>
+        /// <param name="a">
+        /// The first rectangle.
+        /// </param>
+        /// <param name="b">
+        /// The second rectangle.
+        /// </param>
+        /// <returns>
+        /// The union of the rectangles.
+        /// </returns>
+        public static Rect UnionRects(Rect a, Rect b)
+        {
+            var x = a;
+            x.Union(b);
+            return x;
+        }
+
+        /// <summary>
+        /// Returns a shallow clone from the given collection.
+        /// </summary>
+        /// <typeparam name="TNodeData">
+        /// The node data type.
+        /// </typeparam>
+        /// <typeparam name="TLinkData">
+        /// The edge data type.
+        /// </typeparam>
+        /// <param name="list">
+        /// The collection to clone.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        internal static List<Node<TNodeData, TLinkData>> Clone<TNodeData, TLinkData>(
+            this IEnumerable<Node<TNodeData, TLinkData>> list)
+            where TNodeData : new()
+            where TLinkData : new()
+        {
+            var clone = new List<Node<TNodeData, TLinkData>>();
+            clone.AddRange(list);
+            return clone;
+        }
+
+        /// <summary>
+        /// A recursively called depth traversal helper method.
+        /// </summary>
+        /// <typeparam name="TNode">The type of the node.</typeparam>
+        /// <typeparam name="TLink">The type of the edge.</typeparam>
+        /// <param name="g">The graph to traverse.</param>
+        /// <param name="visitor">The visitor.</param>
+        /// <param name="startNode">The start node.</param>
+        /// <param name="visited">The visited dictionary.</param>
+        /// <param name="height">The height.</param>
+        /// <remarks>
+        /// See http://en.wikipedia.org/wiki/Depth-first_search .
+        /// </remarks>
+        private static void DepthFirstTraversal<TNode, TLink>(
+            this Graph<TNode, TLink> g, IVisitor<TNode> visitor, TNode startNode, Dictionary<TNode, bool> visited, int height)
+            where TNode : class, INode<TNode, TLink>, new()
+            where TLink : class, IEdge<TNode, TLink>, new()
+        {
+            if (visitor == null)
+            {
+                throw new ArgumentNullException("visitor");
+            }
+
+            if (startNode == null)
+            {
+                throw new ArgumentNullException("startNode");
+            }
+            visitor.Visit(startNode);
+            visited[startNode] = true;
+            var children = startNode.Children;
+            foreach (var child in children.Where(child => child != null && !visited[child]))
+            {
+                g.DepthFirstTraversal(visitor, child, visited, height++);
+            }
+        }
+
+        private static void DepthFirstTraversal<TNode, TLink>(
+            this Graph<TNode, TLink> g, IDepthVisitor<TNode> visitor, TNode startNode, IDictionary<TNode, bool> visited, int height)
+            where TNode : class, INode<TNode, TLink>, new()
+            where TLink : class, IEdge<TNode, TLink>, new()
+        {
+            if (visitor == null) throw new ArgumentNullException("visitor");
+            if (startNode == null) throw new ArgumentNullException("startNode");
+            visitor.Visit(startNode, height);
+
+            visited[startNode] = true;
+            var children = startNode.Children;
+            var nextLevel = height + 1;
+            foreach (var child in children.Where(child => child != null && !visited[child])) g.DepthFirstTraversal(visitor, child, visited, nextLevel);
+        }
+
+        private static void DepthFirstTraversal<TNode, TLink>(
+            this Graph<TNode, TLink> g, IParentVisitor<TNode> visitor, TNode startNode, IDictionary<TNode, bool> visited, TNode parent)
+            where TNode : class, INode<TNode, TLink>, new()
+            where TLink : class, IEdge<TNode, TLink>, new()
+        {
+            if (visitor == null) throw new ArgumentNullException("visitor");
+            if (startNode == null) throw new ArgumentNullException("startNode");
+            visitor.Visit(startNode, parent);
+
+            visited[startNode] = true;
+            var children = startNode.Children;
+            foreach (var child in children.Where(child => child != null && !visited[child])) g.DepthFirstTraversal(visitor, child, visited, startNode);
+        }
+
+        /// <summary>
+        /// The fetch node.
+        /// </summary>
+        /// <param name="graph">
+        /// The graph.
+        /// </param>
+        /// <param name="incidence">
+        /// The incidence.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private static Node FetchNode(this Graph graph, int incidence = 4)
+        {
+            // we don't try more than 50 times
+            for (var i = 0; i < 50; i++)
+            {
+                var found = graph.Nodes[Rand.Next(graph.Nodes.Count)];
+
+                // we keep the incidence below 4
+                if ((found.Incoming.Count + found.Outgoing.Count) < incidence)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+
+
+        /// <summary>
+        /// Separates the various graph components from the given graph.
+        /// </summary>
+        /// <param name="graph">
+        /// The Graph which should be separated.
+        /// </param>
+        private static IEnumerable<Graph> SplitGraph(Graph graph)
+        {
+            // we'll systematically add each node and perform a traversal of the linked nodes
+            var nodes = graph.Nodes.Clone();
+            var subgraphs = new List<Graph>();
+
+            while (nodes.Count > 0)
+            {
+                var node = nodes[0];
+                nodes.RemoveAt(0);
+
+                var subgraph = new Graph();
+                subgraph.Nodes.Add(node);
+
+                var i = 0;
+                while (i < subgraph.Nodes.Count)
+                {
+                    node = subgraph.Nodes[i];
+
+                    foreach (var edge in node.Incoming)
+                    {
+                        if (!subgraph.Nodes.Contains(edge.Source))
+                        {
+                            subgraph.Nodes.Add(edge.Source);
+                            nodes.Remove(edge.Source);
+                        }
+
+                        if (!subgraph.Edges.Contains(edge))
+                        {
+                            subgraph.Edges.Add(edge);
+                        }
+                    }
+
+                    foreach (var edge in node.Outgoing)
+                    {
+                        if (!subgraph.Nodes.Contains(edge.Sink))
+                        {
+                            subgraph.Nodes.Add(edge.Sink);
+                            nodes.Remove(edge.Sink);
+                        }
+
+                        if (!subgraph.Edges.Contains(edge))
+                        {
+                            subgraph.Edges.Add(edge);
+                        }
+                    }
+
+                    i++;
+                }
+
+                subgraphs.Add(subgraph);
+            }
+
+            return subgraphs.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// Describes a DFT visitor to a data structure.
+    /// </summary>
+    /// <typeparam name="T">The type of objects to be visited.</typeparam>
+    /// <seealso cref="GraphExtensions.DepthFirstTraversal{TNode,TLink}(Graph{TNode,TLink},IVisitor{T},TNode)"/>
+    public interface IDepthVisitor<in T>
+    {
+        /// <summary>
+        /// Gets wether this visitor has finished.
+        /// </summary>
+        /// <remarks>Assigning this value is important to break the traversals when searching.</remarks>
+        /// <value><c>true</c> if this instance is done; otherwise, <c>false</c>.</value>
+        bool HasCompleted { get; }
+
+        /// <summary>
+        /// Visits the specified object.
+        /// </summary>
+        /// <param name="obj">The object to visit.</param>
+        /// <param name="height">The height in the DFT.</param>
+        void Visit(T obj, int height);
+    }
+
+    public interface IParentVisitor<in T>
+    {
+        /// <summary>
+        /// Gets wether this visitor has finished.
+        /// </summary>
+        /// <remarks>Assigning this value is important to break the traversals when searching.</remarks>
+        /// <value><c>true</c> if this instance is done; otherwise, <c>false</c>.</value>
+        bool HasCompleted { get; }
+
+        /// <summary>
+        /// Visits the specified object.
+        /// </summary>
+        /// <param name="obj">The object to visit.</param>
+        /// <param name="parent">The parent of the visited node.</param>
+        void Visit(T obj, T parent);
+    }
+
+
+
+    /// <summary>
+    /// A visitor which encloses a standard action.
+    /// </summary>
+    /// <typeparam name="T">The data type.</typeparam>
+    public sealed class DepthActionVisitor<T> : IDepthVisitor<T>
+    {
+        private readonly Action<T, int> action;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DepthActionVisitor&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        public DepthActionVisitor(Action<T, int> action)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            this.action = action;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has completed.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance has completed; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasCompleted
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Visits the specified object.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <param name="height">The height.</param>
+        public void Visit(T obj, int height)
+        {
+            this.action(obj, height);
+        }
+    }
+
+    /// <summary>
+    /// A visitor which encloses a standard action.
+    /// </summary>
+    /// <typeparam name="T">The data type.</typeparam>
+    public sealed class ParentActionVisitor<T> : IParentVisitor<T>
+    {
+        private readonly Action<T, T> action;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DepthActionVisitor&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        public ParentActionVisitor(Action<T, T> action)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            this.action = action;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has completed.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance has completed; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasCompleted
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Visits the specified object.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <param name="parent">The parent of the visited node (null if the root).</param>
+        public void Visit(T obj, T parent)
+        {
+            this.action(obj, parent);
+        }
+    }
+}
