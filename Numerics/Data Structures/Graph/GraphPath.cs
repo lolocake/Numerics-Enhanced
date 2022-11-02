@@ -75,4 +75,39 @@ namespace Orbifold.Numerics
 		public void Add(TLink edge, TNode node)
 		{
 			this.Links.Add(edge);
-			this.Element
+			this.Elements.Add(edge);
+			this.Nodes.Add(node);
+			this.Elements.Add(node);
+		}
+
+		/// <summary>
+		/// Adds a edge to this path.
+		/// </summary>
+		/// <param name="edge">The edge.</param>
+		public void AddEdge(TLink edge)
+		{
+			this.Links.Add(edge);
+			this.Elements.Add(edge);
+		}
+
+		/// <summary>
+		/// Adds a node to this path.
+		/// </summary>
+		/// <param name="node">
+		/// The node.
+		/// </param>
+		public void AddNode(TNode node)
+		{
+			this.Nodes.Add(node);
+			this.Elements.Add(node);
+		}
+
+		/// <summary>
+		/// Reverses the nodes sequence.
+		/// </summary>
+		public void Reverse()
+		{
+			this.Nodes.Reverse();
+		}
+	}
+}
