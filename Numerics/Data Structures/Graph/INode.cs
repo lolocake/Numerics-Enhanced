@@ -110,3 +110,72 @@ namespace Orbifold.Numerics
 		/// <description>A parent is defined as the opposite node from an edge ending at
 		/// this node.</description></item>
 		/// <item>
+		/// <description>If the graph is not directed this will return the same collection
+		/// as the <see cref="Children"/> and the <see cref="Neighbors"/> property, i.e. all the nodes attached to the
+		/// this node.</description></item></list>
+		/// </remarks>
+		/// <value>
+		/// The parent collection.
+		/// </value>
+		/// <seealso cref="Neighbors">Neighbors</seealso>
+		/// <seealso cref="Children">Children</seealso>
+		IEnumerable<TNode> Parents { get; }
+
+		/// <summary>
+		/// Gets the nodes adjacent to this node, i.e. both the <see cref="Parents"/> and <see cref="Children"/> nodes.
+		/// </summary>
+		/// <returns>
+		/// All the neighbors nodes of this node.
+		/// </returns>
+		/// <seealso cref="Parents">Parents</seealso>
+		/// <seealso cref="Children">Children</seealso>
+		IEnumerable<TNode> Neighbors { get; }
+
+		/// <summary>
+		/// Returns a shallow copy of this node.
+		/// </summary>
+		/// <returns>
+		/// </returns>
+		TNode Clone();
+
+		/// <summary>
+		/// Removes a link from this node.
+		/// </summary>
+		/// <param name="link">
+		/// The link.
+		/// </param>
+		void RemoveLink(TLink link);
+
+		/// <summary>
+		/// Adds an incoming link.
+		/// </summary>
+		/// <param name="edge">
+		/// The link to add.
+		/// </param>
+		void AddIncomingEdge(TLink edge);
+
+		/// <summary>
+		/// Adds an outgoing link.
+		/// </summary>
+		/// <param name="edge">
+		/// The link to add.
+		/// </param>
+		void AddOutgoingEdge(TLink edge);
+
+		/// <summary>
+		/// Removes an incoming edge.
+		/// </summary>
+		/// <param name="edge">
+		/// The edge to remove.
+		/// </param>
+		void RemoveIncomingEdge(TLink edge);
+
+		/// <summary>
+		/// Removes the given outgoing edge.
+		/// </summary>
+		/// <param name="edge">
+		/// The edge to remove.
+		/// </param>
+		void RemoveOutgoingEdge(TLink edge);
+	}
+}
