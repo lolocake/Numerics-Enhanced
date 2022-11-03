@@ -194,4 +194,99 @@ namespace Orbifold.Numerics
 		/// <returns>
 		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
 		/// </returns>
-		public IEnumerator<TData> GetEnumera
+		public IEnumerator<TData> GetEnumerator()
+		{
+			for(var i = 1; i < this.internalList.Count; i++) {
+				yield return this.internalList[i];
+			}
+		}
+
+		/// <summary>
+		/// Removes the root from the heap.
+		/// </summary>
+		public TData RemoveRoot()
+		{
+			if(this.Count == 0) {
+				throw new InvalidOperationException(Resource.IsEmpty);
+			}
+			var root = this.internalList[1];
+			this.RemoveRootItem();
+			return root;
+		}
+
+		/// <summary>
+		/// Returns a <see cref="System.String"/> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.String"/> that represents this instance.
+		/// </returns>
+		public override string ToString()
+		{
+			var sb = new StringBuilder();
+			sb.Append("Content of the heap: ");
+			sb.AppendLine();
+			this.internalList.ForEach(i => sb.AppendFormat("{0} ", i));
+			sb.AppendLine();
+
+			return sb.ToString();
+
+			/* If you need a visual  of this...
+			 * var blanks = 32;
+			var perRow = 1;
+			var column = 0;
+			var j = 0;
+			sb.AppendLine();
+
+			while (internalList.Count > 0)            
+			{
+				if (column == 0)
+					for (var k = 0; k < blanks; k++) sb.Append("  "); ;
+				
+				sb.Append(internalList[j]);
+
+				if (++j == internalList.Count)         
+					break;
+
+				if (++column == perRow)   
+				{
+					blanks /= 2;             
+					perRow *= 2;           
+					column = 0;                  
+					sb.Append(Environment.NewLine);       
+				}
+				else                           
+					for (var k = 0; k < blanks * 2 - 2; k++)
+						sb.Append( "  ");    
+			} 
+			sb.AppendLine();
+			return sb.ToString();*/
+		}
+
+		/// <summary>
+		/// Returns an enumerator that iterates through a collection.
+		/// </summary>
+		/// <returns>
+		/// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+		/// </returns>
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
+		}
+
+		/// <summary>
+		/// Removes the specified item from the heap.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		/// <returns></returns>
+		bool ICollection<TData>.Remove(TData item)
+		{
+			throw new NotSupportedException("You cannot remove an item except the root.");
+		}
+
+		/// <summary>
+		/// Adds the given item to the heap.
+		/// </summary>
+		/// <param name="item">The item.</param>
+		protected virtual void AddItem(TData item)
+		{
+			this.in
