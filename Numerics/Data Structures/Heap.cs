@@ -99,3 +99,99 @@ namespace Orbifold.Numerics
 		}
 
 		/// <summary>
+		/// Gets a value indicating whether this instance is empty.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsEmpty {
+			get {
+				return this.Count == 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns <c>false</c>; the heap is never read-only.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsReadOnly {
+			get {
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Gets the root of the heap.
+		/// </summary>
+		public TData Root {
+			get {
+				if(this.Count == 0) {
+					throw new InvalidOperationException(Resource.IsEmpty);
+				}
+				return this.internalList[1];
+			}
+		}
+
+		/// <summary>
+		/// Gets the type of heap.
+		/// </summary>
+		/// <value>The type of heap.</value>
+		public OrderType Type {
+			get {
+				return this.orderingType;
+			}
+		}
+
+		/// <summary>
+		/// Adds the given item to the heap.
+		/// </summary>
+		/// <param name="item">The item to be added.</param>
+		public void Add(TData item)
+		{
+			this.AddItem(item);
+		}
+
+		/// <summary>
+		/// Clears this heap of all data.
+		/// </summary>
+		public void Clear()
+		{
+			this.ClearItems();
+		}
+
+		/// <summary>
+		/// Returns whether the given item is in the heap.
+		/// </summary>
+		/// <param name="item">The item to test.</param>
+		/// <returns>
+		///   <c>true</c> if contained in this heap; otherwise, <c>false</c>.
+		/// </returns>
+		public bool Contains(TData item)
+		{
+			return this.internalList.Contains(item);
+		}
+
+		/// <summary>
+		/// Copies the heap data to an array.
+		/// </summary>
+		/// <param name="array">The array.</param>
+		/// <param name="position">Index of the array from which the copying starts.</param>
+		public void CopyTo(TData[] array, int position)
+		{
+			if((array.Length - position) < this.Count) {
+				throw new ArgumentException(Resource.ArrayTooSmall, "array");
+			}
+			for(var i = 1; i < this.internalList.Count; i++) {
+				array[position++] = this.internalList[i];
+			}
+		}
+
+		/// <summary>
+		/// Returns an enumerator that iterates through the collection.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+		/// </returns>
+		public IEnumerator<TData> GetEnumera
