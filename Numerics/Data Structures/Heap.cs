@@ -289,4 +289,52 @@ namespace Orbifold.Numerics
 		/// <param name="item">The item.</param>
 		protected virtual void AddItem(TData item)
 		{
-			this.in
+			this.internalList.Add(default(TData));
+			var counter = this.internalList.Count - 1;
+
+			// moving up the tree, note that the parent has always index= childIndex/2
+			while((counter > 1) && (this.comparer.Compare(this.internalList[counter / 2], item) > 0)) {
+				this.internalList[counter] = this.internalList[counter / 2];
+				counter = counter / 2;
+			}
+			this.internalList[counter] = item;
+		}
+
+		/// <summary>
+		/// Clears all the objects in this instance.
+		/// </summary>
+		/// <remarks>
+		/// <b>Notes to Inheritors: </b>
+		///  Derived classes can override this method to change the behavior of the <see cref="Clear"/> method.
+		/// </remarks>
+		protected virtual void ClearItems()
+		{
+			this.internalList.RemoveRange(1, this.internalList.Count - 1); // Clears all objects in this instance except the first dummy one.
+		}
+
+		/// <summary>
+		/// Removes the root item and reheapifies the tree.
+		/// </summary>
+		protected virtual void RemoveRootItem()
+		{
+			// The last item in the heap
+			var last = this.internalList[this.Count];
+			this.internalList.RemoveAt(this.Count);
+			if(this.Count > 0) {
+				var runner = 1;
+				while(runner * 2 < this.internalList.Count) {
+					var child = runner * 2;
+					if(child + 1 < this.internalList.Count && this.comparer.Compare(this.internalList[child + 1], this.internalList[child]) < 0) {
+						child++;
+					}
+					if(this.comparer.Compare(last, this.internalList[child]) <= 0) {
+						break;
+					}
+					this.internalList[runner] = this.internalList[child];
+					runner = child;
+				}
+				this.internalList[runner] = last;
+			}
+		}
+	}
+}
