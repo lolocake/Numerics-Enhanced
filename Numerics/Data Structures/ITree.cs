@@ -64,4 +64,7 @@ namespace Orbifold.Numerics
 		/// Removes the specified child.
 		/// </summary>
 		/// <param name="child">The child.</param>
-		///
+		/// <returns>An indication of whether the child was found (and removed) from this tree.</returns>
+		bool Remove(ITree<T> child);
+	}
+}
