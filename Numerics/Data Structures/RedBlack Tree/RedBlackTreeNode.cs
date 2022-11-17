@@ -20,4 +20,57 @@ namespace Orbifold.Numerics
 		/// Gets or sets the color of the current node.
 		/// </summary>
 		/// <value>The color of the node.</value>
-		internal NodeC
+		internal NodeColor Color { get; set; }
+
+		/// <summary>
+		/// Gets or sets the left subtree.
+		/// </summary>
+		/// <value>The left subtree.</value>
+		internal new RedBlackTreeNode<T> Left
+		{
+			get
+			{
+				return (RedBlackTreeNode<T>)base.Left;
+			}
+			set
+			{
+				base.Left = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the right subtree.
+		/// </summary>
+		/// <value>The right subtree.</value>
+		internal new RedBlackTreeNode<T> Right
+		{
+			get
+			{
+				return (RedBlackTreeNode<T>)base.Right;
+			}
+			set
+			{
+				base.Right = value;
+			}
+		}
+
+		internal RedBlackTreeNode<T> this[bool direction]
+		{
+			get
+			{
+				return direction ? this.Right : this.Left;
+			}
+			set
+			{
+				if (direction)
+				{
+					this.Right = value;
+				}
+				else
+				{
+					this.Left = value;
+				}
+			}
+		}
+	}
+}
