@@ -38,3 +38,4 @@ namespace Orbifold.Numerics
 			this.HasCompleted = EqualityComparer<T>.Default.Equals(this.matchObject, obj);
 		}
 	}
+}
