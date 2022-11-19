@@ -136,4 +136,58 @@ namespace Orbifold.Numerics
         }
 
         /// <summary>
-        /// Returns a bi
+        /// Returns a bitwise 'AND' of two numbers.
+        /// </summary>
+        /// <param name="number1">Must be in decimal form and greater than or equal to 0.</param>
+        /// <param name="number2">Must be in decimal form and greater than or equal to 0.</param>
+        /// <returns></returns>
+        public static long BITAND(long number1, long number2)
+        {
+            return number1 & number2;
+        }
+
+        /// <summary>
+        /// Returns a number shifted left by the specified number of bits.
+        /// </summary>
+        /// <param name="number">Must be an integer greater than or equal to 0.</param>
+        /// <param name="amount">Must be an integer.</param>
+        public static long BITLSHIFT(long number, int amount)
+        {
+            return amount < 0 ? BITRSHIFT(number, -amount) : number << amount;
+        }
+
+        /// <summary>
+        /// Returns a bitwise 'OR' of two numbers.
+        /// </summary>
+        /// <param name="number1"> Must be in decimal form and greater than or equal to 0.</param>
+        /// <param name="number2"> Must be in decimal form and greater than or equal to 0.</param>
+        public static long BITOR(long number1, long number2)
+        {
+            return number1 | number2;
+        }
+
+        /// <summary>
+        /// Returns a number shifted right by the specified number of bits.
+        /// </summary>
+        /// <param name="number">Must be an integer greater than or equal to 0.</param>
+        /// <param name="amount">Must be an integer.</param>
+        public static long BITRSHIFT(long number, int amount)
+        {
+            return amount < 0 ? BITLSHIFT(number, -amount) : number >> amount;
+        }
+
+        /// <summary>
+        /// Returns a bitwise 'XOR' of two numbers.
+        /// </summary>
+        /// <param name="number1">Must be greater than or equal to 0.</param>
+        /// <param name="number2">Must be greater than or equal to 0.</param>
+        public static long BITXOR(long number1, long number2)
+        {
+            return number1 ^ number2;
+        }
+
+        /// <summary>
+        /// Converts real and imaginary coefficients into a complex number of the form x + yi or x + yj.
+        /// </summary>
+        /// <param name="a">The real coefficient of the complex number.</param>
+        /// <param name="b">The imaginary coefficient of th
