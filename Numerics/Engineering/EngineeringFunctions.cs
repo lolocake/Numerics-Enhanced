@@ -57,4 +57,40 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Converts a binary number to decimal.
         /// </summary>
-        /// <param name="number">The binary number you want to convert. Number cannot contain more than 10 ch
+        /// <param name="number">The binary number you want to convert. Number cannot contain more than 10 characters (10 bits). 
+        /// The most significant bit of number is the sign bit. The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static long BIN2DEC(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return 0L;
+
+            if (number.Length == 10)
+            {
+                number = number.Substring(1);
+                return Convert.ToInt64(number, 2) - 512;
+            }
+            return Convert.ToInt64(number, 2);
+        }
+
+        /// <summary>
+        /// Converts a binary number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The binary number you want to convert. Number cannot contain more than 10 characters (10 bits). The most significant bit of number is the sign bit. The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places"> The number of characters to use. If places is omitted, BIN2HEX uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        public static string BIN2HEX(string number, int places)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0";
+            return OCT2HEX(BIN2OCT(number), places);
+        }
+
+        /// <summary>
+        /// Converts a binary number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The binary number you want to convert. Number cannot contain more than 10 characters (10 bits). The most significant bit of number is the sign bit. The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static string BIN2HEX(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Excep
