@@ -93,4 +93,47 @@ namespace Orbifold.Numerics
         public static string BIN2HEX(string number)
         {
             if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
-            if (number.Length > 10) throw new Excep
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0";
+            return OCT2HEX(BIN2OCT(number));
+        }
+
+        /// <summary>
+        /// Converts a binary number to octal.
+        /// </summary>
+        /// <param name="number">The binary number you want to convert. Number cannot contain more than 10 characters (10 bits). The most significant bit of number is the sign bit. The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, BIN2OCT uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        public static string BIN2OCT(string number, int places)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0";
+
+            if (number.Length == 10)
+            {
+                number = number.Substring(1);
+                return DEC2OCT(Convert.ToInt64(number, 2) - 512, places);
+            }
+            return DEC2OCT(Convert.ToInt64(number, 2), places);
+        }
+
+        /// <summary>
+        /// Converts a binary number to octal.
+        /// </summary>
+        /// <param name="number">The binary number you want to convert. Number cannot contain more than 10 characters (10 bits). The most significant bit of number is the sign bit. The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static string BIN2OCT(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0";
+
+            if (number.Length == 10)
+            {
+                number = number.Substring(1);
+                return DEC2OCT(Convert.ToInt64(number, 2) - 512);
+            }
+            return DEC2OCT(Convert.ToInt64(number, 2));
+        }
+
+        /// <summary>
+        /// Returns a bi
