@@ -190,4 +190,38 @@ namespace Orbifold.Numerics
         /// Converts real and imaginary coefficients into a complex number of the form x + yi or x + yj.
         /// </summary>
         /// <param name="a">The real coefficient of the complex number.</param>
-        /// <param name="b">The imaginary coefficient of th
+        /// <param name="b">The imaginary coefficient of the complex number.</param>
+        /// <param name="complexSymbol"> The suffix for the imaginary component of the complex number. If omitted, suffix is assumed to be "i".</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception">Only 'i' or 'j' is allowed for the imaginary number.</exception>
+        public static string COMPLEX(double a, double b, string complexSymbol = "i")
+        {
+            if (complexSymbol != "i" || complexSymbol != "j") throw new Exception("Only 'i' or 'j' is allowed for the imaginary number.");
+            return string.Format("{0}+{1}{2}", a, b, complexSymbol);
+        }
+
+        /// <summary>
+        /// Converts a number from one measurement system to another. For example, CONVERT can translate a table of distances in miles to a table of distances in kilometers.
+        /// </summary>
+        /// <param name="number">The value in from_units to convert.</param>
+        /// <param name="from_unit"> The units for number.</param>
+        /// <param name="to_unit">The units for the result. .</param>
+        /// <seealso cref="MultiplierPrefix"/>
+        public static double CONVERT(double number, string from_unit, string to_unit)
+        {
+            return Converter.Convert(number, from_unit, to_unit);
+        }
+
+        /// <summary>
+        /// Converts a decimal number to binary.
+        /// </summary>
+        /// <param name="number"> The decimal integer you want to convert. If number is negative, valid place values are ignored and DEC2BIN returns a 10-character (10-bit) 
+        /// binary number in which the most significant bit is the sign bit. The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <exception cref="System.Exception">
+        /// If the number should not be less than -512 and not bigger than 511 or if the number of characters to use cannot be less than one or if the number of characters to use cannot be more than ten.
+        /// </exception>
+        public static string DEC2BIN(double number)
+        {
+            if (number < -512 || number > 511) throw new Exception("The inum should not be less than -512 and not bigger than 511.");
+            var inum = number.Truncate();
+            if (inum == 0) return
