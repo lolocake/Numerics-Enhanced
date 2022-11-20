@@ -258,4 +258,35 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Converts a decimal number to hexadecimal.
         /// </summary>
-        /// <param name="number">The decimal integer you want to convert. If number is negative, places is ignored and DEC2HEX returns a 10-character (40-bit) hexadecimal number in which the most significant bit is the sign bit. The remaining 39 
+        /// <param name="number">The decimal integer you want to convert. If number is negative, places is ignored and DEC2HEX returns a 10-character (40-bit) hexadecimal number in which the most significant bit is the sign bit. The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, DEC2BIN uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros)</param>
+        public static string DEC2HEX(double number, int places)
+        {
+            return OCT2HEX(DEC2OCT(number), places);
+        }
+
+        /// <summary>
+        /// Converts a decimal number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The decimal integer you want to convert. If number is negative, places is ignored and DEC2HEX returns a 10-character (40-bit) hexadecimal number in which the most significant bit is the sign bit. The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static string DEC2HEX(double number)
+        {
+            return OCT2HEX(DEC2OCT(number));
+        }
+
+        /// <summary>
+        /// Converts a decimal number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The decimal integer you want to convert. If number is negative, places is ignored and DEC2HEX returns a 10-character (40-bit) hexadecimal number in which the most significant bit is the sign bit. 
+        /// The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, DEC2HEX uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        public static string DEC2OCT(double number, int places)
+        {
+            if (number < -549755813888 || number > 549755813887) throw new Exception("The number should not be less than -549755813888 and not bigger than 549755813887.");
+            if (places <= 0) throw new Exception("The number of characters to use cannot be less than one.");
+            if (places > 10) throw new Exception("The number of characters to use cannot be more than ten.");
+            var inum = number.Truncate();
+            if (inum < 0) inum = 0xFFFFFFFF + inum + 1;
+            if (inum == 0) return "0".PadLeft(places, '0');
+
+            var s = Convert.ToString(inum, 8).PadLeft(p
