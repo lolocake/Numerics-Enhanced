@@ -224,4 +224,38 @@ namespace Orbifold.Numerics
         {
             if (number < -512 || number > 511) throw new Exception("The inum should not be less than -512 and not bigger than 511.");
             var inum = number.Truncate();
-            if (inum == 0) return
+            if (inum == 0) return "0";
+            if (inum < 0) return DEC2BIN(inum, 10);
+            return Convert.ToString(inum, 2);
+        }
+
+        /// <summary>
+        /// Converts a decimal number to binary.
+        /// </summary>
+        /// <param name="number"> The decimal integer you want to convert. If number is negative, valid place values are ignored and DEC2BIN returns a 10-character (10-bit) 
+        /// binary number in which the most significant bit is the sign bit. The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, DEC2BIN uses the minimum number of characters necessary. 
+        /// Places is useful for padding the return value with leading 0s (zeros).</param>
+        /// <exception cref="System.Exception">
+        /// If the number should not be less than -512 and not bigger than 511 or if the number of characters to use cannot be less than one or if the number of characters to use cannot be more than ten.
+        /// </exception>
+        public static string DEC2BIN(double number, int places)
+        {
+            // se the Excel documentation for details on the restrictions
+            if (number < -512 || number > 511) throw new Exception("The number should not be less than -512 and not bigger than 511.");
+            if (places <= 0) throw new Exception("The number of characters to use cannot be less than one.");
+            if (places > 10) throw new Exception("The number of characters to use cannot be more than ten.");
+            var inum = number.Truncate();
+
+            if (inum < 0) inum = 0xFFFFFFFF + inum + 1;
+            if (inum == 0) return "0".PadLeft(places, '0');
+
+            var s = Convert.ToString(inum, 2).PadLeft(places, '0');
+            if (s.Length > places) s = s.Substring(s.Length - 10);
+            return s;
+        }
+
+        /// <summary>
+        /// Converts a decimal number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The decimal integer you want to convert. If number is negative, places is ignored and DEC2HEX returns a 10-character (40-bit) hexadecimal number in which the most significant bit is the sign bit. The remaining 39 
