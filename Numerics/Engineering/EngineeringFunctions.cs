@@ -289,4 +289,50 @@ namespace Orbifold.Numerics
             if (inum < 0) inum = 0xFFFFFFFF + inum + 1;
             if (inum == 0) return "0".PadLeft(places, '0');
 
-            var s = Convert.ToString(inum, 8).PadLeft(p
+            var s = Convert.ToString(inum, 8).PadLeft(places, '0');
+            if (s.Length > places) s = s.Substring(s.Length - 10);
+            return s;
+        }
+
+        /// <summary>
+        /// Converts a decimal number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The decimal integer you want to convert. If number is negative, places is ignored and DEC2HEX returns a 10-character (40-bit) hexadecimal number in which the most significant bit is the sign bit. 
+        /// The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, DEC2HEX uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        public static string DEC2OCT(double number)
+        {
+            if (number < -549755813888 || number > 549755813887) throw new Exception("The number should not be less than -549755813888 and not bigger than 549755813887.");
+            var inum = number.Truncate();
+            if (inum < 0) inum = 0xFFFFFFFF + inum + 1;
+            if (inum == 0) return "0";
+
+            var s = Convert.ToString(inum, 8);
+            if (s.Length > 10) s = s.Substring(s.Length - 10);
+            return s;
+        }
+
+        /// <summary>
+        /// Tests whether the value is equal to zero. Returns 1 if number = 0, returns 0 otherwise. 
+        /// </summary>
+        /// <param name="number">A number.</param>
+        public static int DELTA(double number)
+        {
+            return EpsilonExtensions.IsZero(number) ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Tests whether two values are equal. Returns 1 if number1 = number2; returns 0 otherwise. 
+        /// Use this function to filter a set of values. For example, by summing several DELTA functions you calculate 
+        /// the count of equal pairs. This function is also known as the Kronecker Delta function.
+        /// </summary>
+        /// <param name="number1">A number.</param>
+        /// <param name="number2">A number.</param>
+        /// <returns></returns>
+        public static int DELTA(double number1, double number2)
+        {
+            return DELTA(number1 - number2);
+        }
+
+        /// <summary>
+        /// Returns the error function integrated betwee
