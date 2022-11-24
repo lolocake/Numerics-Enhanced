@@ -335,4 +335,51 @@ namespace Orbifold.Numerics
         }
 
         /// <summary>
-        /// Returns the error function integrated betwee
+        /// Returns the error function integrated between lower_limit and upper_limit.
+        /// </summary>
+        /// <param name="lower_limit">The lower limit of the integration.</param>
+        /// <param name="upper_limit">The upper bound for integrating ERF. If omitted, ERF integrates between zero and lower_limit.</param>
+        /// <returns></returns>
+        public static double ERF(double lower_limit, double upper_limit)
+        {
+            // due to additive integrals
+            return Functions.Erf(upper_limit) - Functions.Erf(lower_limit);
+        }
+
+        /// <summary>
+        /// Returns the error function integrated between zero and the given upper_limit.
+        /// </summary>
+        /// <remarks>The ERF.Precise function of Excel returns a more accurate value but this difference has to be implemented in consumers of this library. 
+        /// This function will return the most precise value possible and is, hence, the ERF.PRECISE engineering function. To get the ERF function just truncate the returned value.</remarks>
+        /// <param name="upper_limit">The upper_limit.</param>
+        /// <returns></returns>
+        public static double ERF(double upper_limit)
+        {
+            return Functions.Erf(upper_limit);
+        }
+
+        /// <summary>
+        /// Returns 1 if number ≥ 0; returns 0 (zero) otherwise.
+        /// </summary>
+        /// <param name="number">The number.</param>
+        /// <returns></returns>
+        public static int GESTEP(double number)
+        {
+            return (number >= 0) ? 1 : 0;
+        }
+
+        /// <summary>
+        /// Returns 1 if number ≥ step; returns 0 (zero) otherwise. This is sometimes called the Heaviside step function, the Kronecker delta being the derivative of this function within the context of distributions.
+        /// </summary>
+        /// <param name="number">A number.</param>
+        /// <param name="step">A step or threshold from which on the result is one.</param>
+        /// <returns></returns>
+        public static int GESTEP(double number, double step)
+        {
+            return GESTEP(number - step);
+        }
+
+        /// <summary>
+        /// Converts a hexadecimal number to binary.
+        /// </summary>
+        /// <param name="number"> The hexadecimal number you want to convert. Number cannot contain more than 10 characters. The most significant bit of number is the sign bit (40th bit from the right). The remain
