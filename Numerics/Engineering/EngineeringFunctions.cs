@@ -382,4 +382,40 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Converts a hexadecimal number to binary.
         /// </summary>
-        /// <param name="number"> The hexadecimal number you want to convert. Number cannot contain more than 10 characters. The most significant bit of number is the sign bit (40th bit from the right). The remain
+        /// <param name="number"> The hexadecimal number you want to convert. Number cannot contain more than 10 characters. The most significant bit of number is the sign bit (40th bit from the right). The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, HEX2BIN uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        /// <returns></returns>
+        public static string HEX2BIN(string number, int places)
+        {
+            return OCT2BIN(HEX2OCT(number), places);
+        }
+
+        /// <summary>
+        /// Converts a hexadecimal number to binary.
+        /// </summary>
+        /// <param name="number"> The hexadecimal number you want to convert. Number cannot contain more than 10 characters. The most significant bit of number is the sign bit (40th bit from the right). The remaining 9 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <returns></returns>
+        public static string HEX2BIN(string number)
+        {
+            return OCT2BIN(HEX2OCT(number));
+        }
+
+        /// <summary>
+        /// Converts a hexadecimal number to decimal.
+        /// </summary>
+        /// <param name="number">The hexadecimal number you want to convert. Number cannot contain more than 10 characters (40 bits). The most significant bit of number is the sign bit. The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static long HEX2DEC(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return 0;
+            if (number.Length == 10) return OCT2DEC(HEX2OCT(number));
+            return Convert.ToInt64(number, 16);
+        }
+
+        /// <summary>
+        /// Converts a hexadecimal number to octal.
+        /// </summary>
+        /// <param name="number">The hexadecimal number you want to convert. Number cannot contain more than 10 characters. 
+        /// The most significant bit of number is the sign bit. The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of charact
