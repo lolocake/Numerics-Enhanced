@@ -418,4 +418,49 @@ namespace Orbifold.Numerics
         /// </summary>
         /// <param name="number">The hexadecimal number you want to convert. Number cannot contain more than 10 characters. 
         /// The most significant bit of number is the sign bit. The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
-        /// <param name="places">The number of charact
+        /// <param name="places">The number of characters to use. If places is omitted, HEX2OCT uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        /// <returns></returns>
+        public static string HEX2OCT(string number, int places)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0".PadLeft(places, '0');
+            string s;
+            //if (number.Length == 10)
+            //{
+            //    number = number.Substring(1);
+            //    s = Convert.ToString(Convert.ToInt64(number, 16), 8);
+            //}
+            //else
+            s = Convert.ToString(Convert.ToInt64(number, 16), 8);
+            s = s.PadLeft(places, '0');
+            if (s.Length > places) s = s.Substring(s.Length - 10);
+            return s.ToUpper();
+        }
+
+        /// <summary>
+        /// Converts a hexadecimal number to octal.
+        /// </summary>
+        /// <param name="number">The hexadecimal number you want to convert. Number cannot contain more than 10 characters. 
+        /// The most significant bit of number is the sign bit. The remaining 39 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static string HEX2OCT(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0";
+            string s;
+            //if (number.Length == 10)
+            //{
+            //    number = number.Substring(1);
+            //    s = Convert.ToString(Convert.ToInt64(number, 16), 8);
+            //}
+            //else
+            s = Convert.ToString(Convert.ToInt64(number, 16), 8);
+            if (s.Length > 10) s = s.Substring(s.Length - 10);
+            return s.ToUpper();
+        }
+
+        /// <summary>
+        /// Returns the absolute value (modulus) of a complex number in x + yi or x + yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param
