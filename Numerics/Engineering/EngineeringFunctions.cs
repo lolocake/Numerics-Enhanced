@@ -463,4 +463,63 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Returns the absolute value (modulus) of a complex number in x + yi or x + yj text format.
         /// </summary>
-        /// <param name="complexNumber">A complex number.</param
+        /// <param name="complexNumber">A complex number.</param>
+        public static double IMABS(string complexNumber)
+        {
+            return Complex.Abs(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Ieturns the imaginary coefficient of a complex number in x + yi or x + yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number for which you want the imaginary coefficient.</param>
+        /// <seealso cref="COMPLEX"/>
+        /// <seealso cref="ComplexExtensions"/>
+        public static double IMAGINARY(string complexNumber)
+        {
+            return complexNumber.ToComplex().Imaginary;
+        }
+
+        /// <summary>
+        /// Returns the argument of the polar representation of the specified complex number.
+        /// </summary>
+        /// <remarks>The returned angle is in radians.</remarks>
+        /// <param name="complexNumber">A complex number.</param>
+        public static double IMARGUMENT(string complexNumber)
+        {
+            var c = complexNumber.ToComplex();
+            return c.Imaginary < Constants.Epsilon ? 0d : System.Math.Atan2(c.Imaginary, c.Real);
+        }
+
+        /// <summary>
+        /// Returns the complex conjugate of a complex number in x + yi or x + yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMCONJUGATE(string complexNumber)
+        {
+            var c = complexNumber.ToComplex();
+            return Complex.Conjugate(c);
+        }
+
+        /// <summary>
+        /// Returns the cosine of a complex number in x + yi or x + yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMCOS(string complexNumber)
+        {
+            return Complex.Cos(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the hyperbolic cosine of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMCOSH(string complexNumber)
+        {
+            return Complex.Cosh(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the cotangent of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
