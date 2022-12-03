@@ -586,4 +586,61 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Returns the base-10 logarithm of a complex number.
         /// </summary>
-        /// <param name="complexNumber">A complex number.</
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMLOG2(string complexNumber)
+        {
+            return Complex.Divide(IMLN(complexNumber), Constants.Ln2);
+        }
+
+        /// <summary>
+        /// Returns a complex number in x + yi or x + yj text format raised to a power.
+        /// </summary>
+        /// <param name="complexNumber">A complex number you want to raise to a power.</param>
+        /// <param name="power">The power to which you want to raise the complex number.</param>
+        /// <returns></returns>
+        public static Complex IMPOWER(string complexNumber, int power)
+        {
+            return Complex.Pow(complexNumber.ToComplex(), power);
+        }
+
+        /// <summary>
+        /// Returns the product of two complex numbers
+        /// </summary>
+        /// <param name="complexNumber1">A complex number.</param>
+        /// <param name="complexNumber2">A complex number.</param>
+        public static Complex IMPRODUCT(string complexNumber1, string complexNumber2)
+        {
+            return Complex.Multiply(complexNumber1.ToComplex(), complexNumber2.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the real coefficient of a complex number in x + yi or x + yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static double IMREAL(string complexNumber)
+        {
+            return complexNumber.ToComplex().Real;
+        }
+
+        /// <summary>
+        /// Returns the secant of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMSEC(string complexNumber)
+        {
+            return Complex.Divide(1, IMCOS(complexNumber));
+        }
+
+        /// <summary>
+        /// Returns the hyperbolic secant of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMSECH(string complexNumber)
+        {
+            return Complex.Divide(1, IMCOSH(complexNumber));
+        }
+
+        /// <summary>
+        /// Returns the sine of a complex number in x + yi or x + yj text format.
+        /// </summary>
+        /// <param name
