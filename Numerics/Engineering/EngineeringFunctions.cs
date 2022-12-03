@@ -643,4 +643,60 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Returns the sine of a complex number in x + yi or x + yj text format.
         /// </summary>
-        /// <param name
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMSIN(string complexNumber)
+        {
+            return Complex.Sin(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the hyperbolic sine of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMSINH(string complexNumber)
+        {
+            return Complex.Sinh(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the square root of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMSQRT(string complexNumber)
+        {
+            return Complex.Sqrt(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the difference between two complex numbers
+        /// </summary>
+        /// <param name="complexNumber1">A complex number.</param>
+        /// <param name="complexNumber2">A complex number.</param>
+        public static Complex IMSUB(string complexNumber1, string complexNumber2)
+        {
+            return Complex.Subtract(complexNumber1.ToComplex(), complexNumber2.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the sum of two complex numbers
+        /// </summary>
+        /// <param name="complexNumber1">A complex number.</param>
+        /// <param name="complexNumber2">A complex number.</param>
+        public static Complex IMSUM(string complexNumber1, string complexNumber2)
+        {
+            return Complex.Add(complexNumber1.ToComplex(), complexNumber2.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the tangent of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMTAN(string complexNumber)
+        {
+            return Complex.Tan(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Converts an octal number to binary.
+        /// </summary>
+        /// <param name="number">The octal number you want to convert. Number may not contain more than 10 characters. The most significant bit of number is the sign bit. The remaining 29 bits are magnitude bits. Negative numbers are represented using two's-complement notation.
