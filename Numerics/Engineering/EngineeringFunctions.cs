@@ -523,3 +523,67 @@ namespace Orbifold.Numerics
         /// Returns the cotangent of a complex number in x+yi or x+yj text format.
         /// </summary>
         /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMCOT(string complexNumber)
+        {
+            return Complex.Divide(1, IMTAN(complexNumber));
+        }
+
+        /// <summary>
+        /// Returns the hyperbolic secant of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMCSC(string complexNumber)
+        {
+            return Complex.Divide(1, IMSIN(complexNumber));
+        }
+
+        /// <summary>
+        /// Returns the hyperbolic cosecant of a complex number in x+yi or x+yj text format.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMCSCH(string complexNumber)
+        {
+            return Complex.Divide(1, IMSINH(complexNumber));
+        }
+
+        /// <summary>
+        /// Returns the quotient of two complex numbers.
+        /// </summary>
+        /// <param name="complexNumber1">A complex number.</param>
+        /// <param name="complexNumber2">A complex number.</param>
+        public static Complex IMDIV(string complexNumber1, string complexNumber2)
+        {
+            return Complex.Divide(complexNumber1.ToComplex(), complexNumber2.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the exponential of a complex number.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMEXP(string complexNumber)
+        {
+            return Complex.Exp(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the natural logarithm of a complex number.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMLN(string complexNumber)
+        {
+            return Complex.Log(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the base-10 logarithm of a complex number.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</param>
+        public static Complex IMLOG10(string complexNumber)
+        {
+            return Complex.Log10(complexNumber.ToComplex());
+        }
+
+        /// <summary>
+        /// Returns the base-10 logarithm of a complex number.
+        /// </summary>
+        /// <param name="complexNumber">A complex number.</
