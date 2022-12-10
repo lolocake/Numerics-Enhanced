@@ -699,4 +699,46 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Converts an octal number to binary.
         /// </summary>
-        /// <param name="number">The octal number you want to convert. Number may not contain more than 10 characters. The most significant bit of number is the sign bit. The remaining 29 bits are magnitude bits. Negative numbers are represented using two's-complement notation.
+        /// <param name="number">The octal number you want to convert. Number may not contain more than 10 characters. The most significant bit of number is the sign bit. The remaining 29 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, OCT2BIN uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        public static string OCT2BIN(string number, int places)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0".PadLeft(places, '0');
+
+            if (number.Length == 10)
+            {
+                number = number.Substring(1);
+                return DEC2BIN(Convert.ToInt64(number, 8) - 134217728, places);
+            }
+            return DEC2BIN(Convert.ToInt64(number, 8), places);
+        }
+
+        /// <summary>
+        /// Converts an octal number to binary.
+        /// </summary>
+        /// <param name="number">The octal number you want to convert. Number may not contain more than 10 characters. The most significant bit of number is the sign bit. The remaining 29 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static string OCT2BIN(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0";
+
+            if (number.Length == 10)
+            {
+                number = number.Substring(1);
+                return DEC2BIN(Convert.ToInt64(number, 8) - 134217728);
+            }
+            return DEC2BIN(Convert.ToInt64(number, 8));
+        }
+
+        /// <summary>
+        /// Converts an octal number to decimal.
+        /// </summary>
+        /// <param name="number">TThe octal number you want to convert. Number may not contain more than 10 octal characters (30 bits). 
+        /// The most significant bit of number is the sign bit. The remaining 29 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static long OCT2DEC(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+      
