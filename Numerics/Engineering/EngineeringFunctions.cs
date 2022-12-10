@@ -741,4 +741,45 @@ namespace Orbifold.Numerics
         public static long OCT2DEC(string number)
         {
             if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
-      
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return 0L;
+
+            if (number.Length == 10)
+            {
+                number = number.Substring(1);
+                return Convert.ToInt64(number, 8) - 134217728;
+            }
+            return Convert.ToInt64(number, 8);
+        }
+
+        /// <summary>
+        /// Converts an octal number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The octal number you want to convert. Number may not contain more than 10 octal characters (30 bits). 
+        /// The most significant bit of number is the sign bit. The remaining 29 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        /// <param name="places">The number of characters to use. If places is omitted, OCT2HEX uses the minimum number of characters necessary. Places is useful for padding the return value with leading 0s (zeros).</param>
+        public static string OCT2HEX(string number, int places)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0".PadLeft(places, '0');
+            string s;
+            s = Convert.ToString(Convert.ToInt64(number, 8), 16);
+
+            s = s.PadLeft(places, '0');
+            if (s.Length > places) s = s.Substring(s.Length - 10);
+            return s.ToUpper();
+        }
+
+        /// <summary>
+        /// Converts an octal number to hexadecimal.
+        /// </summary>
+        /// <param name="number">The octal number you want to convert. Number may not contain more than 10 octal characters (30 bits). 
+        /// The most significant bit of number is the sign bit. The remaining 29 bits are magnitude bits. Negative numbers are represented using two's-complement notation.</param>
+        public static string OCT2HEX(string number)
+        {
+            if (string.IsNullOrEmpty(number)) throw new ArgumentNullException("number");
+            if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
+            if (number == "0") return "0";
+            string s;
+           
