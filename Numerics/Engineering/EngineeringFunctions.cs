@@ -782,4 +782,14 @@ namespace Orbifold.Numerics
             if (number.Length > 10) throw new Exception("The given number cannot be longer than 10 characters.");
             if (number == "0") return "0";
             string s;
-           
+            if (number.Length == 10)
+            {
+                number = number.Substring(1);
+                s = Convert.ToString(Convert.ToInt64(number, 8) - 134217728, 16);
+            }
+            else s = Convert.ToString(Convert.ToInt64(number, 8), 16);
+            if (s.Length > 10) s = s.Substring(s.Length - 10);
+            return s.ToUpper();
+        }
+    }
+}
