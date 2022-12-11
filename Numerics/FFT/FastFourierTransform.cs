@@ -46,4 +46,71 @@ namespace Orbifold.Numerics
                 var sum = Complex.Zero;
                 for (var n = 0; n < samples.Length; n++)
                 {
-                    sum += samples[n] * new Complex(Math.Cos(n * w0 * i), M
+                    sum += samples[n] * new Complex(Math.Cos(n * w0 * i), Math.Sin(n * w0 * i));
+                }
+                spectrum[i] = sum / samples.Length;
+            }
+            return spectrum;
+        }
+
+        /// <summary>
+        /// Forward Fourier transformation.
+        /// <remarks>
+        /// The radix-2 decimation-in-time (DIT) FFT is the simplest and most common form of the Cooley–Tukey algorithm.
+        /// Radix-2 DIT divides a DFT of size N into two interleaved DFTs (hence the name "radix-2") of size N/2 with each recursive stage.
+        /// </remarks> 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static Complex[] Radix2Forward(Complex[] x)
+        {
+            var length = x.Length;
+            // 
+            if (length == 1) return new[] { x[0] };
+
+            // Cooley-Tukey FFT
+            if (length % 2 != 0) throw new Exception("N is not a power of 2");
+
+            // even Radix2Forward
+            var even = new Complex[length / 2];
+            for (var k = 0; k < length / 2; k++) even[k] = x[2 * k];
+            var q = Radix2Forward(even);
+
+            // odd Radix2Forward;
+            var odd = even;
+            for (var k = 0; k < length / 2; k++) odd[k] = x[2 * k + 1];
+            var r = Radix2Forward(odd);
+
+            // combine
+            var y = new Complex[length];
+            for (var k = 0; k < length / 2; k++)
+            {
+                var value = -2 * k * Math.PI / length;
+                var wk = new Complex(Math.Cos(value), Math.Sin(value));
+                y[k] = q[k] + (wk * (r[k]));
+                y[k + length / 2] = q[k] - (wk * (r[k]));
+            }
+            return y;
+        }
+        /// <summary>
+        /// Backward Fourier transform.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        /// <seealso cref="Radix2Forward"/>
+        public static Complex[] Radix2Inverse(Complex[] x)
+        {
+            var length = x.Length;
+            var y = new Complex[length];
+
+            // Cooley-Tukey FFT
+            if (length % 2 != 0) throw new Exception("N is not a power of 2");
+
+            //conjugate
+            for (var i = 0; i < length; i++) y[i] = new Complex(x[i].Real, -x[i].Imaginary);
+
+            // compute forward FFT
+            y = Radix2Forward(y);
+
+            // take conjugate again
+            for (var i = 0; i < length; i++) y[
