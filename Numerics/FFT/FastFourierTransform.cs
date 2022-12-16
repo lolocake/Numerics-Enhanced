@@ -113,4 +113,67 @@ namespace Orbifold.Numerics
             y = Radix2Forward(y);
 
             // take conjugate again
-            for (var i = 0; i < length; i++) y[
+            for (var i = 0; i < length; i++) y[i] = new Complex(y[i].Real, -y[i].Imaginary);
+
+            // divide by N
+            for (var i = 0; i < length; i++) y[i] = y[i] / length;
+
+            return y;
+        }
+        public static Complex[,] Radix2Forward2D(Complex[,] input)
+        {
+            var output = (Complex[,])input.Clone();
+            // Rows first:
+            var x = new Complex[output.GetLength(1)];
+            for (var h = 0; h < output.GetLength(0); h++)
+            {
+                for (var i = 0; i < output.GetLength(1); i++)
+                {
+                    x[i] = output[h, i];
+                }
+                x = Radix2Forward(x);
+                for (var i = 0; i < output.GetLength(1); i++)
+                {
+                    output[h, i] = x[i];
+                }
+            }
+            //Columns last
+            var y = new Complex[output.GetLength(0)];
+            for (var h = 0; h < output.GetLength(1); h++)
+            {
+                for (var i = 0; i < output.GetLength(0); i++)
+                {
+                    y[i] = output[i, h];
+                }
+                y = Radix2Forward(y);
+                for (var i = 0; i < output.GetLength(0); i++)
+                {
+                    output[i, h] = y[i];
+                }
+            }
+            return output;
+        }
+        public static Complex[,] Radix2Inverse2D(Complex[,] input)
+        {
+            var output = (Complex[,])input.Clone();
+            // Rows first:
+            var x = new Complex[output.GetLength(1)];
+            for (var h = 0; h < output.GetLength(0); h++)
+            {
+                for (var i = 0; i < output.GetLength(1); i++) x[i] = output[h, i];
+                x = Radix2Inverse(x);
+                for (var i = 0; i < output.GetLength(1); i++) output[h, i] = x[i];
+            }
+            //Columns last
+            var y = new Complex[output.GetLength(0)];
+            for (var h = 0; h < output.GetLength(1); h++)
+            {
+                for (var i = 0; i < output.GetLength(0); i++) y[i] = output[i, h];
+                y = Radix2Inverse(y);
+                for (var i = 0; i < output.GetLength(0); i++) output[i, h] = y[i];
+            }
+            return output;
+        }
+
+    }
+}
