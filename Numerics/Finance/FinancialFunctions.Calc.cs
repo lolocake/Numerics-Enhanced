@@ -1009,3 +1009,1336 @@ namespace Orbifold.Numerics
             {
                 return TotalDepr(cost, salvage, life, endPeriod, factor, straightLine) - TotalDepr(cost, salvage, life, startPeriod, factor, straightLine);
             }
+
+            private static double DeprCoeff(double assetLife)
+            {
+                Func<double, double, bool> between = (x1, x2) => x1 <= assetLife && assetLife <= x2;
+                if (between.Invoke(3, 4)) return 1.5;
+                if (between.Invoke(5, 6)) return 2;
+                return assetLife > 6d ? 2.5 : 1;
+            }
+
+            private static Func<double, double, double> FDb(double cost, double life, double period, double month, double rate)
+            {
+                return (totDepr, per) =>
+                    {
+                        var months = (int)month;
+                        var req = (int)period - 1;
+                        var lastIndex = months == 12 ? (int)life - 1 : (int)life;
+                        while (true)
+                        {
+                            var i = (int)per;
+
+                            if (i == 0)
+                            {
+                                var depr = cost * rate * month / 12;
+                                if (req == 0) return depr;
+                                per += 1;
+                                totDepr = depr;
+                            }
+                            else
+                            {
+                                if (req == lastIndex)
+                                {
+                                    if (i < lastIndex)
+                                    {
+                                        per += 1;
+                                        totDepr += DeprForPeriod(cost, totDepr, rate);
+                                    }
+                                    else
+                                    {
+                                        if (months == 12) return DeprForPeriod(cost, totDepr, rate);
+                                        else return (cost - totDepr) * rate * (12 - month) / 12;
+                                    }
+                                }
+                                else
+                                {
+                                    if (i == req) return DeprForPeriod(cost, totDepr, rate);
+                                    else
+                                    {
+                                        per += 1;
+                                        totDepr += DeprForPeriod(cost, totDepr, rate);
+                                    }
+
+                                }
+
+                            }
+                            /*  if (i == (((int)period) - 1))
+                              {
+                                  if (month == 12)
+                                  {
+                                      if (period == life) //the last segment in a normal situation
+                                          return (cost - totDepr) * rate * (12 - month) / 12;
+                                      else
+                                          return DeprForPeriod(cost, totDepr, rate); // an intermediate segment
+                                  }
+                                  else // there is an extra segment
+                                  {
+                                      var last = life + 1;
+                                      if (i < last)
+                                      {
+                                          return DeprForPeriod(cost, totDepr, rate); // an intermediate segment
+                                      }
+                                      else
+                                          return (cost - totDepr) * rate * (12 - month) / 12;
+                                  }
+
+                              }
+                              else
+                              {
+                                  per += 1;
+                                  totDepr += DeprForPeriod(cost, totDepr, rate);
+                              }*/
+                        }
+                    };
+            }
+
+            private static Func<double, double, double> FDepr(double cost, double salvage, double life)
+            {
+                return (totDepr, aPeriod) => SLNInternal(cost - totDepr, salvage, life - aPeriod);
+            }
+
+            private static double DaysInYear(DateTime date, DayCountBasis basis)
+            {
+                if (basis != DayCountBasis.ActualActual)
+                {
+                    var dc = DayCount.DayCounterFactory(basis);
+                    var dayCount = dc;
+                    var dateTime = date;
+                    var dateTime1 = date;
+                    return dayCount.DaysInYear(dateTime, dateTime1);
+                }
+                return !Common.IsLeapYear(date) ? 365 : 366;
+            }
+
+            private static double DDBInternal(double cost, double salvage, double life, double period, double factor)
+            {
+                return period < 2 ? TotalDepr(cost, salvage, life, period, factor, false) : DeprBetweenPeriods(cost, salvage, life, period - 1, period, factor, false);
+            }
+
+            private static double DeprForPeriod(double cost, double totDepr, double rate)
+            {
+                return (cost - totDepr) * rate;
+            }
+
+            private static double DeprRate(double cost, double salvage, double life)
+            {
+                return Math.Abs(cost) < Constants.Epsilon ? 0 : Math.Round(1 - Math.Pow(salvage / cost, 1 / life), 3);
+            }
+
+            private static Tuple<double, double> FirstDeprLinc(double cost, DateTime datePurch, DateTime firstP, double salvage, double rate, double assLife, DayCountBasis basis)
+            {
+                var fix29February = FFirstDeprLinc(basis);
+                var dc = DayCount.DayCounterFactory(basis);
+                var daysInYr = DaysInYear(datePurch, basis);
+                var tuple = new Tuple<DateTime, DateTime>(fix29February.Invoke(datePurch), fix29February.Invoke(firstP));
+                var firstPeriod = tuple.Item2;
+                var datePurchased = tuple.Item1;
+                var dayCount = dc;
+                var dateTime = datePurchased;
+                var dateTime1 = firstPeriod;
+
+                var firstLen = dayCount.DaysBetween(dateTime, dateTime1, NumDenumPosition.Numerator);
+                var firstDeprTemp = firstLen / daysInYr * rate * cost;
+                var firstDepr = (firstDeprTemp != 0 ? firstDeprTemp : cost * rate);
+                var d = (firstDeprTemp != 0 ? assLife + 1 : assLife);
+                var availDepr = cost - salvage;
+                return firstDepr <= availDepr ? new Tuple<double, double>(firstDepr, d) : new Tuple<double, double>(availDepr, d);
+            }
+
+            private static Func<double, double, double, double, double> FAmorDegrc(double salvage, double period, bool excelComplaint, double assetLife)
+            {
+                return (countedPeriod, depr, deprRate, remainCost) =>
+                {
+                    while (countedPeriod <= period)
+                    {
+                        var num3 = countedPeriod + 1;
+                        var calcT = assetLife - num3;
+                        var deprTemp = (!Common.AreEqual(calcT, 2) ? deprRate * remainCost : remainCost * 0.5);
+                        var num4 = (!Common.AreEqual(calcT, 2) ? deprRate : 1);
+                        var num2 = remainCost >= salvage ? deprTemp : (remainCost - salvage >= 0 ? remainCost - salvage : 0);
+                        var num5 = num2;
+                        var num6 = remainCost - num5;
+                        remainCost = num6;
+                        deprRate = num4;
+                        depr = num5;
+                        countedPeriod = num3;
+                    }
+                    return Common.Round(excelComplaint, depr);
+                };
+            }
+
+            private static Func<double, double, double> FTotalDepr(double cost, double salvage, double life, double period, double factor, bool straightLine)
+            {
+                return (totDepr, per) =>
+                {
+                    double frac;
+
+                    double newTotalDepr;
+                    double num1;
+
+                    Func<double, double, double> slnDeprFormula;
+                    Func<double, double> ddbDeprFormula;
+                    while (true)
+                    {
+                        frac = Common.Rest(period);
+                        ddbDeprFormula = d => Common.Min((cost - d) * factor / life, cost - salvage - d);
+                        slnDeprFormula = FDepr(cost, salvage, life);
+                        var tuple = new Tuple<double, double>(ddbDeprFormula.Invoke(totDepr), slnDeprFormula(totDepr, per));
+                        var slnDepr = tuple.Item2;
+                        var ddbDepr = tuple.Item1;
+                        var flag = (straightLine && ddbDepr < slnDepr);
+                        var isSln = flag;
+                        var num = (!isSln ? ddbDepr : slnDepr);
+                        var depr = num;
+                        newTotalDepr = totDepr + depr;
+                        if ((int)period == 0) return newTotalDepr * frac;
+                        if ((int)per == (int)period - 1) break;
+                        per = per + 1;
+                        totDepr = newTotalDepr;
+                    }
+                    var ddbDeprNextPeriod = ddbDeprFormula.Invoke(newTotalDepr);
+                    var slnDeprNextPeriod = slnDeprFormula.Invoke(newTotalDepr, per + 1);
+                    var flag1 = (straightLine && ddbDeprNextPeriod < slnDeprNextPeriod);
+                    var isSlnNextPeriod = flag1;
+                    if (!isSlnNextPeriod) num1 = ddbDeprNextPeriod;
+                    else num1 = ((int)period != (int)life ? slnDeprNextPeriod : 0);
+                    var deprNextPeriod = num1;
+                    return newTotalDepr + deprNextPeriod * frac;
+                };
+            }
+
+            private static double SLNInternal(double cost, double salvage, double life)
+            {
+                return (cost - salvage) / life;
+            }
+
+
+            private static double TotalDepr(double cost, double salvage, double life, double period, double factor, bool straightLine)
+            {
+                var ddb = FTotalDepr(cost, salvage, life, period, factor, straightLine);
+                return ddb.Invoke(0, 0);
+            }
+
+            internal static double AmorDegrc(double cost, DateTime datePurchased, DateTime firstPeriod, double salvage, double period, double rate, DayCountBasis basis, bool excelComplaint)
+            {
+                var assetLife = 1 / rate;
+                var between = FAmorDegrc(assetLife);
+                Common.Ensure("Assset life cannot be between 0 and 3", !between.Invoke(0, 3));
+                Common.Ensure("Assset life cannot be between 4. and 5.", !between.Invoke(4, 5));
+                Common.Ensure("Cost must be 0 or more", cost >= 0);
+                Common.Ensure("Salvage must be 0 or more", salvage >= 0);
+                Common.Ensure("Salvage must be less than cost", salvage < cost);
+                Common.Ensure("Period must be 0 or more", period >= 0);
+                Common.Ensure("Rate must be 0 or more", rate >= 0);
+                Common.Ensure("DatePurchased must be less than FirstPeriod", datePurchased < firstPeriod);
+                Common.Ensure("basis cannot be Actual360", basis != DayCountBasis.Actual360);
+                var assLife = Common.Ceiling(1d / rate);
+                if (cost == salvage || period > assLife) return 0d;
+                var deprCoeff = DeprCoeff(assLife);
+                var deprR = rate * deprCoeff;
+                var tuple = FirstDeprLinc(cost, datePurchased, firstPeriod, salvage, deprR, assLife, basis);
+                var firstDeprLinc = tuple.Item1;
+
+                var assetL = tuple.Item2;
+                var firstDepr = Common.Round(excelComplaint, firstDeprLinc);
+                var findDepr = FAmorDegrc(salvage, period, excelComplaint, assetL);
+
+                return period == 0 ? firstDepr : findDepr.Invoke(1, 0, deprR, cost - firstDepr);
+
+            }
+
+            internal static double AmorLinc(double cost, DateTime datePurchased, DateTime firstPeriod, double salvage, double period, double rate, DayCountBasis basis)
+            {
+                var assetLifeTemp = Common.Ceiling(1 / rate);
+                var findDepr = FAmorLinc(period);
+
+                if (cost != salvage ? period > assetLifeTemp : true) return 0;
+                var tuple = FirstDeprLinc(cost, datePurchased, firstPeriod, salvage, rate, assetLifeTemp, basis);
+                var firstDepr = tuple.Item1;
+                return period != 0 ? findDepr.Invoke(1, rate * cost, cost - salvage - firstDepr) : firstDepr;
+            }
+
+            internal static double Db(double cost, double salvage, double life, double period, double month)
+            {
+                Common.Ensure("Cost must be 0 or more", cost >= 0);
+                Common.Ensure("Salvage must be 0 or more", salvage >= 0);
+                Common.Ensure("Life must be 0 or more", life > 0);
+                Common.Ensure("Month must be 0 or more", month > 0);
+                Common.Ensure("Period must be less than life", period <= life + 1);
+                Common.Ensure("Period must be more than 0", period > 0);
+                Common.Ensure("Month must be less or equal to 12", month <= 12);
+                var rate = DeprRate(cost, salvage, life);
+                var fdb = FDb(cost, life, period, month, rate);
+                return fdb.Invoke(0, 0);
+            }
+
+            internal static double Ddb(double cost, double salvage, double life, double period, double factor)
+            {
+                Common.Ensure("Cost must be 0 or more", cost >= 0);
+                Common.Ensure("Salvage must be 0 or more", salvage >= 0);
+                Common.Ensure("Life must be 0 or more", life > 0);
+                Common.Ensure("Month must be 0 or more", factor > 0);
+                Common.Ensure("Period must be less than life", period <= life);
+                Common.Ensure("Period must be more than 0", period > 0);
+                return (int)period != 0 ? DDBInternal(cost, salvage, life, period, factor) : Common.Min(cost * factor / life, cost - salvage);
+            }
+
+            internal static double Sln(double cost, double salvage, double life)
+            {
+                //Common.Ensure("Cost must be 0 or more", cost >= 0);
+                //Common.Ensure("Salvage must be 0 or more", salvage >= 0);
+                //Common.Ensure("Life must be 0 or more", life > 0);
+                return SLNInternal(cost, salvage, life);
+            }
+
+            internal static double Syd(double cost, double salvage, double life, double period)
+            {
+                // Common.Ensure("Cost must be 0 or more", cost >= 0);
+                Common.Ensure("Salvage must be 0 or more", salvage >= 0);
+                Common.Ensure("Life must be 0 or more", life > 0);
+                Common.Ensure("Period must be less than life", period <= life);
+                Common.Ensure("Period must be more than 0", period > 0);
+                return (cost - salvage) * (life - period + 1) * 2 / (life * (life + 1));
+            }
+
+            internal static double Vdb(double cost, double salvage, double life, double startPeriod, double endPeriod, double factor, VdbSwitch bflag)
+            {
+                Common.Ensure("Cost must be 0 or more", cost >= 0);
+                Common.Ensure("Salvage must be 0 or more", salvage >= 0);
+                Common.Ensure("Life must be 0 or more", life > 0);
+                Common.Ensure("Month must be 0 or more", factor > 0);
+                Common.Ensure("Start period must be 1 or more", startPeriod >= 0);
+                Common.Ensure("End period must be 1 or more", endPeriod >= 0);
+                //Common.Ensure("StartPeriod must be less than life", startPeriod <= life);
+                // Common.Ensure("EndPeriod must be less than life", endPeriod <= life);
+                // Common.Ensure("StartPeriod must be less than endPeriod", startPeriod <= endPeriod);
+                // Common.Ensure("EndPeriod must be more than 0", endPeriod > 0);
+                Common.Ensure("If bflag is set to SwitchToStraightLine, then life, startPeriod and endPeriod cannot all have the same value", bflag == VdbSwitch.DontSwitchToStraightLine || !(life == startPeriod && startPeriod == endPeriod));
+                return bflag != VdbSwitch.DontSwitchToStraightLine ? DeprBetweenPeriods(cost, salvage, life, startPeriod, endPeriod, factor, true) : DeprBetweenPeriods(cost, salvage, life, startPeriod, endPeriod, factor, false);
+            }
+
+            private static Func<double, double, bool> FAmorDegrc(double assetLife)
+            {
+                return (x1, x2) => x1 <= assetLife && assetLife <= x2;
+            }
+
+            private static Func<double, double, double, double> FAmorLinc(double period)
+            {
+                return (countedPeriod, depr, availDepr) =>
+                {
+                    while (countedPeriod <= period)
+                    {
+                        var num = (depr <= availDepr ? depr : availDepr);
+                        var num2 = num;
+                        var availDeprTemp = availDepr - num2;
+                        var num1 = (availDeprTemp >= 0 ? availDeprTemp : 0);
+                        var num3 = num1;
+                        availDepr = num3;
+                        depr = num2;
+                        countedPeriod = countedPeriod + 1;
+                    }
+                    return depr;
+                };
+            }
+            private static Func<DateTime, DateTime> FFirstDeprLinc(DayCountBasis basis)
+            {
+                return dateTime =>
+                {
+                    var tuple = Common.ToTuple(dateTime);
+                    var y = tuple.Item1;
+                    var m = tuple.Item2;
+                    var d = tuple.Item3;
+                    var flag = basis == DayCountBasis.ActualActual || basis == DayCountBasis.Actual365;
+                    var flag1 = flag && Common.IsLeapYear(dateTime);
+                    var flag2 = flag1 && m == 2;
+                    var flag3 = flag2 && d >= 28;
+                    return !flag3 ? dateTime : Common.Date(y, m, 28);
+                };
+            }
+        }
+
+        /// <summary>
+        /// Utilities related to counting days and the diverse convention around it.
+        /// See for example http://en.wikipedia.org/wiki/Day_count_convention.
+        /// </summary>
+        static class DayCount
+        {
+            private static readonly Func<DateTime, DateTime, double> FPcdNcd = (d1, d2) => 0;
+
+            public enum Method360Us
+            {
+                ModifyStartDate,
+
+                ModifyBothDates
+            }
+
+            /// <summary>
+            /// Defines the common methods of the day counting modules for each <see cref="DayCountBasis"/>.
+            /// </summary>
+            public interface IDayCounter
+            {
+                DateTime ChangeMonth(DateTime dateTime, int num, bool flag);
+
+                double CoupDays(DateTime settlement, DateTime maturity, double num);
+
+                double CoupDaysBS(DateTime settlement, DateTime maturity, double num);
+
+                double CoupDaysNC(DateTime settlement, DateTime maturity, double num);
+
+                DateTime CoupNCD(DateTime settlement, DateTime maturity, double num);
+
+                double CoupNum(DateTime settlement, DateTime maturity, double num);
+
+                DateTime CoupPCD(DateTime settlement, DateTime maturity, double num);
+
+                double DaysBetween(DateTime from, DateTime t, NumDenumPosition numDenumPosition);
+
+                double DaysInYear(DateTime a, DateTime b);
+            }
+
+            public static IDayCounter DayCounterFactory(DayCountBasis basis)
+            {
+                switch (basis)
+                {
+                    case DayCountBasis.UsPsa30_360:
+                        {
+                            return new UsPsa30360();
+                        }
+                    case DayCountBasis.ActualActual:
+                        {
+                            return new ActualActual();
+                        }
+                    case DayCountBasis.Actual360:
+                        {
+                            return new Actual360();
+                        }
+                    case DayCountBasis.Actual365:
+                        {
+                            return new Actual365();
+                        }
+                    case DayCountBasis.Europ30_360:
+                        {
+                            return new Europ30360();
+                        }
+                }
+                throw new Exception("Should not get here.");
+            }
+
+            private static double ActualCoupDays(DateTime settl, DateTime mat, double freq)
+            {
+                var pcd = FindPreviousCouponDate(settl, mat, freq, DayCountBasis.ActualActual);
+                var ncd = FindNextCouponDate(settl, mat, freq, DayCountBasis.ActualActual);
+                return Common.Days(ncd, pcd);
+            }
+
+            public static DateTime ChangeMonth(DateTime orgDate, int numMonths, DayCountBasis basis, bool returnLastDay)
+            {
+                var newDate = orgDate.AddMonths(numMonths);
+                var tuple1 = new Tuple<int, int, int>(newDate.Year, newDate.Month, newDate.Day);
+                var year = tuple1.Item1;
+                var month = tuple1.Item2;
+
+                return !returnLastDay ? newDate : new DateTime(year, month, DateTime.DaysInMonth(year, month));
+            }
+
+            private static bool ConsiderAsBisestile(DateTime d1, DateTime d2)
+            {
+                var tuple = Common.ToTuple(d1);
+                var item1 = tuple.Item1;
+                var tuple1 = Common.ToTuple(d2);
+                var num = tuple1.Item1;
+                var item21 = tuple1.Item2;
+                var item31 = tuple1.Item3;
+                var flag = item1 == num && Common.IsLeapYear(d1);
+                var flag1 = flag || item21 == 2 && item31 == 29;
+                return flag1 || IsFeb29BetweenConsecutiveYears(d1, d2);
+            }
+
+            private static bool LessOrEqualToAYearApart(DateTime d1, DateTime d2)
+            {
+                var tuple = Common.ToTuple(d1);
+                var item1 = tuple.Item1;
+                var item2 = tuple.Item2;
+                var item3 = tuple.Item3;
+
+                var tuple1 = Common.ToTuple(d2);
+                var num = tuple1.Item1;
+                var item21 = tuple1.Item2;
+                var item31 = tuple1.Item3;
+                if (item1 != num)
+                {
+                    if (num != item1 + 1) return false;
+                    if (item2 <= item21) return item2 == item21 && item3 >= item31;
+                    return true;
+                }
+                return true;
+            }
+
+            internal static double CoupDays(DateTime settlement, DateTime maturity, Frequency frequency, DayCountBasis basis)
+            {
+                Common.Ensure("settlement must be before maturity", maturity > settlement);
+                var dc = DayCounterFactory(basis);
+                var dayCount = dc;
+                var dateTime = settlement;
+                var dateTime1 = maturity;
+                var num = (double)frequency;
+                return dayCount.CoupDays(dateTime, dateTime1, num);
+            }
+
+            internal static double CoupDaysBS(DateTime settlement, DateTime maturity, Frequency frequency, DayCountBasis basis)
+            {
+                var dc = DayCounterFactory(basis);
+                return dc.CoupDaysBS(settlement, maturity, (double)frequency);
+            }
+
+            internal static double CoupDaysNC(DateTime settlement, DateTime maturity, Frequency frequency, DayCountBasis basis)
+            {
+                Common.Ensure("settlement must be before maturity", maturity > settlement);
+                var dc = DayCounterFactory(basis);
+                return dc.CoupDaysNC(settlement, maturity, (double)frequency);
+            }
+
+            internal static DateTime CoupNCD(DateTime settlement, DateTime maturity, Frequency frequency, DayCountBasis basis)
+            {
+                Common.Ensure("settlement must be before maturity", maturity > settlement);
+                var dc = DayCounterFactory(basis);
+                var dayCount = dc;
+                var dateTime = settlement;
+                var dateTime1 = maturity;
+                var num = (double)frequency;
+                return dayCount.CoupNCD(dateTime, dateTime1, num);
+            }
+
+            internal static double CoupNum(DateTime settlement, DateTime maturity, Frequency frequency, DayCountBasis basis)
+            {
+                Common.Ensure("settlement must be before maturity", maturity > settlement);
+                var dc = DayCounterFactory(basis);
+                var dayCount = dc;
+                var dateTime = settlement;
+                var dateTime1 = maturity;
+                var num = (double)frequency;
+                return dayCount.CoupNum(dateTime, dateTime1, num);
+            }
+
+            internal static DateTime CoupPCD(DateTime settlement, DateTime maturity, Frequency frequency, DayCountBasis basis)
+            {
+                Common.Ensure("settlement must be before maturity", maturity > settlement);
+                var dc = DayCounterFactory(basis);
+                var dayCount = dc;
+                var dateTime = settlement;
+                var dateTime1 = maturity;
+                var num = (double)frequency;
+                return dayCount.CoupPCD(dateTime, dateTime1, num);
+            }
+
+            private static int DateDiff360(int sd, int sm, int sy, int ed, int em, int ey)
+            {
+                return (ey - sy) * 360 + (em - sm) * 30 + ed - sd;
+            }
+
+            private static int DateDiff360Eu(DateTime arg2, DateTime arg1)
+            {
+                var startDate = arg2;
+                var tuple = Common.ToTuple(startDate);
+                var sy = tuple.Item1;
+                var sm = tuple.Item2;
+                var sd = tuple.Item3;
+                var endDate = arg1;
+                var tuple1 = Common.ToTuple(endDate);
+                var ey = tuple1.Item1;
+                var em = tuple1.Item2;
+                var ed = tuple1.Item3;
+                var tuple2 = new Tuple<int, int, int, int, int, int, DateTime, Tuple<DateTime>>(sd, sm, sy, ed, em, ey, startDate, new Tuple<DateTime>(endDate));
+                var sy1 = tuple2.Item3;
+
+                var sm1 = tuple2.Item2;
+                var sd1 = tuple2.Item1;
+                var ey1 = tuple2.Item6;
+
+                var em1 = tuple2.Item5;
+                var ed1 = tuple2.Item4;
+                var num = (sd1 != 31 ? sd1 : 30);
+                sd1 = num;
+                var num1 = (ed1 != 31 ? ed1 : 30);
+                ed1 = num1;
+                return DateDiff360(sd1, sm1, sy1, ed1, em1, ey1);
+            }
+
+            public static int DateDiff360US(DateTime startDate, DateTime endDate, Method360Us method360)
+            {
+
+                var tuple = Common.ToTuple(startDate);
+                var sy = tuple.Item1;
+                var sm = tuple.Item2;
+                var sd = tuple.Item3;
+
+                var tuple1 = Common.ToTuple(endDate);
+                var ey = tuple1.Item1;
+                var em = tuple1.Item2;
+                var ed = tuple1.Item3;
+
+                var tuple2 = new Tuple<int, int, int, int, int, int, DateTime, Tuple<DateTime>>(sd, sm, sy, ed, em, ey, startDate, new Tuple<DateTime>(endDate));
+                var sy1 = tuple2.Item3;
+                var startDate1 = tuple2.Item7;
+                var sm1 = tuple2.Item2;
+                var sd1 = tuple2.Item1;
+                var ey1 = tuple2.Item6;
+
+                var endDate1 = tuple2.Rest.Item1;
+                var em1 = tuple2.Item5;
+                var ed1 = tuple2.Item4;
+                var flag = Common.LastDayOfFebruary(endDate1) && (Common.LastDayOfFebruary(startDate1) || method360 == Method360Us.ModifyBothDates);
+                if (flag) ed1 = 30;
+                var flag1 = ed1 == 31 && (sd1 >= 30 || method360 == Method360Us.ModifyBothDates);
+                if (flag1) ed1 = 30;
+                if (sd1 == 31) sd1 = 30;
+                if (Common.LastDayOfFebruary(startDate1)) sd1 = 30;
+                return DateDiff360(sd1, sm1, sy1, ed1, em1, ey1);
+            }
+
+            private static int DateDiff365(DateTime arg2, DateTime arg1)
+            {
+                var startDate = arg2;
+                var tuple = Common.ToTuple(startDate);
+                var sy = tuple.Item1;
+                var sm = tuple.Item2;
+                var sd = tuple.Item3;
+                var endDate = arg1;
+                var tuple1 = Common.ToTuple(endDate);
+                var ey = tuple1.Item1;
+                var em = tuple1.Item2;
+                var ed = tuple1.Item3;
+                var tuple2 = new Tuple<int, int, int, int, int, int, DateTime, Tuple<DateTime>>(sd, sm, sy, ed, em, ey, startDate, new Tuple<DateTime>(endDate));
+                var sy1 = tuple2.Item3;
+
+                var sm1 = tuple2.Item2;
+                var sd1 = tuple2.Item1;
+                var ey1 = tuple2.Item6;
+
+                var em1 = tuple2.Item5;
+                var ed1 = tuple2.Item4;
+                var flag = sd1 > 28 && sm1 == 2;
+                if (flag) sd1 = 28;
+                var flag1 = (ed1 > 28 && em1 == 2);
+                if (flag1) ed1 = 28;
+                var tuple3 = new Tuple<DateTime, DateTime>(Common.Date(sy1, sm1, sd1), Common.Date(ey1, em1, ed1));
+                var startd = tuple3.Item1;
+                var endd = tuple3.Item2;
+                return (ey1 - sy1) * 365 + Common.Days(endd, startd);
+            }
+
+            internal static Tuple<DateTime, DateTime, double> DatesAggregate1(DateTime startDate, DateTime endDate, int numMonths, DayCountBasis basis, Func<DateTime, DateTime, double> f, double acc, bool returnLastMonth)
+            {
+                var iter = FDatesAggregator(endDate, numMonths, basis, f, returnLastMonth);
+                return iter.Invoke(startDate, endDate, acc);
+            }
+            internal static double YearFrac(DateTime startDate, DateTime endDate, DayCountBasis basis)
+            {
+                Common.Ensure("startDate must be before endDate", startDate < endDate);
+                var dc = DayCounterFactory(basis);
+                return dc.DaysBetween(startDate, endDate, NumDenumPosition.Numerator) / dc.DaysInYear(startDate, endDate);
+            }
+            private static Tuple<DateTime, DateTime> FindCouponDates(DateTime settl, DateTime mat, double freq, DayCountBasis basis)
+            {
+                var tuple = Common.ToTuple(mat);
+                var my = tuple.Item1;
+                var mm = tuple.Item2;
+                var md = tuple.Item3;
+                var endMonth = Common.LastDayOfMonth(my, mm, md);
+                var numMonths = -Freq2Months(freq);
+                return FindPcdNcd(mat, settl, numMonths, basis, endMonth);
+            }
+
+            private static DateTime FindNextCouponDate(DateTime settl, DateTime mat, double freq, DayCountBasis basis)
+            {
+                return FindCouponDates(settl, mat, freq, basis).Item2;
+            }
+
+            internal static Tuple<DateTime, DateTime> FindPcdNcd(DateTime startDate, DateTime endDate, int numMonths, DayCountBasis basis, bool returnLastMonth)
+            {
+                var tuple = DatesAggregate1(startDate, endDate, numMonths, basis, FPcdNcd, 0, returnLastMonth);
+                var pcd = tuple.Item1;
+                var ncd = tuple.Item2;
+                return new Tuple<DateTime, DateTime>(pcd, ncd);
+            }
+
+            private static DateTime FindPreviousCouponDate(DateTime settl, DateTime mat, double freq, DayCountBasis basis)
+            {
+                return FindCouponDates(settl, mat, freq, basis).Item1;
+            }
+
+            internal static int Freq2Months(double freq)
+            {
+                return 12 / (int)freq;
+            }
+
+            private static bool IsFeb29BetweenConsecutiveYears(DateTime arg2, DateTime arg1)
+            {
+                var date1 = arg2;
+                var tuple = Common.ToTuple(date1);
+                var y1 = tuple.Item1;
+                var m1 = tuple.Item2;
+
+                var date2 = arg1;
+                var tuple1 = Common.ToTuple(date2);
+                var y2 = tuple1.Item1;
+                var m2 = tuple1.Item2;
+
+
+                if (y1 == y2 && Common.IsLeapYear(date1))
+                {
+                    var flag1 = m1 <= 2 && m2 > 2;
+                    return flag1;
+                }
+                if (y1 != y2)
+                {
+                    if (y2 != y1 + 1) throw new Exception("isFeb29BetweenConsecutiveYears: function called with non consecutive years");
+                    if (!Common.IsLeapYear(date1)) return Common.IsLeapYear(date2) && m2 > 2;
+                    return m1 <= 2;
+                }
+                return false;
+            }
+
+            private static double NumberOfCoupons(DateTime settl, DateTime mat, double freq, DayCountBasis basis)
+            {
+                var tuple = Common.ToTuple(mat);
+                var my = tuple.Item1;
+                var mm = tuple.Item2;
+
+                var pcdate = FindPreviousCouponDate(settl, mat, freq, basis);
+                var tuple1 = Common.ToTuple(pcdate);
+                var pcy = tuple1.Item1;
+                var pcm = tuple1.Item2;
+
+                var months = (double)((my - pcy) * 12 + mm - pcm);
+                return months * freq / 12;
+            }
+
+            private sealed class UsPsa30360 : IDayCounter
+            {
+                public DateTime ChangeMonth(DateTime dateTime, int num, bool flag)
+                {
+                    return DayCount.ChangeMonth(dateTime, num, DayCountBasis.UsPsa30_360, flag);
+                }
+
+                public double CoupDays(DateTime settlement, DateTime maturity, double num)
+                {
+                    return 360 / num;
+                }
+
+                public double CoupDaysBS(DateTime settlement, DateTime maturity, double num)
+                {
+                    return DateDiff360US(this.CoupPCD(settlement, maturity, num), settlement, Method360Us.ModifyStartDate);
+                }
+
+                public double CoupDaysNC(DateTime settlement, DateTime maturity, double num)
+                {
+                    var pdc = FindPreviousCouponDate(settlement, maturity, num, DayCountBasis.UsPsa30_360);
+                    var ndc = FindNextCouponDate(settlement, maturity, num, DayCountBasis.UsPsa30_360);
+                    var totDaysInCoup = DateDiff360US(pdc, ndc, Method360Us.ModifyBothDates);
+                    var daysToSettl = DateDiff360US(pdc, settlement, Method360Us.ModifyStartDate);
+                    return totDaysInCoup - daysToSettl;
+                }
+
+                public DateTime CoupNCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindNextCouponDate(settlement, maturity, num, DayCountBasis.UsPsa30_360);
+                }
+
+                public double CoupNum(DateTime settlement, DateTime maturity, double num)
+                {
+                    return NumberOfCoupons(settlement, maturity, num, DayCountBasis.UsPsa30_360);
+                }
+
+                public DateTime CoupPCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindPreviousCouponDate(settlement, maturity, num, DayCountBasis.UsPsa30_360);
+                }
+
+                public double DaysBetween(DateTime settlement, DateTime maturity, NumDenumPosition numDenumPosition)
+                {
+                    return DateDiff360US(settlement, maturity, Method360Us.ModifyStartDate);
+                }
+
+                public double DaysInYear(DateTime a, DateTime b)
+                {
+                    return 360;
+                }
+            }
+
+            /// <summary>
+            /// Day count convention for calculating interest accrued on U.S. Treasury bills and other money market instruments. 
+            /// Uses actual number of days in a month and 360 days in a year for calculating interest payments. 
+            /// </summary>
+            private sealed class Actual360 : IDayCounter
+            {
+                public DateTime ChangeMonth(DateTime dateTime, int num, bool flag)
+                {
+                    return DayCount.ChangeMonth(dateTime, num, DayCountBasis.Actual360, flag);
+                }
+
+                public double CoupDays(DateTime settlement, DateTime maturity, double num)
+                {
+                    return 360 / num;
+                }
+
+                public double CoupDaysBS(DateTime settlement, DateTime maturity, double num)
+                {
+                    return Common.Days(settlement, this.CoupPCD(settlement, maturity, num));
+                }
+
+                public double CoupDaysNC(DateTime settlement, DateTime maturity, double num)
+                {
+                    return Common.Days(this.CoupNCD(settlement, maturity, num), settlement);
+                }
+
+                public DateTime CoupNCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindNextCouponDate(settlement, maturity, num, DayCountBasis.Actual360);
+                }
+
+                public double CoupNum(DateTime settlement, DateTime maturity, double num)
+                {
+                    return NumberOfCoupons(settlement, maturity, num, DayCountBasis.Actual360);
+                }
+
+                public DateTime CoupPCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindPreviousCouponDate(settlement, maturity, num, DayCountBasis.Actual360);
+                }
+
+                public double DaysBetween(DateTime issue, DateTime settlement, NumDenumPosition numDenumPosition)
+                {
+                    return numDenumPosition == NumDenumPosition.Numerator ? Common.Days(settlement, issue) : DateDiff360US(settlement, issue, Method360Us.ModifyStartDate);
+                }
+
+                public double DaysInYear(DateTime a, DateTime b)
+                {
+                    return 360;
+                }
+            }
+
+            /// <summary>
+            /// Each month is treated normally and the year is assumed to be 365 days.
+            /// </summary>
+            private sealed class Actual365 : IDayCounter
+            {
+                public DateTime ChangeMonth(DateTime dateTime, int num, bool flag)
+                {
+                    return DayCount.ChangeMonth(dateTime, num, DayCountBasis.Actual365, flag);
+                }
+
+                public double CoupDays(DateTime settlement, DateTime maturity, double num)
+                {
+                    return 365 / num;
+                }
+
+                public double CoupDaysBS(DateTime settlement, DateTime maturity, double num)
+                {
+                    return Common.Days(settlement, this.CoupPCD(settlement, maturity, num));
+                }
+
+                public double CoupDaysNC(DateTime settlement, DateTime maturity, double num)
+                {
+                    return Common.Days(this.CoupNCD(settlement, maturity, num), settlement);
+                }
+
+                public DateTime CoupNCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindNextCouponDate(settlement, maturity, num, DayCountBasis.Actual365);
+                }
+
+                public double CoupNum(DateTime settlement, DateTime maturity, double num)
+                {
+                    return NumberOfCoupons(settlement, maturity, num, DayCountBasis.Actual365);
+                }
+
+                public DateTime CoupPCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindPreviousCouponDate(settlement, maturity, num, DayCountBasis.Actual365);
+                }
+
+                public double DaysBetween(DateTime maturity, DateTime settlement, NumDenumPosition numDenumPosition)
+                {
+                    return numDenumPosition == NumDenumPosition.Numerator ? Common.Days(settlement, maturity) : DateDiff365(maturity, settlement);
+                }
+
+                public double DaysInYear(DateTime settlement, DateTime dateTime)
+                {
+                    return 365;
+                }
+            }
+
+            /// <summary>
+            /// "Actual/Actual AFB/FBF Master Agreement" has the DiY equal to 365 (if the calculation period does not contain 29 February) or 366 (if 29 February falls within the Calculation Period or Compounding Period).
+            /// </summary>
+            private sealed class ActualActual : IDayCounter
+            {
+                public DateTime ChangeMonth(DateTime dateTime, int num, bool flag)
+                {
+                    return DayCount.ChangeMonth(dateTime, num, DayCountBasis.ActualActual, flag);
+                }
+
+                public double CoupDays(DateTime settlement, DateTime maturity, double num)
+                {
+                    return ActualCoupDays(settlement, maturity, num);
+                }
+
+                public double CoupDaysBS(DateTime settlement, DateTime maturity, double num)
+                {
+                    return Common.Days(settlement, this.CoupPCD(settlement, maturity, num));
+                }
+
+                public double CoupDaysNC(DateTime settlement, DateTime maturity, double num)
+                {
+                    return Common.Days(this.CoupNCD(settlement, maturity, num), settlement);
+                }
+
+                public DateTime CoupNCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindNextCouponDate(settlement, maturity, num, DayCountBasis.ActualActual);
+                }
+
+                public double CoupNum(DateTime settlement, DateTime maturity, double num)
+                {
+                    return NumberOfCoupons(settlement, maturity, num, DayCountBasis.ActualActual);
+                }
+
+                public DateTime CoupPCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindPreviousCouponDate(settlement, maturity, num, DayCountBasis.ActualActual);
+                }
+
+                public double DaysBetween(DateTime startDate, DateTime endDate, NumDenumPosition numDenumPosition)
+                {
+                    return Common.Days(endDate, startDate);
+                }
+
+                public double DaysInYear(DateTime a, DateTime b)
+                {
+                    if (LessOrEqualToAYearApart(a, b)) return !ConsiderAsBisestile(a, b) ? 365 : 366;
+                    var totDays = Common.Days(Common.Date(a.Year + 1, 1, 1), Common.Date(b.Year, 1, 1));
+                    return totDays / (double)(a.Year - b.Year + 1);
+                }
+            }
+
+            /// <summary>
+            /// The 360-day calendar is a method of measuring durations used in financial markets, in computer models, in ancient literature, and in prophetic literary genres. 
+            /// It is based on merging the three major calendar systems into one complex clock, with the 360-day year as the average year of the lunar and the solar: 365.24 (solar) + 354.37(lunar) = 719.61 ÷ 2 = 359.8 days rounded to 360. 
+            /// It is a simplification to a 360-day year, consisting of 12 months of 30 days each. To derive such a calendar from the standard Gregorian calendar, certain days are skipped.
+            /// </summary>
+            private sealed class Europ30360 : IDayCounter
+            {
+                public DateTime ChangeMonth(DateTime settlement, int num, bool flag)
+                {
+                    return DayCount.ChangeMonth(settlement, num, DayCountBasis.Europ30_360, flag);
+                }
+
+                public double CoupDays(DateTime settlement, DateTime maturity, double num)
+                {
+                    return 360 / num;
+                }
+
+                public double CoupDaysBS(DateTime settlement, DateTime maturity, double num)
+                {
+                    return DateDiff360Eu(this.CoupPCD(settlement, maturity, num), settlement);
+                }
+
+                public double CoupDaysNC(DateTime settlement, DateTime maturity, double num)
+                {
+                    return DateDiff360Eu(settlement, this.CoupNCD(settlement, maturity, num));
+                }
+
+                public DateTime CoupNCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindNextCouponDate(settlement, maturity, num, DayCountBasis.Europ30_360);
+                }
+
+                public double CoupNum(DateTime settlement, DateTime maturity, double num)
+                {
+                    return NumberOfCoupons(settlement, maturity, num, DayCountBasis.Europ30_360);
+                }
+
+                public DateTime CoupPCD(DateTime settlement, DateTime maturity, double num)
+                {
+                    return FindPreviousCouponDate(settlement, maturity, num, DayCountBasis.Europ30_360);
+                }
+
+                public double DaysBetween(DateTime settlement, DateTime maturity, NumDenumPosition numDenumPosition)
+                {
+                    return DateDiff360Eu(settlement, maturity);
+                }
+
+                public double DaysInYear(DateTime settlement, DateTime maturity)
+                {
+                    return 360;
+                }
+            }
+            private static Func<DateTime, DateTime, double, Tuple<DateTime, DateTime, double>> FDatesAggregator(DateTime endDate, int numMonths, DayCountBasis basis, Func<DateTime, DateTime, double> f, bool returnLastMonth)
+            {
+                return (frontDate, trailingDate, acc) =>
+                {
+                    while (true)
+                    {
+                        if (numMonths <= 0 ? frontDate <= endDate : frontDate >= endDate) break;
+                        var dateTime = frontDate;
+                        var dateTime1 = ChangeMonth(frontDate, numMonths, basis, returnLastMonth);
+                        var num = acc + f(dateTime1, dateTime);
+                        acc = num;
+                        trailingDate = dateTime;
+                        frontDate = dateTime1;
+                    }
+                    return new Tuple<DateTime, DateTime, double>(frontDate, trailingDate, acc);
+                };
+            }
+
+        }
+
+        /// <summary>
+        /// Calculational utilities.
+        /// </summary>
+        static class Common
+        {
+            internal static DateTime AddYears(DateTime d, int n)
+            {
+                return d.AddYears(n);
+            }
+            /// <summary>
+            /// Aggregates in step of one from start to end using the given collector function.
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="start">The start.</param>
+            /// <param name="end">The end.</param>
+            /// <param name="collector">The collector.</param>
+            /// <param name="seed">The seed.</param>
+            /// <returns></returns>
+            public static T AggrBetween<T>(int start, int end, Func<T, int, T> collector, T seed)
+            {
+                IEnumerable<int> nums = Range.Create(start, end);
+                return nums.Aggregate(seed, collector);
+            }
+
+            public static Tuple<int, int, int> ToTuple(DateTime d1)
+            {
+                return new Tuple<int, int, int>(d1.Year, d1.Month, d1.Day);
+            }
+
+            internal static bool AreEqual(double x, double y)
+            {
+                return Math.Abs(x - y) < Constants.Epsilon;
+            }
+
+            private static double Bisection(Func<double, double> f, double a, double b, int count, double precision)
+            {
+
+                var d = FBisection();
+                return d.Invoke(f, a, b, count, precision);
+            }
+
+            internal static double Ceiling(double x)
+            {
+                return Math.Ceiling(x);
+            }
+
+            internal static DateTime Date(int y, int m, int d)
+            {
+                return new DateTime(y, m, d);
+            }
+
+            internal static int Days(DateTime after, DateTime before)
+            {
+                var timeSpan = after - before;
+                return timeSpan.Days;
+            }
+
+            internal static int DaysOfMonth(int y, int m)
+            {
+                return DateTime.DaysInMonth(y, m);
+            }
+
+            internal static void Ensure(string s, bool c)
+            {
+                if (c) return;
+                throw new Exception(s);
+            }
+
+            private static Tuple<double, double> FindBounds(Func<double, double> f, double guess, double minBound, double maxBound, double precision)
+            {
+                if (guess <= minBound || guess >= maxBound) throw new Exception(string.Format("guess needs to be between {0} and {1}", minBound, maxBound));
+                const double Shift = 0.01;
+                const double Factor = 1.6;
+                const int MaxTries = 60;
+                var adjValueToMin = FAdjustMin(minBound, precision);
+                var adjValueToMax = FAdjustMax(maxBound, precision);
+                var rfindBounds = new FindBoundsWorker(f, Factor, MaxTries, adjValueToMin.Invoke, adjValueToMax.Invoke);
+                var low = adjValueToMin.Invoke(guess - Shift);
+                var high = adjValueToMax.Invoke(guess + Shift);
+                return rfindBounds.Invoke(low, high, MaxTries);
+            }
+
+            internal static double FindRoot(Func<double, double> f, double guess)
+            {
+                const double Precision = 1E-07;
+                var newtValue = Newton(f, guess, 0, Precision);
+
+                if (newtValue.HasValue && Sign(guess) == Sign(newtValue.Value)) return newtValue.Value;
+                var tuple = FindBounds(f, guess, -1, double.MaxValue, Precision);
+                var upper = tuple.Item2;
+                var lower = tuple.Item1;
+                return Bisection(f, lower, upper, 0, Precision);
+            }
+
+            internal static double Floor(double x)
+            {
+                return Math.Floor(x);
+            }
+
+            internal static bool IsLeapYear(DateTime d)
+            {
+                var tuple = ToTuple(d);
+                var y = tuple.Item1;
+                return DateTime.IsLeapYear(y);
+            }
+
+            internal static bool LastDayOfFebruary(DateTime d)
+            {
+
+                var tuple = ToTuple(d);
+                var item1 = tuple.Item1;
+                var item2 = tuple.Item2;
+                var item3 = tuple.Item3;
+                return item2 == 2 && LastDayOfMonth(item1, item2, item3);
+            }
+
+            internal static bool LastDayOfMonth(int y, int m, int d)
+            {
+                return DateTime.DaysInMonth(y, m) == d;
+            }
+
+            internal static double Ln(double x)
+            {
+                return Math.Log(x);
+            }
+
+            internal static double Log10(double x)
+            {
+                return Math.Log(x, 10);
+            }
+
+            internal static double Min(double x, double y)
+            {
+                return Math.Min(x, y);
+            }
+
+            /// <summary>
+            /// The well-know Newton iterator.
+            /// </summary>
+            /// <param name="f">The underlying function.</param>
+            /// <param name="x">The argumentx.</param>
+            /// <param name="count">The count.</param>
+            /// <param name="precision">The required precision.</param>
+            /// <returns></returns>
+            private static double? Newton(Func<double, double> f, double x, int count, double precision)
+            {
+                var d = FNewtonIterator();
+                return d.Invoke(f, x, count, precision);
+            }
+
+            internal static double Pow(double x, double y)
+            {
+                return Math.Pow(x, y);
+            }
+
+            internal static bool Raisable(double b, double p)
+            {
+                return !((1d + b) < 0d && (Math.Abs((p - (int)p)) > Constants.Epsilon));
+            }
+
+            internal static double Rest(double x)
+            {
+                return x - (int)x;
+            }
+
+            internal static double Round(bool excelComplaint, double x)
+            {
+#if SILVERLIGHT
+
+				if (!excelComplaint) return DecimalExtensions.Round(x, MidpointRounding.AwayFromZero);
+				var k = DecimalExtensions.Round(x, 13, MidpointRounding.AwayFromZero);
+				return DecimalExtensions.Round(k, MidpointRounding.AwayFromZero);
+#else
+
+                if (!excelComplaint) return Math.Round(x, MidpointRounding.AwayFromZero);
+                var k = Math.Round(x, 13, MidpointRounding.AwayFromZero);
+                return Math.Round(k, MidpointRounding.AwayFromZero);
+#endif
+            }
+
+            internal static int Sign(double x)
+            {
+                return Math.Sign(x);
+            }
+
+            internal static double Sqr(double x)
+            {
+                return Math.Sqrt(x);
+            }
+
+            private static Func<double, double> FAdjustMin(double minBound, double precision)
+            {
+                return value => value > minBound ? value : minBound + precision;
+            }
+            private static Func<double, double> FAdjustMax(double maxBound, double precision)
+            {
+                return value => value < maxBound ? value : maxBound - precision;
+            }
+            private static Func<Func<double, double>, double, double> Derivative(double precision)
+            {
+                return (f, x) => (f.Invoke(x + precision) - f.Invoke(x - precision)) / (2 * precision);
+            }
+
+            private static Func<Func<double, double>, double, int, double, double?> FNewtonIterator(int maxIterations = 20)
+            {
+                return (f, x, count, precision) =>
+                {
+                    while (true)
+                    {
+                        var d = Derivative(precision);
+                        var fx = f.Invoke(x);
+                        var Fx = d.Invoke(f, x);
+                        var newX = x - fx / Fx;
+                        if (Math.Abs(newX - x) < precision) return newX;
+                        if (count > maxIterations) break;
+                        count++;
+                        x = newX;
+                    }
+                    return null;
+                };
+            }
+
+
+            private static Func<Func<double, double>, double, double, int, double, double> FBisection(int maxIterations = 200)
+            {
+                return (f, a, b, count, precision) =>
+                {
+                    while (true)
+                    {
+                        if (a == b) throw new Exception(string.Format("(a=b={0}) impossible to start Bisection", a));
+                        var fa = f.Invoke(a);
+                        if (Math.Abs(fa) < precision) return a;
+
+                        var fb = f.Invoke(b);
+                        if (Math.Abs(fb) < precision) return b;
+
+                        var newCount = count + 1;
+                        if (newCount > maxIterations) throw new Exception(string.Format("No root found in {0} iterations", maxIterations));
+
+                        if (fa * fb > 0) throw new Exception(string.Format("({0},{1}) don't bracket the root", a, b));
+
+                        var midvalue = a + 0.5 * (b - a);
+                        var fmid = f.Invoke(midvalue);
+                        if (Math.Abs(fmid) < precision) return midvalue;
+
+                        if (fa * fmid >= 0)
+                        {
+                            if (fa * fmid <= 0) break;
+                            count = newCount;
+                            a = midvalue;
+                        }
+                        else
+                        {
+                            count = newCount;
+                            b = midvalue;
+                        }
+                    }
+                    throw new Exception("Bisection: It should never get here");
+                };
+            }
+
+            class FindBoundsWorker
+            {
+                private readonly Func<double, double> adjValueToMax;
+
+                private readonly Func<double, double> adjValueToMin;
+
+                private readonly Func<double, double> f;
+
+                private readonly double factor;
+
+                private readonly int maxTries;
+
+                public FindBoundsWorker(Func<double, double> f, double factor, int maxTries, Func<double, double> adjValueToMin, Func<double, double> adjValueToMax)
+                {
+                    this.f = f;
+                    this.factor = factor;
+                    this.maxTries = maxTries;
+                    this.adjValueToMin = adjValueToMin;
+                    this.adjValueToMax = adjValueToMax;
+                }
+
+                public Tuple<double, double> Invoke(double low, double up, int tries)
+                {
+                    while (true)
+                    {
+                        var num = tries - 1;
+                        if (num == 0) throw new Exception(string.Format("Not found an interval comprising the root after {0} tries, last tried was ({1}, {2})", this.maxTries, low, up));
+                        var lower = this.adjValueToMin.Invoke(low);
+                        var upper = this.adjValueToMax.Invoke(up);
+
+                        var x = this.f.Invoke(lower);
+                        var y = this.f.Invoke(upper);
+                        if (Math.Abs(x * y) < Constants.Epsilon) return new Tuple<double, double>(lower, upper);
+                        if (x * y < 0) return new Tuple<double, double>(lower, upper);
+                        if (x * y > 0)
+                        {
+                            tries = num;
+                            up = upper + this.factor * (upper - lower);
+                            low = lower + this.factor * (lower - upper);
+                        }
+                        else throw new Exception(string.Format("FindBounds: one of the values {0}, {1}) cannot be used to evaluate the objective function", lower, upper));
+                    }
+                }
+            }
+
+
+        }
+    }
+
+#if SILVERLIGHT
+
+	public enum MidpointRounding
+	{
+		ToEven,
+		AwayFromZero
+	}
+
+	public static class DecimalExtensions
+	{
+		public static double Round(this double d, MidpointRounding mode)
+		{
+			return d.Round(0, mode);
+		}
+
+		/// <summary>
+		/// Rounds using arithmetic (5 rounds up) symmetrical (up is away from zero) rounding
+		/// </summary>
+		/// <param name="d">A Decimal number to be rounded.</param>
+		/// <param name="decimals">The number of significant fractional digits (precision) in the return value.</param>
+		/// <returns>The number nearest d with precision equal to decimals. If d is halfway between two numbers, then the nearest whole number away from zero is returned.</returns>
+		public static double Round(this double d, int decimals, MidpointRounding mode)
+		{
+			if (mode == MidpointRounding.ToEven)
+			{
+				return (double)decimal.Round((decimal)d, decimals);
+			}
+			else
+			{
+				var  factor = Convert.ToDouble(Math.Pow(10, decimals));
+				var sign = Math.Sign(d);
+				return (double) Decimal.Truncate((decimal)(d * factor + 0.5d * sign)) / factor;
+			}
+		}
+	}
+#endif
+}
