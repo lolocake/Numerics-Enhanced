@@ -183,3 +183,47 @@ namespace Orbifold.Numerics
 		/// <typeparam name="TSource">The type of the source.</typeparam>
 		/// <typeparam name="TIR1">The type of the I r1.</typeparam>
 		/// <typeparam name="TIR2">The type of the I r2.</typeparam>
+		/// <typeparam name="TEndResult">The type of the end result.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="func2">The second functional.</param>
+		/// <param name="func3">The third functional.</param>
+		/// <returns></returns>
+		public static Func<TSource, TEndResult> Compose<TSource, TIR1, TIR2, TEndResult>(
+		  Func<TSource, TIR1> func1, Func<TIR1, TIR2> func2, Func<TIR2, TEndResult> func3)
+		{
+			return sourceParam => func3(func2(func1(sourceParam)));
+		}
+
+		/// <summary>
+		/// Composition of the given functionals.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TIR1">The type of the I r1.</typeparam>
+		/// <typeparam name="TIR2">The type of the I r2.</typeparam>
+		/// <typeparam name="TEndResult">The type of the end result.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="func2">The second functional.</param>
+		/// <param name="func3">The third functional.</param>
+		/// <returns></returns>
+		public static Func<TDomain1, TDomain2, TEndResult> Compose<TDomain1, TDomain2, TIR1, TIR2, TEndResult>(
+		  this Func<TDomain1, TDomain2, TIR1> func1, Func<TIR1, TIR2> func2, Func<TIR2, TEndResult> func3)
+		{
+			return (p1, p2) => func3(func2(func1(p1, p2)));
+		}
+
+		/// <summary>
+		/// Composition of the given functionals.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TIR1">The type of the I r1.</typeparam>
+		/// <typeparam name="TIR2">The type of the I r2.</typeparam>
+		/// <typeparam name="TEndResult">The type of the end result.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="func2">The second functional.</param>
+		/// <param name="func3">The third functional.</param>
+		/// <returns></returns>
+		public static Func<TDomain1, TDomain2, TDomain3, TEndResult> Compose<TDomain1, TDomain2, TDomain3, TIR1, TIR2, TEndResult>(
+		  this Func<TDomain1, TDomain2, TDomain3, TIR1> func1, Func<TIR1, TIR2> func2, Func<TIR2, TEndResult
