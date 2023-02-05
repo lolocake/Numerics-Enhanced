@@ -829,4 +829,44 @@ namespace Orbifold.Numerics
 
 		/// <summary>
 		/// Composition of the given functionals.
-		/// </summ
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TIntermediateResult">The type of the intermediate result.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="action">The action.</param>
+		/// <returns></returns>
+		public static Action<TDomain1, TDomain2, TDomain3> Compose<TDomain1, TDomain2, TDomain3, TIntermediateResult>(
+		  this Func<TDomain1, TDomain2, TDomain3, TIntermediateResult> func1, Action<TIntermediateResult> action)
+		{
+			return (p1, p2, p3) => action(func1(p1, p2, p3));
+		}
+
+		/// <summary>
+		/// Composition of the given functionals.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TIntermediateResult">The type of the intermediate result.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="action">The action.</param>
+		/// <returns></returns>
+		public static Action<TDomain1, TDomain2, TDomain3, TDomain4> Compose<TDomain1, TDomain2, TDomain3, TDomain4, TIntermediateResult>(
+		  this Func<TDomain1, TDomain2, TDomain3, TDomain4, TIntermediateResult> func1, Action<TIntermediateResult> action)
+		{
+			return (p1, p2, p3, p4) => action(func1(p1, p2, p3, p4));
+		}
+
+		/// <summary>
+		/// Composition of the given functionals.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TIntermediateResult">The type of the intermediate result.</typeparam>
+		/// <param name="func1">The first func
