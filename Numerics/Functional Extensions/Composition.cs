@@ -906,4 +906,40 @@ namespace Orbifold.Numerics
 		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
 		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
 		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
-		/// <typeparam name="TDomain7">The data type of the seventh pa
+		/// <typeparam name="TDomain7">The data type of the seventh parameter.</typeparam>
+		/// <typeparam name="TIntermediateResult">The type of the intermediate result.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="action">The action.</param>
+		/// <returns></returns>
+		public static Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7> Compose<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TIntermediateResult>(
+		  this Func<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TIntermediateResult> func1, Action<TIntermediateResult> action)
+		{
+			return (p1, p2, p3, p4, p5, p6, p7) => action(func1(p1, p2, p3, p4, p5, p6, p7));
+		}
+
+		/// <summary>
+		/// Composition of the given functionals.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
+		/// <typeparam name="TDomain7">The data type of the seventh parameter.</typeparam>
+		/// <typeparam name="TDomain8">The data type of the eigth parameter.</typeparam>
+		/// <typeparam name="TIntermediateResult">The type of the intermediate result.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="action">The action.</param>
+		/// <returns></returns>
+		public static Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8> Compose<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TIntermediateResult>(
+		  this Func<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TIntermediateResult> func1, Action<TIntermediateResult> action)
+		{
+			return (p1, p2, p3, p4, p5, p6, p7, p8) => action(func1(p1, p2, p3, p4, p5, p6, p7, p8));
+		}
+
+		/// <summary>
+		/// Composition of the given functionals.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data t
