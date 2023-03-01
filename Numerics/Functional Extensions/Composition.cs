@@ -1457,4 +1457,40 @@ namespace Orbifold.Numerics
 		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
 		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
 		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
-		/// <typeparam name="TIR1">The type of the 
+		/// <typeparam name="TIR1">The type of the I r1.</typeparam>
+		/// <typeparam name="TIR2">The type of the I r2.</typeparam>
+		/// <typeparam name="TIR3">The type of the I r3.</typeparam>
+		/// <typeparam name="TIR4">The type of the I r4.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="func2">The second functional.</param>
+		/// <param name="func3">The third functional.</param>
+		/// <param name="func4">The fourth functional.</param>
+		/// <param name="action">The action.</param>
+		/// <returns></returns>
+		public static Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6> Compose<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TIR1, TIR2, TIR3, TIR4>(
+		  this Func<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TIR1> func1, Func<TIR1, TIR2> func2, Func<TIR2, TIR3> func3, Func<TIR3, TIR4> func4, Action<TIR4> action)
+		{
+			return (p1, p2, p3, p4, p5, p6) => action(func4(func3(func2(func1(p1, p2, p3, p4, p5, p6)))));
+		}
+
+		/// <summary>
+		/// Composition of the given functionals.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
+		/// <typeparam name="TDomain7">The data type of the seventh parameter.</typeparam>
+		/// <typeparam name="TIR1">The type of the I r1.</typeparam>
+		/// <typeparam name="TIR2">The type of the I r2.</typeparam>
+		/// <typeparam name="TIR3">The type of the I r3.</typeparam>
+		/// <typeparam name="TIR4">The type of the I r4.</typeparam>
+		/// <param name="func1">The first functional.</param>
+		/// <param name="func2">The second functional.</param>
+		/// <param name="func3">The third functional.</param>
+		/// <param name="func4">The fourth functional.</param>
+		/// <param name="action">The action.</param>
+		/// <returns></returns>
+		public static Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7> Compose<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TIR
