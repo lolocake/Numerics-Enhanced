@@ -495,4 +495,38 @@ namespace Orbifold.Numerics
 		/// <summary>
 		/// Partial application of the given functional.
 		/// </summary>
-		/// <typeparam name="TDomain1">The d
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
+		/// <typeparam name="TDomain7">The data type of the seventh parameter.</typeparam>
+		/// <typeparam name="TDomain8">The data type of the eigth parameter.</typeparam>
+		/// <typeparam name="TRange">The type of the range.</typeparam>
+		/// <param name="function">The function.</param>
+		/// <param name="arg1">The first argument.</param>
+		/// <param name="arg2">The second argument.</param>
+		/// <param name="arg3">The third argument.</param>
+		/// <param name="arg4">The fourth argument.</param>
+		/// <param name="arg5">The fifth argument.</param>
+		/// <returns></returns>
+		public static Func<TDomain6, TDomain7, TDomain8, TRange> Partial<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TRange>(Func<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TRange> function, TDomain1 arg1, TDomain2 arg2, TDomain3 arg3, TDomain4 arg4, TDomain5 arg5)
+		{
+			return (arg6, arg7, arg8) => function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+		}
+
+		/// <summary>
+		/// Partial application of the given functional.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
+		/// <typeparam name="TDomain7">The data type of the seventh parameter.</typeparam>
+		/// <typeparam name="TDomain8">The data type of the eigth parameter.</typeparam>
+		/// <typeparam name="TRange">The type of the range.</typeparam>
+		/// <param name="function">The function.</param>
+		/// <param name="arg1">The first argument
