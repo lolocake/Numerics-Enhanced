@@ -901,4 +901,48 @@ namespace Orbifold.Numerics
 		/// <returns></returns>
 		public static Action<TDomain4, TDomain5> Partial<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5>(Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5> action, TDomain1 arg1, TDomain2 arg2, TDomain3 arg3)
 		{
-			return (arg4, arg5) => action(arg1, arg2, arg3, arg4, ar
+			return (arg4, arg5) => action(arg1, arg2, arg3, arg4, arg5);
+		}
+
+		/// <summary>
+		/// Partial application of the given functional.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <param name="action">The action.</param>
+		/// <param name="arg1">The first argument.</param>
+		/// <param name="arg2">The second argument.</param>
+		/// <param name="arg3">The third argument.</param>
+		/// <param name="arg4">The fourth argument.</param>
+		/// <returns></returns>
+		public static Action<TDomain5> Partial<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5>(Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5> action, TDomain1 arg1, TDomain2 arg2, TDomain3 arg3, TDomain4 arg4)
+		{
+			return arg5 => action(arg1, arg2, arg3, arg4, arg5);
+		}
+
+		/// <summary>
+		/// Partial application of the given functional.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
+		/// <param name="action">The action.</param>
+		/// <param name="arg1">The first argument.</param>
+		/// <returns></returns>
+		public static Action<TDomain2, TDomain3, TDomain4, TDomain5, TDomain6> Partial<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6>(Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6> action, TDomain1 arg1)
+		{
+			return (arg2, arg3, arg4, arg5, arg6) => action(arg1, arg2, arg3, arg4, arg5, arg6);
+		}
+
+		/// <summary>
+		/// Partial application of the given functional.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The dat
