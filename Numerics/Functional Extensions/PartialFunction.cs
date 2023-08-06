@@ -1205,4 +1205,40 @@ namespace Orbifold.Numerics
 		/// Partial application of the given functional.
 		/// </summary>
 		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
-		/// <typeparam name="TDomain2">T
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
+		/// <typeparam name="TDomain7">The data type of the seventh parameter.</typeparam>
+		/// <typeparam name="TDomain8">The data type of the eigth parameter.</typeparam>
+		/// <param name="action">The action.</param>
+		/// <param name="arg1">The first argument.</param>
+		/// <param name="arg2">The second argument.</param>
+		/// <param name="arg3">The third argument.</param>
+		/// <param name="arg4">The fourth argument.</param>
+		/// <returns></returns>
+		public static Action<TDomain5, TDomain6, TDomain7, TDomain8> Partial<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8>(Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8> action, TDomain1 arg1, TDomain2 arg2, TDomain3 arg3, TDomain4 arg4)
+		{
+			return (arg5, arg6, arg7, arg8) => action(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+		}
+
+		/// <summary>
+		/// Partial application of the given functional.
+		/// </summary>
+		/// <typeparam name="TDomain1">The data type of the first parameter.</typeparam>
+		/// <typeparam name="TDomain2">The data type of the second parameter.</typeparam>
+		/// <typeparam name="TDomain3">The data type of the thrid parameter.</typeparam>
+		/// <typeparam name="TDomain4">The data type of the fourth parameter.</typeparam>
+		/// <typeparam name="TDomain5">The data type of the fifth parameter.</typeparam>
+		/// <typeparam name="TDomain6">The data type of the sixth parameter.</typeparam>
+		/// <typeparam name="TDomain7">The data type of the seventh parameter.</typeparam>
+		/// <typeparam name="TDomain8">The data type of the eigth parameter.</typeparam>
+		/// <param name="action">The action.</param>
+		/// <param name="arg1">The first argument.</param>
+		/// <param name="arg2">The second argument.</param>
+		/// <param name="arg3">The third argument.</param>
+		/// <param name="arg4">The fourth argument.</param>
+		/// <param name="arg5">The fifth argument.</param>
+		/// <returns></returns>
+		public static Action<TDomain6, TDomain7
