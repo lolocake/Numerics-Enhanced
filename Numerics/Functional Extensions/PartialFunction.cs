@@ -1478,4 +1478,9 @@ namespace Orbifold.Numerics
 		/// <param name="arg7">The seventh argument.</param>
 		/// <param name="arg8">The eigth argument.</param>
 		/// <returns></returns>
-		public static Action<TDomain9> Partial<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TDomain9>(Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TDomain9> action, TDomain1 arg1, TDomain2 arg2, TDomain3 arg3, TDomain4 arg4, TD
+		public static Action<TDomain9> Partial<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TDomain9>(Action<TDomain1, TDomain2, TDomain3, TDomain4, TDomain5, TDomain6, TDomain7, TDomain8, TDomain9> action, TDomain1 arg1, TDomain2 arg2, TDomain3 arg3, TDomain4 arg4, TDomain5 arg5, TDomain6 arg6, TDomain7 arg7, TDomain8 arg8)
+		{
+			return arg9 => action(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+		}
+	}
+}
