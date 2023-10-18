@@ -73,4 +73,71 @@ namespace Orbifold.Numerics
 		}
 
 		/// <summary>
-		//
+		/// Gets the start of the range.
+		/// </summary>
+		public TData Start {
+			get {
+				return this.start;
+			}
+		}
+
+		/// <summary>
+		/// Returns whether the given values sits in this range.
+		/// </summary>
+		/// <remarks>The given value should be larger or equal than the start of the range but
+		/// strictly less than the end.
+		/// </remarks>
+		/// <param name="d">A value.</param>
+		public bool Test(double d)
+		{
+			if(typeof(TData) == typeof(double) || typeof(TData) == typeof(decimal) || typeof(TData) == typeof(Int16) || typeof(TData) == typeof(Int32) || typeof(TData) == typeof(Int64)) {
+				return d >= Convert.ToDouble(Start) && d < Convert.ToDouble(End);
+			}
+			 
+			throw new NotSupportedException("The Test method is only supported for a range based on a numeric generic type.");
+		}
+
+		/// <summary>
+		/// Returns whether the given value is in the range.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		/// <returns>
+		///   <c>true</c> if the specified value is inside the range; otherwise, <c>false</c>.
+		/// </returns>
+		public bool Contains(TData value)
+		{
+			return this.compare(value, this.start) >= 0 && this.compare(this.end, value) >= 0;
+		}
+
+		/// <summary>
+		/// Gets the enumerator.
+		/// </summary>
+		/// <returns></returns>
+		IEnumerator<TData> IEnumerable<TData>.GetEnumerator()
+		{
+			return this.sequence.GetEnumerator();
+		}
+
+		/// <summary>
+		/// Returns an enumerator that iterates through a collection.
+		/// </summary>
+		/// <returns>
+		/// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+		/// </returns>
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return ((IEnumerable<TData>)this).GetEnumerator();
+		}
+
+		/// <summary>
+		/// Compares the specified one.
+		/// </summary>
+		/// <param name="item1">The first item.</param>
+		/// <param name="item2">The second item.</param>
+		/// <returns></returns>
+		private static int Compare(TData item1, TData item2)
+		{
+			return Comparer<TData>.Default.Compare(item1, item2);
+		}
+	}
+}
