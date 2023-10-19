@@ -293,3 +293,23 @@ namespace Orbifold.Numerics
 		/// <param name="max">The max.</param>
 		/// <returns></returns>
 		public static double EnsureRange(double value, double? min, double? max)
+		{
+			if(min.HasValue && (value < min.Value))
+				return min.Value;
+			if(max.HasValue && (value > max.Value))
+				return max.Value;
+			return value;
+		}
+
+		/// <summary>
+		/// Creates the rectangle.
+		/// </summary>
+		/// <param name="startPoint">The start point.</param>
+		/// <param name="endPoint">The end point.</param>
+		/// <returns></returns>
+		public static Rect CreateRectangle(Point startPoint, Point endPoint)
+		{
+			return new Rect(startPoint, new Size(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y));
+		}
+	}
+}
