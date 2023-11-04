@@ -92,4 +92,46 @@ namespace Orbifold.Numerics
         /// <param name="center">The center of the circle.</param>
         /// <param name="radius">The radius of the circle.</param>
         /// <returns></returns>
-        public static bool IntersectsCircle(this Rect rectangle, Point center, double radi
+        public static bool IntersectsCircle(this Rect rectangle, Point center, double radius)
+        {
+            return AreIntersecting(rectangle, center, radius);
+        }
+
+        /// <summary>
+        /// Returns whether the line (line segments) intersect and returns in the crossingPoint the actual crossing
+        /// point if they do.
+        /// </summary>
+        /// <param name="a">The first point of the first line.</param>
+        /// <param name="b">The second point of the first line.</param>
+        /// <param name="c">The first point of the second line.</param>
+        /// <param name="d">The second point of the second line.</param>
+        /// <param name="intersectionPoint">The crossing point, if any.</param>
+        /// <returns></returns>
+        public static bool AreLinesIntersecting(Point a, Point b, Point c, Point d, ref Point intersectionPoint)
+        {
+            var tangensdiff = ((b.X - a.X) * (d.Y - c.Y)) - ((b.Y - a.Y) * (d.X - c.X));
+            if (tangensdiff.IsEqualTo(0)) return false;
+            var num1 = ((a.Y - c.Y) * (d.X - c.X)) - ((a.X - c.X) * (d.Y - c.Y));
+            var num2 = ((a.Y - c.Y) * (b.X - a.X)) - ((a.X - c.X) * (b.Y - a.Y));
+            var r = num1 / tangensdiff;
+            var s = num2 / tangensdiff;
+
+            if (r < 0 || r > 1 || s < 0 || s > 1) return false;
+            intersectionPoint = new Point(a.X + (r * (b.X - a.X)), a.Y + (r * (b.Y - a.Y)));
+            return true;
+        }
+        /// <summary>
+        /// Returns whether the rectangle and the segment intersect.
+        /// </summary>
+        /// <param name="rect">A rectangle.</param>
+        /// <param name="a">An endpoint of the segment.</param>
+        /// <param name="b">The complementary endpoint of the segment.</param>
+        /// <param name="intersectionPoint">The crossing point, if any.</param>
+        /// <returns></returns>
+        public static bool IntersectsLineSegment(this Rect rect, Point a, Point b, ref Point intersectionPoint)
+        {
+            return AreLinesIntersecting(a, b, rect.TopLeft(), rect.TopRight(), ref intersectionPoint) ||
+                   AreLinesIntersecting(a, b, rect.TopRight(), rect.BottomRight(), ref intersectionPoint) ||
+                   AreLinesIntersecting(a, b, rect.BottomRight(), rect.BottomLeft(), ref intersectionPoint) ||
+                   AreLinesIntersecting(a, b, rect.BottomLeft(), rect.TopLeft(), ref intersectionPoint);
+        
