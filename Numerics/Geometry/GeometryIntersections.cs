@@ -134,4 +134,59 @@ namespace Orbifold.Numerics
                    AreLinesIntersecting(a, b, rect.TopRight(), rect.BottomRight(), ref intersectionPoint) ||
                    AreLinesIntersecting(a, b, rect.BottomRight(), rect.BottomLeft(), ref intersectionPoint) ||
                    AreLinesIntersecting(a, b, rect.BottomLeft(), rect.TopLeft(), ref intersectionPoint);
-        
+        }
+
+        /// <summary>
+        /// Returns whether the polyline segment intersect the rectangle.
+        /// </summary>
+        /// <param name="rect">A rectangle</param>
+        /// <param name="polyline">A polyline.</param>
+        /// <returns></returns>
+        /// <seealso cref="IntersectsLineSegment"/>
+        public static bool IntersectsLine(this Rect rect, IList polyline)
+        {
+            var intersectsWithRect = false;
+            for (var s = 0; s < polyline.Count - 1; ++s)
+            {
+                var p1 = (Point)polyline[s];
+                var p2 = (Point)polyline[s + 1];
+                var intersectionPoint = new Point();
+                intersectsWithRect = GeometryIntersections.IntersectsLineSegment(rect, p1, p2, ref intersectionPoint);
+                if (intersectsWithRect) break;
+            }
+            return intersectsWithRect;
+        }
+
+        /// <summary>
+        /// Returns whether the given rectangle intersects the current one.
+        /// </summary>
+        /// <param name="r1">The first rectangle.</param>
+        /// <param name="r2">The queried rectangle which potentially intersects.</param>
+        /// <returns></returns>
+        public static bool IntersectsWith(this Rect r1, Rect r2)
+        {
+            r1.Intersect(r2);
+            return !r1.IsEmpty;
+        }
+
+        /// <summary>
+        /// Checks whether the segments defined by the specified
+        /// point pairs intersect and returns the intersection point.
+        /// </summary>
+        public static bool SegmentIntersect(Point s1, Point s2, Point l1, Point l2, ref Point p)
+        {
+            p = FindLinesIntersection(s1, s2, l1, l2);
+            var p1 = (p.X - s1.X) * (p.X - s2.X);
+            var p2 = (p.Y - s1.Y) * (p.Y - s2.Y);
+            if (p1 > Constants.Epsilon || p2 > Constants.Epsilon) return false;
+            var pl1 = (p.X - l1.X) * (p.X - l2.X);
+            var pl2 = (p.Y - l1.Y) * (p.Y - l2.Y);
+            return pl1 <= Constants.Epsilon && pl2 <= Constants.Epsilon;
+        }
+
+        /// <summary>
+        /// Finds the intersection point of the lines defined by the point pairs.
+        /// </summary>
+        /// <returns>
+        /// The intersection point. If acceptNaN is <c>true</c> a <c>double.NaN</c> is returned if they don't intersect.
+        /// </return
