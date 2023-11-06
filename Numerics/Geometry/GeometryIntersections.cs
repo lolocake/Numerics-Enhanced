@@ -246,4 +246,48 @@ namespace Orbifold.Numerics
 
                 var alpha = (eb * eb) + (a * a * ea * ea);
                 var beta = (2 * a * (b - cy) * ea * ea) - (2 * cx * eb * eb);
-            
+                var rho = (eb * eb * cx * cx) + (ea * ea * (b - cy) * (b - cy)) - (ea * ea * eb * eb);
+
+                var d = System.Math.Sqrt((beta * beta) - (4 * alpha * rho));
+                var p1X = (-beta + d) / (2 * alpha);
+                var p2X = (-beta - d) / (2 * alpha);
+                var p1Y = (a * p1X) + b;
+                var p2Y = (a * p2X) + b;
+
+                pointOfIntersection.X = p1X;
+                pointOfIntersection.Y = p1Y;
+                if (pointOfIntersection.X >= rc.Left && pointOfIntersection.X <= rc.Right && pointOfIntersection.Y >= rc.Top && pointOfIntersection.Y <= rc.Bottom) return pointOfIntersection;
+
+                pointOfIntersection.X = p2X;
+                pointOfIntersection.Y = p2Y;
+                if (pointOfIntersection.X >= rc.Left && pointOfIntersection.X <= rc.Right && pointOfIntersection.Y >= rc.Top && pointOfIntersection.Y <= rc.Bottom) return pointOfIntersection;
+            }
+            else
+            {
+                var cx = (rectangle.Left + rectangle.Right) / 2;
+                var cy = (rectangle.Top + rectangle.Bottom) / 2;
+                var ea = (rectangle.Right - rectangle.Left) / 2;
+                var eb = (rectangle.Bottom - rectangle.Top) / 2;
+
+                var x = x1;
+                var mu = cy - System.Math.Sqrt(1 - ((x - cx) * (x - cx) / (ea * ea) * eb * eb));
+                var nu = cy + System.Math.Sqrt(1 - ((x - cx) * (x - cx) / (ea * ea) * eb * eb));
+
+                pointOfIntersection.X = x;
+                pointOfIntersection.Y = mu;
+                if (pointOfIntersection.X >= rc.Left && pointOfIntersection.X <= rc.Right && pointOfIntersection.Y >= rc.Top && pointOfIntersection.Y <= rc.Bottom) return pointOfIntersection;
+
+                pointOfIntersection.X = x;
+                pointOfIntersection.Y = nu;
+                if (pointOfIntersection.X >= rc.Left && pointOfIntersection.X <= rc.Right && pointOfIntersection.Y >= rc.Top && pointOfIntersection.Y <= rc.Bottom) return pointOfIntersection;
+            }
+
+            return pointOfIntersection;
+        }
+
+        /// <summary>
+        /// Calculate the intersection point between a polyline and a line segment.
+        /// </summary>
+        public static bool IntersectionPointOnEllipse(Collection<Point> points, Point org, Point end, ref Point result)
+        {
+            var intersection = new Point(
