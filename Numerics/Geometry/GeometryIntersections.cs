@@ -189,4 +189,61 @@ namespace Orbifold.Numerics
         /// </summary>
         /// <returns>
         /// The intersection point. If acceptNaN is <c>true</c> a <c>double.NaN</c> is returned if they don't intersect.
-        /// </return
+        /// </returns>
+        public static Point FindLinesIntersection(Point a, Point b, Point c, Point d, bool acceptNaN = false)
+        {
+            var pt = acceptNaN ? new Point(Double.NaN, Double.NaN) : new Point(Double.MinValue, Double.MinValue);
+            if (a.X.IsEqualTo(b.X) && c.X.IsEqualTo(d.X)) return pt;
+
+            //// Check if the first line is vertical
+            if (a.X.IsEqualTo(b.X))
+            {
+                pt.X = a.X;
+                pt.Y = ((c.Y - d.Y) / (c.X - d.X) * pt.X) + (((c.X * d.Y) - (d.X * c.Y)) / (c.X - d.X));
+                return pt;
+            }
+            //// Check if the second line is vertical
+            if (c.X.IsEqualTo(d.X))
+            {
+                pt.X = c.X;
+                pt.Y = ((a.Y - b.Y) / (a.X - b.X) * pt.X) + (((a.X * b.Y) - (b.X * a.Y)) / (a.X - b.X));
+                return pt;
+            }
+            var a1 = (a.Y - b.Y) / (a.X - b.X);
+            var b1 = ((a.X * b.Y) - (b.X * a.Y)) / (a.X - b.X);
+            var a2 = (c.Y - d.Y) / (c.X - d.X);
+            var b2 = ((c.X * d.Y) - (d.X * c.Y)) / (c.X - d.X);
+            if (a1.IsNotEqualTo(a2) || acceptNaN)
+            {
+                pt.X = (b2 - b1) / (a1 - a2);
+                pt.Y = (a1 * (b2 - b1) / (a1 - a2)) + b1;
+            }
+
+            return pt;
+        }
+
+        /// <summary>
+        /// Calculate the intersection point between an ellipse and a line segment.
+        /// </summary>
+        public static Point IntersectionPoint(Rect rectangle, Point pt1, Point pt2)
+        {
+            var rc = new Rect(pt1, pt2);
+            var pointOfIntersection = new Point();
+
+            var x1 = pt1.X;
+            var y1 = pt1.Y;
+            var x2 = pt2.X;
+            var y2 = pt2.Y;
+
+            if (System.Math.Abs(x1 - x2) > Constants.Epsilon)
+            {
+                var cx = (rectangle.Left + rectangle.Right) / 2;
+                var cy = (rectangle.Top + rectangle.Bottom) / 2;
+                var ea = (rectangle.Right - rectangle.Left) / 2;
+                var eb = (rectangle.Bottom - rectangle.Top) / 2;
+                var a = (y1 - y2) / (x1 - x2);
+                var b = ((x1 * y2) - (x2 * y1)) / (x1 - x2);
+
+                var alpha = (eb * eb) + (a * a * ea * ea);
+                var beta = (2 * a * (b - cy) * ea * ea) - (2 * cx * eb * eb);
+            
