@@ -290,4 +290,57 @@ namespace Orbifold.Numerics
         /// </summary>
         public static bool IntersectionPointOnEllipse(Collection<Point> points, Point org, Point end, ref Point result)
         {
-            var intersection = new Point(
+            var intersection = new Point();
+            var d = Double.PositiveInfinity;
+            for (var i = 0; i < points.Count; i++)
+            {
+                if (!SegmentIntersect(points[i], points[(i + 1) % points.Count], org, end, ref intersection)) continue;
+                var currentDistanceSq = DistanceExstensions.DistanceSquared(intersection, end);
+                if (currentDistanceSq >= d) continue;
+                d = currentDistanceSq;
+                result = intersection;
+            }
+            return !Double.IsPositiveInfinity(d);
+        }
+
+        /// <summary>
+        /// Calculates the intersection point between the specified
+        /// rectangle and the line segment defined by the specified
+        /// points.
+        /// </summary>
+        public static void IntersectionPointOnRectangle(Rect rectangle, Point pt1, Point pt2, ref Point intersectionPoint)
+        {
+            var rc = RectExtensions.FromLtrd(pt1.X, pt1.Y, pt2.X, pt2.Y);
+
+            var x1 = pt1.X;
+            var y1 = pt1.Y;
+            var x2 = pt2.X;
+            var y2 = pt2.Y;
+
+            if (x1 == x2)
+            {
+                intersectionPoint.X = x1;
+
+                // try with the top line
+                intersectionPoint.Y = rectangle.Top;
+                if (intersectionPoint.X >= rectangle.Left && intersectionPoint.X <= rectangle.Right &&
+                    intersectionPoint.Y >= rc.Top && intersectionPoint.Y <= rc.Bottom) return;
+
+                // try with the bottom line
+                intersectionPoint.Y = rectangle.Bottom;
+                if (intersectionPoint.X >= rectangle.Left && intersectionPoint.X <= rectangle.Right &&
+                    intersectionPoint.Y >= rc.Top && intersectionPoint.Y <= rc.Bottom) return;
+            }
+            else if (y1 == y2)
+            {
+                intersectionPoint.Y = y1;
+
+                // Try with the left line segment
+                intersectionPoint.X = rectangle.Left;
+                if (intersectionPoint.Y >= rectangle.Top && intersectionPoint.Y <= rectangle.Bottom &&
+                    intersectionPoint.X >= rc.Left && intersectionPoint.X <= rc.Right) return;
+
+                // Try with the right line segment
+                intersectionPoint.X = rectangle.Right;
+                if (intersectionPoint.Y >= rectangle.Top && intersectionPoint.Y <= rectangle.Bottom &&
+                    intersectionPoint.X >= rc.Left && intersectionPoint.X <= r
