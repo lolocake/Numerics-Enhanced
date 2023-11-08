@@ -343,4 +343,41 @@ namespace Orbifold.Numerics
                 // Try with the right line segment
                 intersectionPoint.X = rectangle.Right;
                 if (intersectionPoint.Y >= rectangle.Top && intersectionPoint.Y <= rectangle.Bottom &&
-                    intersectionPoint.X >= rc.Left && intersectionPoint.X <= r
+                    intersectionPoint.X >= rc.Left && intersectionPoint.X <= rc.Right) return;
+            }
+            else
+            {
+                var a = (y1 - y2) / (x1 - x2);
+                var b = ((x1 * y2) - (x2 * y1)) / (x1 - x2);
+
+                ////TOP
+                intersectionPoint.Y = rectangle.Top;
+                intersectionPoint.X = (intersectionPoint.Y - b) / a;
+                if (intersectionPoint.X >= rectangle.Left && intersectionPoint.X <= rectangle.Right &&
+                    intersectionPoint.Y <= rectangle.Bottom &&
+                    intersectionPoint.Y >= rc.Top && intersectionPoint.Y <= rc.Bottom) return;
+
+                //// BOTTOM
+                intersectionPoint.Y = rectangle.Bottom;
+                intersectionPoint.X = (intersectionPoint.Y - b) / a;
+                if (intersectionPoint.X >= rectangle.Left && intersectionPoint.X <= rectangle.Right &&
+                    intersectionPoint.Y >= rectangle.Top &&
+                    intersectionPoint.Y >= rc.Top && intersectionPoint.Y <= rc.Bottom) return;
+
+                ////LEFT
+                intersectionPoint.X = rectangle.Left;
+                intersectionPoint.Y = (a * intersectionPoint.X) + b;
+                if (intersectionPoint.Y >= rectangle.Top && intersectionPoint.Y <= rectangle.Bottom &&
+                    intersectionPoint.X <= rectangle.Right &&
+                    intersectionPoint.X >= rc.Left && intersectionPoint.X <= rc.Right) return;
+
+                ////RIGHT
+                intersectionPoint.X = rectangle.Right;
+                intersectionPoint.Y = (a * intersectionPoint.X) + b;
+                if (intersectionPoint.Y >= rectangle.Top && intersectionPoint.Y <= rectangle.Bottom &&
+                    intersectionPoint.X >= rectangle.Left &&
+                    intersectionPoint.X >= rc.Left && intersectionPoint.X <= rc.Right) return;
+            }
+        }
+    }
+}
