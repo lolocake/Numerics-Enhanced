@@ -493,3 +493,45 @@ namespace Orbifold.Numerics
         }
 
         /// <summary>
+        /// Normals the specified p1.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="p2">The p2.</param>
+        /// <returns></returns>
+        public static Vector2D Normal(Point p1, Point p2)
+        {
+            return new Vector2D(p1.Y - p2.Y, p2.X - p1.X).Normalized();
+        }
+
+        /// <summary>
+        /// Inverts the point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        public static Point InvertPoint(this Point point)
+        {
+            return new Point(-point.X, -point.Y);
+        }
+
+        /// <summary>
+        /// Nearests the point.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="points">The points.</param>
+        /// <returns></returns>
+        public static Point NearestPoint(this Point point, IEnumerable<Point> points)
+        {
+            if (points == null) throw new ArgumentNullException("points");
+            var nearestCenter = point;
+            var minDistance = Double.MaxValue;
+            foreach (var centerPoint in points)
+            {
+                var distance = centerPoint.Distance(point);
+                if (distance >= minDistance) continue;
+                minDistance = distance;
+                nearestCenter = centerPoint;
+            }
+            return nearestCenter;
+        }
+    }
+}
