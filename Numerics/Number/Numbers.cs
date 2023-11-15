@@ -106,4 +106,36 @@ namespace Orbifold.Numerics
 		}
 
 		/// <summary>
-		/// R
+		/// Returns the greatest common divisor of the given numbers.
+		/// </summary>
+		public static int GreatestCommonDivisor(params int[] integers)
+		{
+			return GreatestCommonDivisor(integers.ToList());
+		}
+
+		/// <summary>
+		/// Returns the least common multiple (<c>lcm</c>) of a set of integers using Euclid's algorithm.
+		/// </summary>
+		public static int LeastCommonMultiple(IList<int> integers)
+		{
+			if (null == integers) throw new ArgumentNullException("integers");
+			if (integers.Count == 0) return 1;
+			var lcm = System.Math.Abs(integers[0]);
+			for (var i = 1; i < integers.Count; i++) lcm = LeastCommonMultiple(lcm, integers[i]);
+			return lcm;
+		}
+
+		/// <summary>
+		/// Returns the least common multiple of the given numbers.
+		/// </summary>
+		public static int LeastCommonMultiple(params int[] integers)
+		{
+			return LeastCommonMultiple((IList<int>)integers);
+		}
+
+		public static bool AlmostEqual(double a, double b, int numberOfDigits = 5)
+		{
+			return Math.Abs((a - b) * Math.Pow(10, numberOfDigits) - 1d) < Constants.Epsilon;
+		}
+	}
+}
