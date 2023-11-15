@@ -77,4 +77,17 @@ namespace Orbifold.Numerics
         /// <param name="y"></param>
         /// <param name="x"></param>
         /// <param name="segments">The number of children nodes to create.</param>
-        
+        /// <returns></returns>
+        public double SegmentedRelativeGain(Vector y, Vector x, int segments)
+        {
+            var inpurityY = this.Calculate(y);
+            return (inpurityY - this.SegmentedConditional(y, x, segments)) / inpurityY;
+        }
+
+        public double SegmentedRelativeGain(Vector y, Vector x, IEnumerable<Range<double>> ranges)
+        {
+            var impurityY = this.Calculate(y);
+            return (impurityY -  this.SegmentedConditional(y, x, ranges)) / impurityY;
+        }
+    }
+}
