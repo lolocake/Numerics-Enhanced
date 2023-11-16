@@ -72,4 +72,63 @@ namespace Orbifold.Numerics
                 rect._x = Math.Min(Math.Min(point0.X, point1.X), Math.Min(point2.X, point3.X));
                 rect._y = Math.Min(Math.Min(point0.Y, point1.Y), Math.Min(point2.Y, point3.Y));
 
-                rect._width = Math.Max(Math.Max(p
+                rect._width = Math.Max(Math.Max(point0.X, point1.X), Math.Max(point2.X, point3.X)) - rect._x;
+                rect._height = Math.Max(Math.Max(point0.Y, point1.Y), Math.Max(point2.Y, point3.Y)) - rect._y;
+            }
+        }
+
+        /// <summary>
+        /// Multiplies two transformations, where the behavior is matrix1 *= matrix2.
+        /// This code exists so that we can efficient combine matrices without copying
+        /// the data around, since each matrix is 52 bytes.
+        /// To reduce duplication and to ensure consistent behavior, this is the
+        /// method which is used to implement Matrix * Matrix as well.
+        /// </summary>
+        internal static void MultiplyMatrix(ref Matrix matrix1, ref Matrix matrix2)
+        {
+            MatrixTypes type1 = matrix1._type;
+            MatrixTypes type2 = matrix2._type;
+
+            // Check for idents
+
+            // If the second is ident, we can just return
+            if (type2 == MatrixTypes.TRANSFORM_IS_IDENTITY)
+            {
+                return;
+            }
+
+            // If the first is ident, we can just copy the memory across.
+            if (type1 == MatrixTypes.TRANSFORM_IS_IDENTITY)
+            {
+                matrix1 = matrix2;
+                return;
+            }
+
+            // Optimize for translate case, where the second is a translate
+            if (type2 == MatrixTypes.TRANSFORM_IS_TRANSLATION)
+            {
+                // 2 additions
+                matrix1._offsetX += matrix2._offsetX;
+                matrix1._offsetY += matrix2._offsetY;
+
+                // If matrix 1 wasn't unknown we added a translation
+                if (type1 != MatrixTypes.TRANSFORM_IS_UNKNOWN)
+                {
+                    matrix1._type |= MatrixTypes.TRANSFORM_IS_TRANSLATION;
+                }
+
+                return;
+            }
+
+            // Check for the first value being a translate
+            if (type1 == MatrixTypes.TRANSFORM_IS_TRANSLATION)
+            {
+                // Save off the old offsets
+                double offsetX = matrix1._offsetX;
+                double offsetY = matrix1._offsetY;
+
+                // Copy the matrix
+                matrix1 = matrix2;
+
+                matrix1._offsetX = offsetX * matrix2._m11 + offsetY * matrix2._m21 + matrix2._offsetX;
+                matrix1._offsetY = offsetX * matrix2._m12 + offsetY * matr
