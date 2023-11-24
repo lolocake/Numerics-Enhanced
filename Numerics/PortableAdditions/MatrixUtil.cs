@@ -131,4 +131,60 @@ namespace Orbifold.Numerics
                 matrix1 = matrix2;
 
                 matrix1._offsetX = offsetX * matrix2._m11 + offsetY * matrix2._m21 + matrix2._offsetX;
-                matrix1._offsetY = offsetX * matrix2._m12 + offsetY * matr
+                matrix1._offsetY = offsetX * matrix2._m12 + offsetY * matrix2._m22 + matrix2._offsetY;
+
+                if (type2 == MatrixTypes.TRANSFORM_IS_UNKNOWN)
+                {
+                    matrix1._type = MatrixTypes.TRANSFORM_IS_UNKNOWN;
+                }
+                else
+                {
+                    matrix1._type = MatrixTypes.TRANSFORM_IS_SCALING | MatrixTypes.TRANSFORM_IS_TRANSLATION;
+                }
+                return;
+            }
+
+            // The following code combines the type of the transformations so that the high nibble
+            // is "this"'s type, and the low nibble is mat's type.  This allows for a switch rather
+            // than nested switches.
+
+            // trans1._type |  trans2._type
+            //  7  6  5  4   |  3  2  1  0
+            int combinedType = ((int)type1 << 4) | (int)type2;
+
+            switch (combinedType)
+            {
+                case 34:  // S * S
+                    // 2 multiplications
+                    matrix1._m11 *= matrix2._m11;
+                    matrix1._m22 *= matrix2._m22;
+                    return;
+
+                case 35:  // S * S|T
+                    matrix1._m11 *= matrix2._m11;
+                    matrix1._m22 *= matrix2._m22;
+                    matrix1._offsetX = matrix2._offsetX;
+                    matrix1._offsetY = matrix2._offsetY;
+
+                    // Transform set to Translate and Scale
+                    matrix1._type = MatrixTypes.TRANSFORM_IS_TRANSLATION | MatrixTypes.TRANSFORM_IS_SCALING;
+                    return;
+
+                case 50: // S|T * S
+                    matrix1._m11 *= matrix2._m11;
+                    matrix1._m22 *= matrix2._m22;
+                    matrix1._offsetX *= matrix2._m11;
+                    matrix1._offsetY *= matrix2._m22;
+                    return;
+
+                case 51: // S|T * S|T
+                    matrix1._m11 *= matrix2._m11;
+                    matrix1._m22 *= matrix2._m22;
+                    matrix1._offsetX = matrix2._m11 * matrix1._offsetX + matrix2._offsetX;
+                    matrix1._offsetY = matrix2._m22 * matrix1._offsetY + matrix2._offsetY;
+                    return;
+                case 36: // S * U
+                case 52: // S|T * U
+                case 66: // U * S
+                case 67: // U * S|T
+                case 68: // U * U
