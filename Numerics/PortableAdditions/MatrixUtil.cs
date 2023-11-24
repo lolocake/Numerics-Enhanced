@@ -188,3 +188,57 @@ namespace Orbifold.Numerics
                 case 66: // U * S
                 case 67: // U * S|T
                 case 68: // U * U
+                    matrix1 = new Matrix(
+                        matrix1._m11 * matrix2._m11 + matrix1._m12 * matrix2._m21,
+                        matrix1._m11 * matrix2._m12 + matrix1._m12 * matrix2._m22,
+
+                        matrix1._m21 * matrix2._m11 + matrix1._m22 * matrix2._m21,
+                        matrix1._m21 * matrix2._m12 + matrix1._m22 * matrix2._m22,
+
+                        matrix1._offsetX * matrix2._m11 + matrix1._offsetY * matrix2._m21 + matrix2._offsetX,
+                        matrix1._offsetX * matrix2._m12 + matrix1._offsetY * matrix2._m22 + matrix2._offsetY);
+                    return;
+#if DEBUG
+                default:
+                    //Debug.Fail("Matrix multiply hit an invalid case: " + combinedType);
+                    break;
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Applies an offset to the specified matrix in place.
+        /// </summary>
+        internal static void PrependOffset(
+            ref Matrix matrix,
+            double offsetX,
+            double offsetY)
+        {
+            if (matrix._type == MatrixTypes.TRANSFORM_IS_IDENTITY)
+            {
+                matrix = new Matrix(1, 0, 0, 1, offsetX, offsetY);
+                matrix._type = MatrixTypes.TRANSFORM_IS_TRANSLATION;
+            }
+            else
+            {
+                // 
+                //  / 1   0   0 \       / m11   m12   0 \
+                //  | 0   1   0 |   *   | m21   m22   0 |
+                //  \ tx  ty  1 /       \  ox    oy   1 /
+                //
+                //       /   m11                  m12                     0 \
+                //  =    |   m21                  m22                     0 |
+                //       \   m11*tx+m21*ty+ox     m12*tx + m22*ty + oy    1 /
+                //
+
+                matrix._offsetX += matrix._m11 * offsetX + matrix._m21 * offsetY;
+                matrix._offsetY += matrix._m12 * offsetX + matrix._m22 * offsetY;
+
+                // It just gained a translate if was a scale transform. Identity transform is handled above.
+                Debug.Assert(matrix._type != MatrixTypes.TRANSFORM_IS_IDENTITY);
+                if (matrix._type != MatrixTypes.TRANSFORM_IS_UNKNOWN)
+                {
+                    matrix._type |= MatrixTypes.TRANSFORM_IS_TRANSLATION;
+                }
+            }
+     
