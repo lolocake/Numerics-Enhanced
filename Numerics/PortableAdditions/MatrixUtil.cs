@@ -241,4 +241,6 @@ namespace Orbifold.Numerics
                     matrix._type |= MatrixTypes.TRANSFORM_IS_TRANSLATION;
                 }
             }
-     
+        }
+    }
+}
