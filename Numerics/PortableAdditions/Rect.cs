@@ -400,4 +400,67 @@ namespace Orbifold.Numerics
         }
 
         /// <summary> 
-       
+        /// Contains - Returns true if the Point represented by x,y is within the rectangle inclusive of the edges.
+        /// Returns false otherwise.
+        /// </summary>
+        /// <param name="x"> X coordinate of the point which is being tested </param> 
+        /// <param name="y"> Y coordinate of the point which is being tested </param>
+        /// <returns> 
+        /// Returns true if the Point represented by x,y is within the rectangle. 
+        /// Returns false otherwise.
+        /// </returns> 
+        public bool Contains(double x, double y)
+        {
+            if (IsEmpty)
+            {
+                return false;
+            }
+
+            return ContainsInternal(x, y);
+        }
+
+        /// <summary>
+        /// Contains - Returns true if the Rect non-Empty and is entirely contained within the
+        /// rectangle, inclusive of the edges. 
+        /// Returns false otherwise
+        /// </summary> 
+        public bool Contains(Rect rect)
+        {
+            if (IsEmpty || rect.IsEmpty)
+            {
+                return false;
+            }
+
+            return (_x <= rect._x &&
+                    _y <= rect._y &&
+                    _x + _width >= rect._x + rect._width &&
+                    _y + _height >= rect._y + rect._height);
+        }
+
+        /// <summary>
+        /// IntersectsWith - Returns true if the Rect intersects with this rectangle
+        /// Returns false otherwise. 
+        /// Note that if one edge is coincident, this is considered an intersection.
+        /// </summary> 
+        /// <returns> 
+        /// Returns true if the Rect intersects with this rectangle
+        /// Returns false otherwise. 
+        /// or Height
+        /// </returns>
+        /// <param name="rect"> Rect </param>
+        public bool IntersectsWith(Rect rect)
+        {
+            if (IsEmpty || rect.IsEmpty)
+            {
+                return false;
+            }
+
+            return (rect.Left <= Right) &&
+                   (rect.Right >= Left) &&
+                   (rect.Top <= Bottom) &&
+                   (rect.Bottom >= Top);
+        }
+
+        /// <summary>
+        /// Intersect - Update this rectangle to be the intersection of this and rect 
+        /// If either this or rect are Empty, the re
