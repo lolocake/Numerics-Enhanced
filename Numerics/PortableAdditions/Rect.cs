@@ -235,4 +235,89 @@ namespace Orbifold.Numerics
             }
             set
             {
-                if (IsEmpt
+                if (IsEmpty)
+                {
+                    throw new System.InvalidOperationException("Cannot modify empty rectangle.");
+                }
+
+                if (value < 0)
+                {
+                    throw new System.ArgumentException("Width cannot be negative.");
+                }
+
+                _width = value;
+            }
+        }
+
+        /// <summary>
+        /// Height - The Height component of the Size.  This cannot be set to negative, and will only 
+        /// be negative if this is the empty rectangle, in which case it will be negative infinity.
+        /// If this rect is Empty, setting this property is illegal. 
+        /// </summary> 
+        public double Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                if (IsEmpty)
+                {
+                    throw new System.InvalidOperationException("Cannot modify empty rectangle.");
+                }
+
+                if (value < 0)
+                {
+                    throw new System.ArgumentException("Height cannot be negative.");
+                }
+
+                _height = value;
+            }
+        }
+
+        /// <summary>
+        /// Left Property - This is a read-only alias for X 
+        /// If this is the empty rectangle, the value will be positive infinity.
+        /// </summary> 
+        public double Left
+        {
+            get
+            {
+                return _x;
+            }
+        }
+
+        /// <summary> 
+        /// Top Property - This is a read-only alias for Y 
+        /// If this is the empty rectangle, the value will be positive infinity.
+        /// </summary> 
+        public double Top
+        {
+            get
+            {
+                return _y;
+            }
+        }
+
+        /// <summary> 
+        /// Right Property - This is a read-only alias for X + Width
+        /// If this is the empty rectangle, the value will be negative infinity.
+        /// </summary>
+        public double Right
+        {
+            get
+            {
+                if (IsEmpty)
+                {
+                    return Double.NegativeInfinity;
+                }
+
+                return _x + _width;
+            }
+        }
+
+        /// <summary>
+        /// Bottom Property - This is a read-only alias for Y + Height 
+        /// If this is the empty rectangle, the value will be negative infinity.
+        /// </summ
