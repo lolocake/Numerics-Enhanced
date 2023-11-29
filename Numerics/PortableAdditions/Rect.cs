@@ -320,4 +320,84 @@ namespace Orbifold.Numerics
         /// <summary>
         /// Bottom Property - This is a read-only alias for Y + Height 
         /// If this is the empty rectangle, the value will be negative infinity.
-        /// </summ
+        /// </summary>
+        public double Bottom
+        {
+            get
+            {
+                if (IsEmpty)
+                {
+                    return Double.NegativeInfinity;
+                }
+
+                return _y + _height;
+            }
+        }
+
+        /// <summary> 
+        /// TopLeft Property - This is a read-only alias for the Point which is at X, Y
+        /// If this is the empty rectangle, the value will be positive infinity, positive infinity. 
+        /// </summary>
+        public Point TopLeft
+        {
+            get
+            {
+                return new Point(Left, Top);
+            }
+        }
+
+        /// <summary>
+        /// TopRight Property - This is a read-only alias for the Point which is at X + Width, Y
+        /// If this is the empty rectangle, the value will be negative infinity, positive infinity.
+        /// </summary> 
+        public Point TopRight
+        {
+            get
+            {
+                return new Point(Right, Top);
+            }
+        }
+
+        /// <summary> 
+        /// BottomLeft Property - This is a read-only alias for the Point which is at X, Y + Height
+        /// If this is the empty rectangle, the value will be positive infinity, negative infinity. 
+        /// </summary> 
+        public Point BottomLeft
+        {
+            get
+            {
+                return new Point(Left, Bottom);
+            }
+        }
+
+        /// <summary> 
+        /// BottomRight Property - This is a read-only alias for the Point which is at X + Width, Y + Height
+        /// If this is the empty rectangle, the value will be negative infinity, negative infinity. 
+        /// </summary>
+        public Point BottomRight
+        {
+            get
+            {
+                return new Point(Right, Bottom);
+            }
+        }
+        #endregion Public Properties
+
+        #region Public Methods
+
+        /// <summary> 
+        /// Contains - Returns true if the Point is within the rectangle, inclusive of the edges.
+        /// Returns false otherwise. 
+        /// </summary> 
+        /// <param name="point"> The point which is being tested </param>
+        /// <returns> 
+        /// Returns true if the Point is within the rectangle.
+        /// Returns false otherwise
+        /// </returns>
+        public bool Contains(Point point)
+        {
+            return Contains(point._x, point._y);
+        }
+
+        /// <summary> 
+       
