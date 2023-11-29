@@ -156,4 +156,83 @@ namespace Orbifold.Numerics
             {
                 if (IsEmpty)
                     return Size.Empty;
- 
+                return new Size(_width, _height);
+            }
+            set
+            {
+                if (value.IsEmpty)
+                {
+                    this = s_empty;
+                }
+                else
+                {
+                    if (IsEmpty)
+                    {
+                        throw new System.InvalidOperationException("Cannot modify empty rectangle.");
+                    }
+
+                    _width = value._width;
+                    _height = value._height;
+                }
+            }
+        }
+
+        /// <summary>
+        /// X - The X coordinate of the Location. 
+        /// If this is the empty rectangle, the value will be positive infinity.
+        /// If this rect is Empty, setting this property is illegal. 
+        /// </summary> 
+        public double X
+        {
+            get
+            {
+                return _x;
+            }
+            set
+            {
+                if (IsEmpty)
+                {
+                    throw new System.InvalidOperationException("Cannot modify empty rectangle.");
+                }
+
+                _x = value;
+            }
+
+        }
+
+        /// <summary>
+        /// Y - The Y coordinate of the Location 
+        /// If this is the empty rectangle, the value will be positive infinity.
+        /// If this rect is Empty, setting this property is illegal.
+        /// </summary>
+        public double Y
+        {
+            get
+            {
+                return _y;
+            }
+            set
+            {
+                if (IsEmpty)
+                {
+                    throw new System.InvalidOperationException("Cannot modify empty rectangle.");
+                }
+
+                _y = value;
+            }
+        }
+
+        /// <summary>
+        /// Width - The Width component of the Size.  This cannot be set to negative, and will only 
+        /// be negative if this is the empty rectangle, in which case it will be negative infinity.
+        /// If this rect is Empty, setting this property is illegal. 
+        /// </summary> 
+        public double Width
+        {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                if (IsEmpt
