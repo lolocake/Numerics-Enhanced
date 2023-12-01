@@ -529,4 +529,78 @@ namespace Orbifold.Numerics
                     _height = Double.PositiveInfinity;
                 }
                 else
-      
+                {
+                    //  Max with 0 to prevent double weirdness from causing us to be (-epsilon..0)
+                    double maxBottom = Math.Max(Bottom, rect.Bottom);
+                    _height = Math.Max(maxBottom - top, 0);
+                }
+
+                _x = left;
+                _y = top;
+            }
+        }
+
+        /// <summary> 
+        /// Union - Return the result of the union of rect1 and rect2. 
+        /// </summary>
+        public static Rect Union(Rect rect1, Rect rect2)
+        {
+            rect1.Union(rect2);
+            return rect1;
+        }
+
+        /// <summary> 
+        /// Union - Update this rectangle to be the union of this and point. 
+        /// </summary>
+        public void Union(Point point)
+        {
+            Union(new Rect(point, point));
+        }
+
+        /// <summary>
+        /// Union - Return the result of the union of rect and point. 
+        /// </summary> 
+        public static Rect Union(Rect rect, Point point)
+        {
+            rect.Union(new Rect(point, point));
+            return rect;
+        }
+
+        /// <summary>
+        /// Offset - translate the Location by the offset provided. 
+        /// If this is Empty, this method is illegal. 
+        /// </summary>
+        public void Offset(Vector2D offsetVector)
+        {
+            if (IsEmpty)
+            {
+                throw new System.InvalidOperationException("Cannot offset empty rectangle.");
+            }
+
+            _x += offsetVector._x;
+            _y += offsetVector._y;
+        }
+
+        /// <summary>
+        /// Offset - translate the Location by the offset provided
+        /// If this is Empty, this method is illegal. 
+        /// </summary>
+        public void Offset(double offsetX, double offsetY)
+        {
+            if (IsEmpty)
+            {
+                throw new System.InvalidOperationException("Cannot offset empty rectangle.");
+            }
+
+            _x += offsetX;
+            _y += offsetY;
+        }
+
+        /// <summary>
+        /// Offset - return the result of offsetting rect by the offset provided 
+        /// If this is Empty, this method is illegal.
+        /// </summary>
+        public static Rect Offset(Rect rect, Vector2D offsetVector)
+        {
+            rect.Offset(offsetVector.X, offsetVector.Y);
+   
