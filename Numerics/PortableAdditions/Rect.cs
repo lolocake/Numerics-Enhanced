@@ -463,4 +463,70 @@ namespace Orbifold.Numerics
 
         /// <summary>
         /// Intersect - Update this rectangle to be the intersection of this and rect 
-        /// If either this or rect are Empty, the re
+        /// If either this or rect are Empty, the result is Empty as well.
+        /// </summary>
+        /// <param name="rect"> The rect to intersect with this </param>
+        public void Intersect(Rect rect)
+        {
+            if (!this.IntersectsWith(rect))
+            {
+                this = Empty;
+            }
+            else
+            {
+                double left = Math.Max(Left, rect.Left);
+                double top = Math.Max(Top, rect.Top);
+
+                //  Max with 0 to prevent double weirdness from causing us to be (-epsilon..0) 
+                _width = Math.Max(Math.Min(Right, rect.Right) - left, 0);
+                _height = Math.Max(Math.Min(Bottom, rect.Bottom) - top, 0);
+
+                _x = left;
+                _y = top;
+            }
+        }
+
+        /// <summary> 
+        /// Intersect - Return the result of the intersection of rect1 and rect2. 
+        /// If either this or rect are Empty, the result is Empty as well.
+        /// </summary> 
+        public static Rect Intersect(Rect rect1, Rect rect2)
+        {
+            rect1.Intersect(rect2);
+            return rect1;
+        }
+
+        /// <summary> 
+        /// Union - Update this rectangle to be the union of this and rect.
+        /// </summary> 
+        public void Union(Rect rect)
+        {
+            if (IsEmpty)
+            {
+                this = rect;
+            }
+            else if (!rect.IsEmpty)
+            {
+                double left = Math.Min(Left, rect.Left);
+                double top = Math.Min(Top, rect.Top);
+
+
+                // We need this check so that the math does not result in NaN 
+                if ((rect.Width == Double.PositiveInfinity) || (Width == Double.PositiveInfinity))
+                {
+                    _width = Double.PositiveInfinity;
+                }
+                else
+                {
+                    //  Max with 0 to prevent double weirdness from causing us to be (-epsilon..0)
+                    double maxRight = Math.Max(Right, rect.Right);
+                    _width = Math.Max(maxRight - left, 0);
+                }
+
+                // We need this check so that the math does not result in NaN 
+                if ((rect.Height == Double.PositiveInfinity) || (Height == Double.PositiveInfinity))
+                {
+                    _height = Double.PositiveInfinity;
+                }
+                else
+      
