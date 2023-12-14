@@ -603,4 +603,64 @@ namespace Orbifold.Numerics
         public static Rect Offset(Rect rect, Vector2D offsetVector)
         {
             rect.Offset(offsetVector.X, offsetVector.Y);
-   
+            return rect;
+        }
+
+        /// <summary> 
+        /// Offset - return the result of offsetting rect by the offset provided
+        /// If this is Empty, this method is illegal.
+        /// </summary>
+        public static Rect Offset(Rect rect, double offsetX, double offsetY)
+        {
+            rect.Offset(offsetX, offsetY);
+            return rect;
+        }
+
+        /// <summary>
+        /// Inflate - inflate the bounds by the size provided, in all directions
+        /// If this is Empty, this method is illegal.
+        /// </summary> 
+        public void Inflate(Size size)
+        {
+            Inflate(size._width, size._height);
+        }
+
+        /// <summary>
+        /// Inflate - inflate the bounds by the size provided, in all directions.
+        /// If -width is > Width / 2 or -height is > Height / 2, this Rect becomes Empty
+        /// If this is Empty, this method is illegal. 
+        /// </summary>
+        public void Inflate(double width, double height)
+        {
+            if (IsEmpty)
+            {
+                throw new System.InvalidOperationException("Cannot offset empty rectangle.");
+            }
+
+            _x -= width;
+            _y -= height;
+
+            // Do two additions rather than multiplication by 2 to avoid spurious overflow 
+            // That is: (A + 2 * B) != ((A + B) + B) if 2*B overflows.
+            // Note that multiplication by 2 might work in this case because A should start 
+            // positive & be "clamped" to positive after, but consider A = Inf & B = -MAX.
+            _width += width;
+            _width += width;
+            _height += height;
+            _height += height;
+
+            // We catch the case of inflation by less than -width/2 or -height/2 here.  This also 
+            // maintains the invariant that either the Rect is Empty or _width and _height are
+            // non-negative, even if the user parameters were NaN, though this isn't strictly maintained 
+            // by other methods.
+            if (!(_width >= 0 && _height >= 0))
+            {
+                this = s_empty;
+            }
+        }
+
+        /// <summary>
+        /// Inflate - return the result of inflating rect by the size provided, in all directions 
+        /// If this is Empty, this method is illegal.
+        /// </summary>
+        public static Rect Inflate(Rect rect, Size s
