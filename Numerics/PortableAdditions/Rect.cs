@@ -663,4 +663,79 @@ namespace Orbifold.Numerics
         /// Inflate - return the result of inflating rect by the size provided, in all directions 
         /// If this is Empty, this method is illegal.
         /// </summary>
-        public static Rect Inflate(Rect rect, Size s
+        public static Rect Inflate(Rect rect, Size size)
+        {
+            rect.Inflate(size._width, size._height);
+            return rect;
+        }
+
+        /// <summary> 
+        /// Inflate - return the result of inflating rect by the size provided, in all directions
+        /// If this is Empty, this method is illegal.
+        /// </summary>
+        public static Rect Inflate(Rect rect, double width, double height)
+        {
+            rect.Inflate(width, height);
+            return rect;
+        }
+
+        /// <summary>
+        /// Returns the bounds of the transformed rectangle.
+        /// The Empty Rect is not affected by this call.
+        /// </summary> 
+        /// <returns>
+        /// The rect which results from the transformation. 
+        /// </returns> 
+        /// <param name="rect"> The Rect to transform. </param>
+        /// <param name="matrix"> The Matrix by which to transform. </param> 
+        public static Rect Transform(Rect rect, Matrix matrix)
+        {
+            MatrixUtil.TransformRect(ref rect, ref matrix);
+            return rect;
+        }
+
+        /// <summary> 
+        /// Updates rectangle to be the bounds of the original value transformed
+        /// by the matrix. 
+        /// The Empty Rect is not affected by this call.
+        /// </summary>
+        /// <param name="matrix"> Matrix </param>
+        public void Transform(Matrix matrix)
+        {
+            MatrixUtil.TransformRect(ref this, ref matrix);
+        }
+
+        /// <summary> 
+        /// Scale the rectangle in the X and Y directions
+        /// </summary>
+        /// <param name="scaleX"> The scale in X </param>
+        /// <param name="scaleY"> The scale in Y </param> 
+        public void Scale(double scaleX, double scaleY)
+        {
+            if (IsEmpty)
+            {
+                return;
+            }
+
+            _x *= scaleX;
+            _y *= scaleY;
+            _width *= scaleX;
+            _height *= scaleY;
+
+            // If the scale in the X dimension is negative, we need to normalize X and Width
+            if (scaleX < 0)
+            {
+                // Make X the left-most edge again
+                _x += _width;
+
+                // and make Width positive
+                _width *= -1;
+            }
+
+            // Do the same for the Y dimension 
+            if (scaleY < 0)
+            {
+                // Make Y the top-most edge again
+                _y += _height;
+
+                // and make Hei
