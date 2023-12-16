@@ -921,3 +921,98 @@ namespace Orbifold.Numerics
         /// <param name="source"> string with Rect data </param>
         /// </summary>
         public static Rect Parse(string source)
+        {
+            IFormatProvider formatProvider = CultureInfo.InvariantCulture;// System.Windows.Markup.TypeConverterHelper.InvariantEnglishUS;
+
+            TokenizerHelper th = new TokenizerHelper(source, formatProvider);
+
+            Rect value;
+
+            String firstToken = th.NextTokenRequired();
+
+            // The token will already have had whitespace trimmed so we can do a
+            // simple string compare. 
+            if (firstToken == "Empty")
+            {
+                value = Empty;
+            }
+            else
+            {
+                value = new Rect(
+                    Convert.ToDouble(firstToken, formatProvider),
+                    Convert.ToDouble(th.NextTokenRequired(), formatProvider),
+                    Convert.ToDouble(th.NextTokenRequired(), formatProvider),
+                    Convert.ToDouble(th.NextTokenRequired(), formatProvider));
+            }
+
+            // There should be no more tokens in this string.
+            th.LastTokenRequired();
+
+            return value;
+        }
+
+        #endregion Public Methods
+
+        //------------------------------------------------------
+        //
+        //  Public Properties
+        // 
+        //-----------------------------------------------------
+
+
+
+
+        #region Public Properties
+
+
+
+        #endregion Public Properties
+
+        //------------------------------------------------------ 
+        //
+        //  Protected Methods 
+        //
+        //------------------------------------------------------
+
+        #region Protected Methods
+
+
+
+
+
+        #endregion ProtectedMethods
+
+        //-----------------------------------------------------
+        // 
+        //  Internal Methods
+        // 
+        //------------------------------------------------------ 
+
+        #region Internal Methods
+
+
+
+
+
+
+
+
+
+        #endregion Internal Methods
+
+        //-----------------------------------------------------
+        // 
+        //  Internal Properties
+        // 
+        //----------------------------------------------------- 
+
+        #region Internal Properties
+
+
+        /// <summary>
+        /// Creates a string representation of this object based on the current culture. 
+        /// </summary>
+        /// <returns> 
+        /// A string representation of this object. 
+        /// </returns>
+     
