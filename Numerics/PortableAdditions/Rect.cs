@@ -738,4 +738,71 @@ namespace Orbifold.Numerics
                 // Make Y the top-most edge again
                 _y += _height;
 
-                // and make Hei
+                // and make Height positive 
+                _height *= -1;
+            }
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        /// <summary> 
+        /// ContainsInternal - Performs just the "point inside" logic 
+        /// </summary>
+        /// <returns> 
+        /// bool - true if the point is inside the rect
+        /// </returns>
+        /// <param name="x"> The x-coord of the point to test </param>
+        /// <param name="y"> The y-coord of the point to test </param> 
+        private bool ContainsInternal(double x, double y)
+        {
+            // We include points on the edge as "contained". 
+            // We do "x - _width <= _x" instead of "x <= _x + _width"
+            // so that this check works when _width is PositiveInfinity 
+            // and _x is NegativeInfinity.
+            return ((x >= _x) && (x - _width <= _x) &&
+                    (y >= _y) && (y - _height <= _y));
+        }
+
+        static private Rect CreateEmptyRect()
+        {
+            Rect rect = new Rect();
+            // We can't set these via the property setters because negatives widths 
+            // are rejected in those APIs.
+            rect._x = Double.PositiveInfinity;
+            rect._y = Double.PositiveInfinity;
+            rect._width = Double.NegativeInfinity;
+            rect._height = Double.NegativeInfinity;
+            return rect;
+        }
+
+        #endregion Private Methods
+
+        #region Private Fields
+
+        private readonly static Rect s_empty = CreateEmptyRect();
+
+        #endregion Private Fields 
+        //-----------------------------------------------------
+        // 
+        //  Public Methods
+        // 
+        //----------------------------------------------------- 
+
+        #region Public Methods
+
+
+
+
+        /// <summary>
+        /// Compares two Rect instances for exact equality. 
+        /// Note that double values can acquire error when operated upon, such that 
+        /// an exact comparison between two values which are logically equal may fail.
+        /// Furthermore, using this equality operator, Double.NaN is not equal to itself. 
+        /// </summary>
+        /// <returns>
+        /// bool - true if the two Rect instances are exactly equal, false otherwise
+        /// </returns> 
+        /// <param name='rect1'>The first Rect to compare</param>
+    
