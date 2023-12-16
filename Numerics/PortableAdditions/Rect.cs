@@ -805,4 +805,56 @@ namespace Orbifold.Numerics
         /// bool - true if the two Rect instances are exactly equal, false otherwise
         /// </returns> 
         /// <param name='rect1'>The first Rect to compare</param>
-    
+        /// <param name='rect2'>The second Rect to compare</param> 
+        public static bool operator ==(Rect rect1, Rect rect2)
+        {
+            return rect1.X == rect2.X &&
+                   rect1.Y == rect2.Y &&
+                   rect1.Width == rect2.Width &&
+                   rect1.Height == rect2.Height;
+        }
+
+        /// <summary> 
+        /// Compares two Rect instances for exact inequality. 
+        /// Note that double values can acquire error when operated upon, such that
+        /// an exact comparison between two values which are logically equal may fail. 
+        /// Furthermore, using this equality operator, Double.NaN is not equal to itself.
+        /// </summary>
+        /// <returns>
+        /// bool - true if the two Rect instances are exactly unequal, false otherwise 
+        /// </returns>
+        /// <param name='rect1'>The first Rect to compare</param> 
+        /// <param name='rect2'>The second Rect to compare</param> 
+        public static bool operator !=(Rect rect1, Rect rect2)
+        {
+            return !(rect1 == rect2);
+        }
+        /// <summary>
+        /// Compares two Rect instances for object equality.  In this equality 
+        /// Double.NaN is equal to itself, unlike in numeric equality.
+        /// Note that double values can acquire error when operated upon, such that 
+        /// an exact comparison between two values which 
+        /// are logically equal may fail.
+        /// </summary> 
+        /// <returns>
+        /// bool - true if the two Rect instances are exactly equal, false otherwise
+        /// </returns>
+        /// <param name='rect1'>The first Rect to compare</param> 
+        /// <param name='rect2'>The second Rect to compare</param>
+        public static bool Equals(Rect rect1, Rect rect2)
+        {
+            if (rect1.IsEmpty)
+            {
+                return rect2.IsEmpty;
+            }
+            else
+            {
+                return rect1.X.Equals(rect2.X) &&
+                       rect1.Y.Equals(rect2.Y) &&
+                       rect1.Width.Equals(rect2.Width) &&
+                       rect1.Height.Equals(rect2.Height);
+            }
+        }
+
+        /// <summary>
+        /// Equals - compares this Rect with the passed in object.  In this equalit
