@@ -857,4 +857,67 @@ namespace Orbifold.Numerics
         }
 
         /// <summary>
-        /// Equals - compares this Rect with the passed in object.  In this equalit
+        /// Equals - compares this Rect with the passed in object.  In this equality 
+        /// Double.NaN is equal to itself, unlike in numeric equality.
+        /// Note that double values can acquire error when operated upon, such that 
+        /// an exact comparison between two values which 
+        /// are logically equal may fail.
+        /// </summary> 
+        /// <returns>
+        /// bool - true if the object is an instance of Rect and if it's equal to "this".
+        /// </returns>
+        /// <param name='o'>The object to compare to "this"</param> 
+        public override bool Equals(object o)
+        {
+            if ((null == o) || !(o is Rect))
+            {
+                return false;
+            }
+
+            Rect value = (Rect)o;
+            return Rect.Equals(this, value);
+        }
+
+        /// <summary> 
+        /// Equals - compares this Rect with the passed in object.  In this equality
+        /// Double.NaN is equal to itself, unlike in numeric equality. 
+        /// Note that double values can acquire error when operated upon, such that
+        /// an exact comparison between two values which
+        /// are logically equal may fail.
+        /// </summary> 
+        /// <returns>
+        /// bool - true if "value" is equal to "this". 
+        /// </returns> 
+        /// <param name='value'>The Rect to compare to "this"</param>
+        public bool Equals(Rect value)
+        {
+            return Rect.Equals(this, value);
+        }
+        /// <summary> 
+        /// Returns the HashCode for this Rect
+        /// </summary> 
+        /// <returns> 
+        /// int - the HashCode for this Rect
+        /// </returns> 
+        public override int GetHashCode()
+        {
+            if (IsEmpty)
+            {
+                return 0;
+            }
+            else
+            {
+                // Perform field-by-field XOR of HashCodes 
+                return X.GetHashCode() ^
+                       Y.GetHashCode() ^
+                       Width.GetHashCode() ^
+                       Height.GetHashCode();
+            }
+        }
+
+        /// <summary>
+        /// Parse - returns an instance converted from the provided string using 
+        /// the culture "en-US"
+        /// <param name="source"> string with Rect data </param>
+        /// </summary>
+        public static Rect Parse(string source)
