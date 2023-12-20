@@ -1073,4 +1073,61 @@ namespace Orbifold.Numerics
             return String.Format(provider,
                 "{1:" + format + "}{0}{2:" + format + "}{0}{3:" + format + "}{0}{4:" + format + "}",
                 separator,
-             
+                this._x,
+                this._y,
+                this._width,
+                this._height);
+        }
+
+
+
+        #endregion Internal Properties
+
+        //-----------------------------------------------------
+        // 
+        //  Dependency Properties 
+        //
+        //------------------------------------------------------ 
+
+        #region Dependency Properties
+
+
+
+        #endregion Dependency Properties
+
+        //-----------------------------------------------------
+        // 
+        //  Internal Fields
+        //
+        //------------------------------------------------------
+
+        #region Internal Fields
+
+
+        internal double _x;
+        internal double _y;
+        internal double _width;
+        internal double _height;
+
+
+
+
+        #endregion Internal Fields
+
+
+
+        #region Constructors
+
+        //------------------------------------------------------ 
+        //
+        //  Constructors 
+        // 
+        //-----------------------------------------------------
+
+
+
+
+        #endregion Constructors 
+
+    }
+}
