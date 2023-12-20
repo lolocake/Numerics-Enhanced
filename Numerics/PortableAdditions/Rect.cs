@@ -1015,4 +1015,62 @@ namespace Orbifold.Numerics
         /// <returns> 
         /// A string representation of this object. 
         /// </returns>
-     
+        public override string ToString()
+        {
+
+            // Delegate to the internal method which implements all ToString calls.
+            return this.ConvertToString(null /* format string */, null /* format provider */);
+        }
+
+        /// <summary> 
+        /// Creates a string representation of this object based on the IFormatProvider
+        /// passed in.  If the provider is null, the CurrentCulture is used. 
+        /// </summary>
+        /// <returns>
+        /// A string representation of this object.
+        /// </returns> 
+        public string ToString(IFormatProvider provider)
+        {
+
+            // Delegate to the internal method which implements all ToString calls.
+            return this.ConvertToString(null /* format string */, provider);
+        }
+
+        /// <summary>
+        /// Creates a string representation of this object based on the format string 
+        /// and IFormatProvider passed in.
+        /// If the provider is null, the CurrentCulture is used. 
+        /// See the documentation for IFormattable for more information. 
+        /// </summary>
+        /// <returns> 
+        /// A string representation of this object.
+        /// </returns>
+        string IFormattable.ToString(string format, IFormatProvider provider)
+        {
+
+            // Delegate to the internal method which implements all ToString calls. 
+            return this.ConvertToString(format, provider);
+        }
+
+        /// <summary>
+        /// Creates a string representation of this object based on the format string
+        /// and IFormatProvider passed in.
+        /// If the provider is null, the CurrentCulture is used. 
+        /// See the documentation for IFormattable for more information.
+        /// </summary> 
+        /// <returns> 
+        /// A string representation of this object.
+        /// </returns> 
+        internal string ConvertToString(string format, IFormatProvider provider)
+        {
+            if (IsEmpty)
+            {
+                return "Empty";
+            }
+
+            // Helper to get the numeric list separator for a given culture.
+            char separator =TokenizerHelper.GetNumericListSeparator(provider);
+            return String.Format(provider,
+                "{1:" + format + "}{0}{2:" + format + "}{0}{3:" + format + "}{0}{4:" + format + "}",
+                separator,
+             
