@@ -183,4 +183,58 @@
   <data name="ArgumentPositive" xml:space="preserve">
     <value>Value must be positive (and not zero).</value>
   </data>
-  <data name="
+  <data name="ArgumentPowerOfTwo" xml:space="preserve">
+    <value>Size must be a Power of Two.</value>
+  </data>
+  <data name="ArgumentPowerOfTwoEveryDimension" xml:space="preserve">
+    <value>Size must be a Power of Two in every dimension.</value>
+  </data>
+  <data name="ArgumentRangeLessEqual" xml:space="preserve">
+    <value>The range between {0} and {1} must be less than or equal to {2}.</value>
+  </data>
+  <data name="ArgumentSingleDimensionArray" xml:space="preserve">
+    <value>Array must have exactly one dimension (and not be null).</value>
+  </data>
+  <data name="ArgumentTooLarge" xml:space="preserve">
+    <value>Value is too large.</value>
+  </data>
+  <data name="ArgumentTooLargeForIterationLimit" xml:space="preserve">
+    <value>Value is too large for the current iteration limit.</value>
+  </data>
+  <data name="ArgumentTypeMismatch" xml:space="preserve">
+    <value>Type mismatch.</value>
+  </data>
+  <data name="ArgumentVectorLengthsMultipleOf" xml:space="preserve">
+    <value>Array length must be a multiple of {0}.</value>
+  </data>
+  <data name="ArgumentVectorsSameLengths" xml:space="preserve">
+    <value>All vectors must have the same dimensionality.</value>
+  </data>
+  <data name="ArgumentVectorThreeDimensional" xml:space="preserve">
+    <value>The vector must have 3 dimensions.</value>
+  </data>
+  <data name="ArrayTooSmall" xml:space="preserve">
+    <value>The array is not large enough.</value>
+  </data>
+  <data name="FeaturePlannedButNotImplementedYet" xml:space="preserve">
+    <value>This feature is not implemented yet (but is planned).</value>
+  </data>
+  <data name="InvalidDistributionParameters" xml:space="preserve">
+    <value>The distribution parametrization is not valid.</value>
+  </data>
+  <data name="InvalidLeftBoundaryCondition" xml:space="preserve">
+    <value>Invalid Left Boundary Condition.</value>
+  </data>
+  <data name="InvalidOperationAccumulatorEmpty" xml:space="preserve">
+    <value>The operation could not be performed because the accumulator is empty.</value>
+  </data>
+  <data name="InvalidOperationHistogramEmpty" xml:space="preserve">
+    <value>The operation could not be performed because the histogram is empty.</value>
+  </data>
+  <data name="InvalidOperationHistogramNotEnoughPoints" xml:space="preserve">
+    <value>Not enough points in the distribution.</value>
+  </data>
+  <data name="InvalidOperationNoSamplesProvided" xml:space="preserve">
+    <value>No Samples Provided. Preparation Required.</value>
+  </data>
+  <data name="InvalidR
