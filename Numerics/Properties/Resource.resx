@@ -237,4 +237,22 @@
   <data name="InvalidOperationNoSamplesProvided" xml:space="preserve">
     <value>No Samples Provided. Preparation Required.</value>
   </data>
-  <data name="InvalidR
+  <data name="InvalidRightBoundaryCondition" xml:space="preserve">
+    <value>Invalid Right Boundary Condition.</value>
+  </data>
+  <data name="IsAlreadyInTheStructure" xml:space="preserve">
+    <value>The item is already present in the data structure.</value>
+  </data>
+  <data name="IsEmpty" xml:space="preserve">
+    <value>The collection is empty.</value>
+  </data>
+  <data name="NotInGraph" xml:space="preserve">
+    <value>The specified item is not part of the graph.</value>
+  </data>
+  <data name="NotPowerOfTwo" xml:space="preserve">
+    <value>The length of the list must be a power of two.</value>
+  </data>
+  <data name="SpecialCasePlannedButNotImplementedYet" xml:space="preserve">
+    <value>This special case is not supported yet (but is planned).</value>
+  </data>
+</root>
