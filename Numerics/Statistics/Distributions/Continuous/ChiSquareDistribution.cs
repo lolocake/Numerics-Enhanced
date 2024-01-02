@@ -116,4 +116,68 @@ namespace Orbifold.Numerics
         ///     </para>
         ///     <para>
         ///         The χ² complementary distribution function is defined in terms of the
-        ///         <see cref="Gamma
+        ///         <see cref="Gamma.UpperIncomplete">
+        ///             Complemented Incomplete Gamma
+        ///             Function Γc(a, x)
+        ///         </see>
+        ///         as CDF(x; df) = Γc(df/2, x/d).
+        ///     </para>
+        /// </remarks>
+        public double ComplementaryDistributionFunction(double x)
+        {
+            return x <= 0 ? 1 : Gamma.UpperIncomplete(this.DegreesOfFreedom / 2.0, x / 2.0);
+        }
+
+        #region ISamplableDistribution<double> Members
+
+        /// <summary>
+        ///     Generates a random observation from the current distribution.
+        /// </summary>
+        /// <returns>A random observations drawn from this distribution.</returns>
+        public override double NextDouble()
+        {
+            return GammaDistribution.Random(this.DegreesOfFreedom / 2.0, 2);
+        }
+
+        /// <summary>
+        ///     Continuous probability density function (pdf) of this probability distribution.
+        /// </summary>
+        public override double ProbabilityDensity(double x)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     Continuous cumulative distribution function (cdf) of this probability distribution.
+        /// </summary>
+        public override double CumulativeDistribution(double x)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     Lower limit of a random variable with this probability distribution.
+        /// </summary>
+        public override double Minimum
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        ///     Generates a random vector of observations from the
+        ///     Chi-Square distribution with the given parameters.
+        /// </summary>
+        /// <returns>An array of double values sampled from the specified Chi-Square distribution.</returns>
+        public static double[] Random(int degreesOfFreedom, int samples)
+        {
+            return GammaDistribution.Random(degreesOfFreedom / 2.0, 2, samples);
+        }
+
+        /// <summary>
+        ///     Generates a random observation from the
+        ///     Chi-Square distribution with the given parameters.
+        /// </summary>
+        /// <param name="degreesOfFre
