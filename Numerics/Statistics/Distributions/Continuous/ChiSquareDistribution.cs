@@ -180,4 +180,13 @@ namespace Orbifold.Numerics
         ///     Generates a random observation from the
         ///     Chi-Square distribution with the given parameters.
         /// </summary>
-        /// <param name="degreesOfFre
+        /// <param name="degreesOfFreedom">The degrees of freedom for the distribution.</param>
+        /// <returns>A random double value sampled from the specified Chi-Square distribution.</returns>
+        public static double Random(int degreesOfFreedom)
+        {
+            return GammaDistribution.Random(degreesOfFreedom / 2.0, 2);
+        }
+
+        #endregion
+    }
+}
