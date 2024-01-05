@@ -143,4 +143,47 @@ namespace Orbifold.Numerics
 		private static bool IsValidParameterSet(double mean, double stddev)
 		{
 			if(stddev < 0.0 || Double.IsNaN(mean) || Double.IsNaN(stddev)) {
-				return fals
+				return false;
+			}
+
+			return true;
+		}
+
+		private void SetParameters(double mean, double stddev)
+		{
+			if(!IsValidParameterSet(mean, stddev))
+				throw new ArgumentOutOfRangeException(Resource.InvalidDistributionParameters);
+
+			this.mean = mean;
+			this.stdDev = stddev;
+		}
+
+		/// <summary>
+		/// Samples a pair of standard normal distributed random variables using the <i>Box-Muller</i> algorithm.
+		/// </summary>
+		/// <param name="rnd">The random number generator to use.</param>
+		/// <returns>a pair of random numbers from the standard normal distribution.</returns>
+		internal static Tuple<double, double> SampleBoxMuller(IStochastic rnd)
+		{
+			var v1 = (2.0 * rnd.NextDouble()) - 1.0;
+			var v2 = (2.0 * rnd.NextDouble()) - 1.0;
+			var r = (v1 * v1) + (v2 * v2);
+			while(r >= 1.0 || r == 0.0) {
+				v1 = (2.0 * rnd.NextDouble()) - 1.0;
+				v2 = (2.0 * rnd.NextDouble()) - 1.0;
+				r = (v1 * v1) + (v2 * v2);
+			}
+
+			var fac = System.Math.Sqrt(-2.0 * System.Math.Log(r) / r);
+			return new Tuple<double, double>(v1 * fac, v2 * fac);
+		}
+
+		/// <summary>
+		/// Continuous probability density function (pdf) of this probability distribution.
+		/// </summary>
+		public override double ProbabilityDensity(double x)
+		{
+			return Constants.InvSqrt2Pi * System.Math.Exp(x * x / -2.0);
+		}
+	}
+}
