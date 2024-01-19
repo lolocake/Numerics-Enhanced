@@ -100,3 +100,52 @@ namespace Orbifold.Numerics
 		/// <summary>
 		/// Gets the median of generated random numbers.
 		/// </summary>
+		/// <remarks>This is an approximation and not an exact value.</remarks>
+		public override int Median {
+			get { return (int)System.Math.Floor(this.lambda + 1.0 / 3.0 - 0.2 / this.lambda); }
+		}
+
+		/// <summary>
+		/// Gets the variance of generated random numbers.
+		/// </summary>
+		public override double Variance {
+			get { return this.lambda; }
+		}
+
+		/// <summary>
+		/// Gets the skewness of generated random numbers.
+		/// </summary>
+		public override double Skewness {
+			get { return 1d / Math.Sqrt(this.lambda); }
+		}
+
+		/// <summary>
+		/// Discrete probability mass function (pmf) of this probability distribution.
+		/// See http://en.wikipedia.org/wiki/Probability_mass_function .
+		/// </summary>
+		public override double ProbabilityMass(int x)
+		{
+			return System.Math.Exp(-this.lambda + x * System.Math.Log(this.lambda) - Functions.FactorialLn(x));
+		}
+
+		/// <summary>
+		/// Continuous cumulative distribution function (cdf) of this probability distribution.
+		/// See http://en.wikipedia.org/wiki/Cumulative_distribution_function .
+		/// </summary>
+		public override double CumulativeDistribution(double x)
+		{
+			return 1.0 - Functions.GammaRegularized(x + 1, this.lambda);
+		}
+
+		/// <summary>
+		/// Returns a poisson distributed random number.
+		/// </summary>
+		public override int Next()
+		{
+			var count = 0;
+			for(var product = this.Randomizer.NextDouble(); product >= this.rapidity; product *= this.Randomizer.NextDouble())
+				count++;
+			return count;
+		}
+	}
+}
