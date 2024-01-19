@@ -22,4 +22,23 @@ namespace Orbifold.Numerics
 			var binWidth = (max - min) / partitionCount;
 			var doubles = data as double[] ?? data.ToArray();
 			for(var i = 0; i < partitionCount; i++) {
-				var nCounts = doubles.Count(t => t >= min + (i) * binWid
+				var nCounts = doubles.Count(t => t >= min + (i) * binWidth && t < min + (i + 1) * binWidth);
+				histogram[i] = nCounts;
+			}
+			return histogram;
+		}
+
+		/// <summary>
+		/// Creates an histogram for the given data.
+		/// </summary>
+		/// <param name="data">The data to partition in the histogram.</param>
+		/// <param name="partitionCount">The number of partitions.</param>
+		public static double[] MakeHistogram(this IEnumerable<double> data, int partitionCount)
+		{
+			var doubles = data as double[] ?? data.ToArray();
+			// the max has to be slightly larger to ensure the last value is included
+			return MakeHistogram(doubles, doubles.Min(), doubles.Max() + 1, partitionCount);
+		}
+
+	}
+}
