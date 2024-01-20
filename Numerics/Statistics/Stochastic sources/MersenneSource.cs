@@ -44,4 +44,79 @@ namespace Orbifold.Numerics
 		/// Represents the multiplier that computes a double-precision floating point number greater than or equal to 0.0 
 		///   and less than 1.0  when it gets applied to a 32-bit unsigned integer.
 		/// </summary>
-		private const doub
+		private const double UIntToDoubleMultiplier = 1.0 / (uint.MaxValue + 1D);
+
+		/// <summary>
+		/// Represents the most significant w-r bits. This field is constant.
+		/// </summary>
+		/// <remarks>The value of this constant is 0x80000000.</remarks>
+		private const uint UpperMask = 0x80000000U;
+
+		/// <summary>
+		/// Represents the constant vector a. This field is constant.
+		/// </summary>
+		/// <remarks>The value of this constant is 0x9908b0dfU.</remarks>
+		private const uint VectorA = 0x9908b0dfU;
+
+		/// <summary>
+		/// Stores the state vector array.
+		/// </summary>
+		private readonly long[] mt;
+
+		/// <summary>
+		/// Stores the used seed value.
+		/// </summary>
+		private readonly int seed;
+
+		/// <summary>
+		/// Stores the used seed array.
+		/// </summary>
+		private readonly int[] seedArray;
+
+		/// <summary>
+		/// Stores an <see cref="uint"/> used to generate up to 32 random <see cref="bool"/> values.
+		/// </summary>
+		private int bitBuffer;
+
+		/// <summary>
+		/// Stores how many random <see cref="bool"/> values still can be generated from <see cref="bitBuffer"/>.
+		/// </summary>
+		private int bitCount;
+
+		/// <summary>
+		/// Stores an index for the state vector array element that will be accessed next.
+		/// </summary>
+		private uint mti;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MersenneSource"/> class, using a time-dependent default 
+		///   seed value.
+		/// </summary>
+		public MersenneSource()
+			: this(System.Math.Abs(Environment.TickCount))
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MersenneSource"/> class, using the specified seed value.
+		/// </summary>
+		/// <param name="seed">
+		/// An unsigned number used to calculate a starting value for the pseudo-random number sequence.
+		/// </param>
+		public MersenneSource(int seed)
+		{
+
+			this.mt = new long[N];
+			this.seed = System.Math.Abs(seed);
+			this.Reset();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MersenneSource"/> class, using the specified seed array.
+		/// </summary>
+		/// <param name="seedArray">
+		/// An array of numbers used to calculate a starting values for the pseudo-random number sequence.
+		/// If negative numbers are specified, the absolute values of them are used. 
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="seedArray"/> is NULL (<see langword="Nothing"/> 
