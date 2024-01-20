@@ -54,4 +54,19 @@ namespace Orbifold.Numerics
 		double NextDouble(double minValue, double maxValue);
 
 		/// <summary>
-		/// Returns
+		/// Returns a random boolean.
+		/// </summary>
+		/// <returns></returns>
+		bool NextBoolean();
+
+		/// <summary>
+		/// Returns a random byte.
+		/// </summary>
+		/// <param name="buffer">The buffer.</param>
+		void NextBytes(byte[] buffer);
+
+		void Reset();
+
+		bool CanReset { get; set; }
+	}
+}
