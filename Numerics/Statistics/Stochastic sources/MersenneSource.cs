@@ -192,4 +192,69 @@ namespace Orbifold.Numerics
 		/// </summary>
 		/// <param name="maxValue">
 		/// The exclusive upper bound of the random number to be generated. 
-		/// <paramref name="maxValue"/> must be greater t
+		/// <paramref name="maxValue"/> must be greater than or equal to 0. 
+		/// </param>
+		/// <returns>
+		/// A 32-bit signed integer greater than or equal to 0, and less than <paramref name="maxValue"/>; that is, 
+		///   the range of return values includes 0 but not <paramref name="maxValue"/>. 
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="maxValue"/> is less than 0. 
+		/// </exception>
+		public override int Next(int maxValue)
+		{
+			if (maxValue < 0)
+			{
+				throw new ArgumentOutOfRangeException("maxValue");
+			}
+
+			// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+			if (this.mti >= N)
+			{
+				// generate N words at one time
+				this.GenerateUnsignedInts();
+			}
+
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			y ^= y >> 18;
+
+			// The shift operation and extra int cast before the first multiplication give better performance.
+			// See comment in NextDouble().
+			return (int)((int)(y >> 1) * IntToDoubleMultiplier * maxValue);
+		}
+
+		/// <summary>
+		/// Returns a random number within the specified range. 
+		/// </summary>
+		/// <param name="minValue">
+		/// The inclusive lower bound of the random number to be generated. 
+		/// </param>
+		/// <param name="maxValue">
+		/// The exclusive upper bound of the random number to be generated. 
+		/// <paramref name="maxValue"/> must be greater than or equal to <paramref name="minValue"/>. 
+		/// </param>
+		/// <returns>
+		/// A 32-bit signed integer greater than or equal to <paramref name="minValue"/>, and less than 
+		///   <paramref name="maxValue"/>; that is, the range of return values includes <paramref name="minValue"/> but 
+		///   not <paramref name="maxValue"/>. 
+		/// If <paramref name="minValue"/> equals <paramref name="maxValue"/>, <paramref name="minValue"/> is returned.  
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="minValue"/> is greater than <paramref name="maxValue"/>.
+		/// </exception>
+		public override int Next(int minValue, int maxValue)
+		{
+			if (minValue > maxValue) throw new ArgumentOutOfRangeException("maxValue");
+
+			// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+			if (this.mti >= N) this.GenerateUnsignedInts();
+
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 1
