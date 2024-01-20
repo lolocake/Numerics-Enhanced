@@ -119,4 +119,77 @@ namespace Orbifold.Numerics
 		/// If negative numbers are specified, the absolute values of them are used. 
 		/// </param>
 		/// <exception cref="ArgumentNullException">
-		/// <paramref name="seedArray"/> is NULL (<see langword="Nothing"/> 
+		/// <paramref name="seedArray"/> is NULL (<see langword="Nothing"/> in Visual Basic).
+		/// </exception>
+		public MersenneSource(IList<int> seedArray)
+		{
+			if (seedArray == null) throw new ArgumentNullException("seedArray");
+
+			this.mt = new long[N];
+			this.seed = 19650218;
+
+			this.seedArray = new int[seedArray.Count];
+			for (var index = 0; index < seedArray.Count; index++) this.seedArray[index] = System.Math.Abs(seedArray[index]);
+
+			this.Reset();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MersenneSource"/> class, using the specified seed array.
+		/// </summary>
+		/// <param name="seedArray">
+		/// An array of unsigned numbers used to calculate a starting values for the pseudo-random number sequence.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="seedArray"/> is NULL (<see langword="Nothing"/> in Visual Basic).
+		/// </exception>
+		public MersenneSource(int[] seedArray)
+		{
+			if (seedArray == null)
+			{
+				throw new ArgumentNullException("seedArray");
+			}
+			this.mt = new long[N];
+			this.seed = 19650218;
+			this.seedArray = seedArray;
+			this.Reset();
+		}
+
+		/// <summary>
+		/// Returns a nonnegative random number less than <see cref="Int32.MaxValue"/>.
+		/// </summary>
+		/// <returns>
+		/// A 32-bit signed integer greater than or equal to 0, and less than <see cref="Int32.MaxValue"/>; that is, 
+		///   the range of return values includes 0 but not <paramref>
+		///                                                   <name>Int32.MaxValue</name>
+		///                                                 </paramref> .
+		/// </returns>
+		public override int Next()
+		{
+			// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+			if (this.mti >= N)
+			{
+				// generate N words at one time
+				this.GenerateUnsignedInts();
+			}
+
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			y ^= y >> 18;
+
+			var result = (int)(y >> 1);
+
+			// Exclude Int32.MaxValue from the range of return values.
+			return result == int.MaxValue ? this.Next() : result;
+		}
+
+		/// <summary>
+		/// Returns a nonnegative random number less than the specified maximum.
+		/// </summary>
+		/// <param name="maxValue">
+		/// The exclusive upper bound of the random number to be generated. 
+		/// <paramref name="maxValue"/> must be greater t
