@@ -257,4 +257,63 @@ namespace Orbifold.Numerics
 			var y = this.mt[this.mti++];
 
 			// Tempering
-			y ^= y >> 1
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			y ^= y >> 18;
+
+			var range = maxValue - minValue;
+			//if (range < 0)
+			//{
+			//    // The range is greater than Int32.MaxValue, so we have to use slower floating point arithmetic.
+			//    // Also all 32 random bits (uint) have to be used which again is slower (See comment in NextDouble()).
+			//    return minValue + (int)(y * UIntToDoubleMultiplier * (maxValue - (double)minValue));
+			//}
+
+			// 31 random bits (int) will suffice which allows us to shift and cast to an int before the first multiplication and gain better performance.
+			// See comment in NextDouble().
+			//if ((int)((y >> 1) * IntToDoubleMultiplier * range) < 0) throw new Exception(string.Format("Trouble in the y-value; {0} -> {1}", ((y >> 1) * IntToDoubleMultiplier * range), Convert.ToInt32(((int)y >> 1) * IntToDoubleMultiplier * range)));
+			if (y > int.MaxValue) y = y % int.MaxValue;
+			var r = (Convert.ToInt32(y) >> 1) * IntToDoubleMultiplier * range;
+			if (r > int.MaxValue) r = r % int.MaxValue;
+			//if (r < 0) throw new Exception("Trouble in the algorithm!");
+			return minValue + Convert.ToInt32(r);
+		}
+
+		/// <summary>
+		/// Returns a random Boolean value.
+		/// </summary>
+		/// <remarks>
+		/// Buffers 32 random bits (1 uint) for future calls, so a new random number is only generated every 32 calls.
+		/// </remarks>
+		/// <returns>A <see cref="bool"/> value.</returns>
+		public override bool NextBoolean()
+		{
+			if (this.bitCount == 32)
+			{
+				// Generate 32 more bits (1 uint) and store it for future calls.
+				// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+				if (this.mti >= N) this.GenerateUnsignedInts();
+
+				var y = this.mt[this.mti++];
+
+				// Tempering
+				y ^= y >> 11;
+				y ^= (y << 7) & 0x9d2c5680U;
+				y ^= (y << 15) & 0xefc60000U;
+				this.bitBuffer = (int)(y ^ (y >> 18));
+
+				// Reset the bitCount and use rightmost bit of buffer to generate random bool.
+				this.bitCount = 1;
+				return (this.bitBuffer & 0x1) == 1;
+			}
+
+			// Increase the bitCount and use rightmost bit of shifted buffer to generate random bool.
+			this.bitCount++;
+			return ((this.bitBuffer >>= 1) & 0x1) == 1;
+		}
+
+		/// <summary>
+		/// Fills the elements of a specified array of bytes with random numbers. 
+		/// </summary>
+		/
