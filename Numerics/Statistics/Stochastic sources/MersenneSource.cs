@@ -316,4 +316,88 @@ namespace Orbifold.Numerics
 		/// <summary>
 		/// Fills the elements of a specified array of bytes with random numbers. 
 		/// </summary>
-		/
+		/// <remarks>
+		/// Each element of the array of bytes is set to a random number greater than or equal to 0, and less than or 
+		///   equal to <see cref="Byte.MaxValue"/>.
+		/// </remarks>
+		/// <param name="buffer">An array of bytes to contain random numbers.</param>
+		/// <exception cref="ArgumentNullException">
+		/// <paramref name="buffer"/> is a null reference (<see langword="Nothing"/> in Visual Basic). 
+		/// </exception>
+		public override void NextBytes(byte[] buffer)
+		{
+			if (buffer == null) throw new ArgumentNullException("buffer");
+
+			// Fill the buffer with 4 bytes (1 uint) at a time.
+			var i = 0;
+			long y;
+			while (i < buffer.Length - 3)
+			{
+				// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+				if (this.mti >= N)
+				{
+					// generate N words at one time
+					this.GenerateUnsignedInts();
+				}
+
+				y = this.mt[this.mti++];
+
+				// Tempering
+				y ^= y >> 11;
+				y ^= (y << 7) & 0x9d2c5680U;
+				y ^= (y << 15) & 0xefc60000U;
+				y ^= y >> 18;
+
+				buffer[i++] = (byte)y;
+				buffer[i++] = (byte)(y >> 8);
+				buffer[i++] = (byte)(y >> 16);
+				buffer[i++] = (byte)(y >> 24);
+			}
+
+			// Fill up any remaining bytes in the buffer.
+			if (i < buffer.Length)
+			{
+				// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+				if (this.mti >= N)
+				{
+					// generate N words at one time
+					this.GenerateUnsignedInts();
+				}
+
+				y = this.mt[this.mti++];
+
+				// Tempering
+				y ^= y >> 11;
+				y ^= (y << 7) & 0x9d2c5680U;
+				y ^= (y << 15) & 0xefc60000U;
+				y ^= y >> 18;
+
+				buffer[i++] = (byte)y;
+				if (i < buffer.Length)
+				{
+					buffer[i++] = (byte)(y >> 8);
+					if (i < buffer.Length)
+					{
+						buffer[i++] = (byte)(y >> 16);
+						if (i < buffer.Length)
+						{
+							buffer[i] = (byte)(y >> 24);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns a nonnegative floating point random number less than 1.0.
+		/// </summary>
+		/// <returns>
+		/// A double-precision floating point number greater than or equal to 0.0, and less than 1.0; that is, 
+		///   the range of return values includes 0.0 but not 1.0.
+		/// </returns>
+		public override double NextDouble()
+		{
+			// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+			if (this.mti >= N) this.GenerateUnsignedInts();
+
+		
