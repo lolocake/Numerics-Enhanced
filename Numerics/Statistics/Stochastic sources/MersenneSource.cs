@@ -400,4 +400,63 @@ namespace Orbifold.Numerics
 			// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
 			if (this.mti >= N) this.GenerateUnsignedInts();
 
-		
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			y ^= y >> 18;
+
+			// Here a ~2x speed improvement is gained by computing a value that can be cast to an int 
+			//   before casting to a double to perform the multiplication.
+			// Casting a double from an int is a lot faster than from an uint and the extra shift operation 
+			//   and cast to an int are very fast (the allocated bits remain the same), so overall there's 
+			//   a significant performance improvement.
+			return (int)(y >> 1) * IntToDoubleMultiplier;
+		}
+
+		/// <summary>
+		/// Returns a nonnegative floating point random number less than the specified maximum.
+		/// </summary>
+		/// <param name="maxValue">
+		/// The exclusive upper bound of the random number to be generated. 
+		/// <paramref name="maxValue"/> must be greater than or equal to 0.0. 
+		/// </param>
+		/// <returns>
+		/// A double-precision floating point number greater than or equal to 0.0, and less than <paramref name="maxValue"/>; 
+		///   that is, the range of return values includes 0 but not <paramref name="maxValue"/>. 
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="maxValue"/> is less than 0. 
+		/// </exception>
+		public override double NextDouble(double maxValue)
+		{
+			if (maxValue < 0.0) throw new ArgumentOutOfRangeException("maxValue");
+
+			// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+			if (this.mti >= N) this.GenerateUnsignedInts();
+
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			y ^= y >> 18;
+
+			// The shift operation and extra int cast before the first multiplication give better performance.
+			// See comment in NextDouble().
+			return (int)(y >> 1) * IntToDoubleMultiplier * maxValue;
+		}
+
+		/// <summary>
+		/// Returns a floating point random number within the specified range. 
+		/// </summary>
+		/// <param name="minValue">
+		/// The inclusive lower bound of the random number to be generated. 
+		/// The range between <paramref name="minValue"/> and <paramref name="maxValue"/> must be less than or equal to
+		///   <see cref="Double.MaxValue"/>.
+		/// </param>
+		/// <param name="maxValue">
+		/// The exclusive u
