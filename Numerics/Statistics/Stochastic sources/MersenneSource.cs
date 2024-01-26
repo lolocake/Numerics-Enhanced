@@ -459,4 +459,54 @@ namespace Orbifold.Numerics
 		///   <see cref="Double.MaxValue"/>.
 		/// </param>
 		/// <param name="maxValue">
-		/// The exclusive u
+		/// The exclusive upper bound of the random number to be generated. 
+		/// <paramref name="maxValue"/> must be greater than or equal to <paramref name="minValue"/>.
+		/// The range between <paramref name="minValue"/> and <paramref name="maxValue"/> must be less than or equal to
+		///   <see cref="Double.MaxValue"/>.
+		/// </param>
+		/// <returns>
+		/// A double-precision floating point number greater than or equal to <paramref name="minValue"/>, and less than 
+		///   <paramref name="maxValue"/>; that is, the range of return values includes <paramref name="minValue"/> but 
+		///   not <paramref name="maxValue"/>. 
+		/// If <paramref name="minValue"/> equals <paramref name="maxValue"/>, <paramref name="minValue"/> is returned.  
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="minValue"/> is greater than <paramref name="maxValue"/>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// The range between <paramref name="minValue"/> and <paramref name="maxValue"/> is greater than
+		///   <see cref="Double.MaxValue"/>.
+		/// </exception>
+		public override double NextDouble(double minValue, double maxValue)
+		{
+			if (minValue > maxValue) throw new ArgumentOutOfRangeException("maxValue");
+
+			var range = maxValue - minValue;
+
+			if (double.IsPositiveInfinity(range)) throw new ArgumentException("maxValue");
+
+			if (this.mti >= N) this.GenerateUnsignedInts();
+
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			y ^= y >> 18;
+
+			// The shift operation and extra int cast before the first multiplication give better performance.
+			// See comment in NextDouble().
+			return minValue + ((int)(y >> 1) * IntToDoubleMultiplier * range);
+		}
+
+		/// <summary>
+		/// Returns a nonnegative random number less than or equal to <see cref="Int32.MaxValue"/>.
+		/// </summary>
+		/// <returns>
+		/// A 32-bit signed integer greater than or equal to 0, and less than or equal to <see cref="Int32.MaxValue"/>; 
+		///   that is, the range of return values includes 0 and <paramref>
+		///                                                        <name>Int32.MaxValue</name>
+		///                                                      </paramref> .
+		/// </returns>
+		public int NextInclus
