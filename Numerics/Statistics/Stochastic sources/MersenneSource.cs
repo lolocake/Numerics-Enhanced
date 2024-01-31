@@ -509,4 +509,96 @@ namespace Orbifold.Numerics
 		///                                                        <name>Int32.MaxValue</name>
 		///                                                      </paramref> .
 		/// </returns>
-		public int NextInclus
+		public int NextInclusiveMaxValue()
+		{
+			// Its faster to explicitly calculate the unsigned random number than simply call NextUInt().
+			if (this.mti >= N) this.GenerateUnsignedInts();
+
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			y ^= y >> 18;
+
+			return (int)(y >> 1);
+		}
+
+		/// <summary>
+		/// Returns an unsigned random number.
+		/// </summary>
+		/// <returns>
+		/// A 32-bit unsigned integer greater than or equal to <see cref="uint.MinValue"/> and 
+		///   less than or equal to <see cref="uint.MaxValue"/>.
+		/// </returns>
+		public int NextUInt()
+		{
+			if (this.mti >= N) this.GenerateUnsignedInts();
+
+			var y = this.mt[this.mti++];
+
+			// Tempering
+			y ^= y >> 11;
+			y ^= (y << 7) & 0x9d2c5680U;
+			y ^= (y << 15) & 0xefc60000U;
+			return (int)(y ^ (y >> 18));
+		}
+
+		/// <summary>
+		/// Generates <see cref="MersenneSource.N"/> unsigned random numbers.
+		/// </summary>
+		/// <remarks>
+		/// Generated random numbers are 32-bit unsigned integers greater than or equal to <see cref="uint.MinValue"/> 
+		///   and less than or equal to <see cref="uint.MaxValue"/>.
+		/// </remarks>
+		private void GenerateUnsignedInts()
+		{
+			int kk;
+			long y;
+			var mag01 = new[] { 0x0U, VectorA };
+
+			for (kk = 0; kk < N - M; kk++)
+			{
+				y = (this.mt[kk] & UpperMask) | (this.mt[kk + 1] & LowerMask);
+				this.mt[kk] = this.mt[kk + M] ^ (y >> 1) ^ mag01[y & 0x1U];
+			}
+
+			for (; kk < N - 1; kk++)
+			{
+				y = (this.mt[kk] & UpperMask) | (this.mt[kk + 1] & LowerMask);
+				this.mt[kk] = this.mt[kk + (M - N)] ^ (y >> 1) ^ mag01[y & 0x1U];
+			}
+
+			y = (this.mt[N - 1] & UpperMask) | (this.mt[0] & LowerMask);
+			this.mt[N - 1] = this.mt[M - 1] ^ (y >> 1) ^ mag01[y & 0x1U];
+
+			this.mti = 0;
+		}
+
+		/// <summary>
+		/// Extends resetting of the <see cref="MersenneSource"/> using the <see cref="seedArray"/>.
+		/// </summary>
+		private void ResetBySeedArray()
+		{
+			uint i = 1;
+			uint j = 0;
+			var k = (N > this.seedArray.Length) ? N : this.seedArray.Length;
+			for (; k > 0; k--)
+			{
+				this.mt[i] = (this.mt[i] ^ ((this.mt[i - 1] ^ (this.mt[i - 1] >> 30)) * 1664525U)) + this.seedArray[j] + j; // non linear
+				i++;
+				j++;
+
+				if (i >= N)
+				{
+					this.mt[0] = this.mt[N - 1];
+					i = 1;
+				}
+
+				if (j >= this.seedArray.Length) j = 0;
+			}
+
+			for (k = N - 1; k > 0; k--)
+			{
+				this.mt[i] = (this.mt[i] ^ ((this.mt[i - 1] ^ (this.mt[i - 1
