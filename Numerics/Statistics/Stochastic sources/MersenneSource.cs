@@ -601,4 +601,40 @@ namespace Orbifold.Numerics
 
 			for (k = N - 1; k > 0; k--)
 			{
-				this.mt[i] = (this.mt[i] ^ ((this.mt[i - 1] ^ (this.mt[i - 1
+				this.mt[i] = (this.mt[i] ^ ((this.mt[i - 1] ^ (this.mt[i - 1] >> 30)) * 1566083941U)) - i; // non linear
+				i++;
+				if (i >= N)
+				{
+					this.mt[0] = this.mt[N - 1];
+					i = 1;
+				}
+			}
+
+			this.mt[0] = 0x80000000U; // MSB is 1; assuring non-0 initial array
+		}
+
+		/// <summary>
+		/// Resets the <see cref="MersenneSource"/>,
+		/// so that it produces the same pseudo-random number sequence again.
+		/// </summary>
+		public override sealed void Reset()
+		{
+			this.mt[0] = this.seed & 0xffffffffU;
+			for (this.mti = 1; this.mti < N; this.mti++)
+			{
+				this.mt[this.mti] = (1812433253U * (this.mt[this.mti - 1] ^ (this.mt[this.mti - 1] >> 30)) + this.mti);
+
+				// See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier.
+				// In the previous versions, MSBs of the seed affect only MSBs of the array mt[].
+				// 2002/01/09 modified by Makoto Matsumoto
+			}
+
+			// If the object was instantiated with a seed array do some further (re)initialisation.
+			if (this.seedArray != null) this.ResetBySeedArray();
+
+			// Reset helper variables used for generation of random booleans.
+			this.bitBuffer = 0;
+			this.bitCount = 32;
+		}
+	}
+}
