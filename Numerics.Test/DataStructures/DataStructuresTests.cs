@@ -151,4 +151,98 @@ namespace Orbifold.Numerics.Tests.DataStructures
 		public void PriorityTest3()
 		{
 			var pq = new PriorityQueue<string, int>(OrderType.Ascending);
-			
+			var prios = new Dictionary<string, int> { { "a", 1 }, { "k", -2 }, { "j", 9 }, { "v", 234 } };
+			prios.Keys.ToList().ForEach(i => pq.Push(i, prios[i]));
+			var ordered = prios.OrderBy(q => q.Value);
+			foreach(var i in ordered) {
+				var item = pq.Pop();
+				Debug.WriteLine(item);
+				Assert.AreEqual(i.Key, item, "Wrong priority at this level.");
+			}
+
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public void StringLengthQueueTest()
+		{
+			var queue = new PriorityQueue<string, string>(OrderType.Ascending, new StringLengthComparer());
+			queue.Push("A", "short");
+			queue.Push("B", "longer");
+			queue.Push("E", "much longer");
+			queue.Push("D", "much longer");
+			queue.Push("C", "tiny");
+
+			Assert.AreEqual("C", queue.Pop(), "Not the correct head of the queue.");
+		}
+
+		public sealed class StringLengthComparer : IComparer<string>
+		{
+			public int Compare(String x, String y)
+			{
+				var lx = 0;
+				if(!string.IsNullOrEmpty(x))
+					lx = x.Length;
+
+				var ly = 0;
+				if(!string.IsNullOrEmpty(y))
+					ly = y.Length;
+
+				if(lx < ly)
+					return -1;
+				if(lx > ly)
+					return 1;
+				return 0;
+			}
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public void RemoveQueueTest()
+		{
+			var queue = new PriorityQueue<string, int>();
+			Assert.IsFalse(queue.Contains("Swa"));
+			queue.Enqueue("Swa");
+			Assert.IsTrue(queue.Contains("Swa"));
+			queue.Remove("Swa");
+			Assert.IsFalse(queue.Contains("Swa"));
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public void PeekPriorityTest()
+		{
+			var priorityQueue = new PriorityQueue<string, int>(OrderType.Ascending);
+			int priority;
+			priorityQueue.Enqueue("Microsoft", 13);
+			var nextItem = priorityQueue.Peek(out priority);
+			Assert.AreEqual("Microsoft", nextItem);
+			Assert.AreEqual(13, priority, "Peeked priority is wrong.");
+			priorityQueue.Enqueue("Google", 44);
+			nextItem = priorityQueue.Peek(out priority);
+			Assert.AreEqual("Microsoft", nextItem);
+			Assert.AreEqual(13, priority);
+			priorityQueue.Enqueue("Apple", 12);
+			nextItem = priorityQueue.Peek(out priority);
+			Assert.AreEqual("Apple", nextItem);
+			Assert.AreEqual(12, priority);
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#en
