@@ -97,3 +97,155 @@ namespace Orbifold.Numerics
 				var key = a.ToString();
 				if(string.IsNullOrWhiteSpace(key))
 					continue;
+				if(exclusions != null && exclusions.Length > 0 && exclusions.Contains(key))
+					continue;
+				key = char.IsSymbol(a) || char.IsPunctuation(a) || char.IsSeparator(a) ? SymbolHash : key;
+				key = char.IsNumber(a) ? NumHash : key;
+				yield return key;
+			}
+		}
+
+		/// <summary>
+		/// Gets the words from the given string. Punctuations and other characters are removed.
+		/// </summary>
+		/// <param name="s">The string to parse.</param>
+		/// <param name="separator">The separating string.</param>
+		/// <param name="exclusions">Optional list of strings to exclude.</param>
+		public static IEnumerable<string> GetWords(string s, string separator = " ", string[] exclusions = null)
+		{
+			if(string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s))
+				yield return EmptyStringHash;
+			else {
+				s = s.Trim().ToUpperInvariant();
+				foreach(var w in s.Split(separator.ToCharArray())) {
+					var key = Sanitize(w);					
+					if(exclusions != null && exclusions.Length > 0 && exclusions.Contains(key, StringComparer.CurrentCultureIgnoreCase))
+						continue;
+					yield return key;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Counts the words specified in the <see cref="StringProperty.Dictionary"/>.
+		/// </summary>
+		/// <param name="item">The text to parse.</param>
+		/// <param name="property">Defines how and what to count.</param>
+		public static double[] GetWordCount(string item, StringFeature property)
+		{
+			var counts = new double[property.Dictionary.Length];
+			var d = new Dictionary<string, int>();
+
+			for(int i = 0; i < counts.Length; i++) {
+				counts[i] = 0;
+				d.Add(property.Dictionary[i], i);
+			}
+			var words = property.SplitType == StringSplitType.Character ?
+				GetChars(item) :
+				GetWords(item, property.Separator);
+
+			foreach(var s in words)
+				if(property.Dictionary.Contains(s))
+					counts[d[s]]++;
+
+			return counts;
+		}
+
+		/// <summary>Gets word position.</summary>
+		/// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+		/// <param name="item">The item.</param>
+		/// <param name="dictionary">The dictionary.</param>
+		/// <param name="checkNumber">(Optional) true to check number.</param>
+		/// <returns>The word position.</returns>
+		public static int GetWordPosition(string item, string[] dictionary, bool checkNumber = true)
+		{
+			//string[] dictionary = property.Dictionary;
+			if(dictionary == null || dictionary.Length == 0)
+				throw new InvalidOperationException("Cannot get word position with an empty dictionary");
+
+			item = Sanitize(item, checkNumber);
+
+			// is this the smartest thing?
+			for(int i = 0; i < dictionary.Length; i++)
+				if(dictionary[i] == item)
+					return i;
+
+			throw new InvalidOperationException(
+				string.Format("\"{0}\" does not exist in the property dictionary", item));
+		}
+
+		/// <summary>Builds character dictionary.</summary>
+		/// <param name="examples">The examples.</param>
+		/// <param name="exclusion">(Optional) the exclusion.</param>
+		/// <returns>A Dictionary&lt;string,double&gt;</returns>
+		public static Dictionary<string, double> BuildCharDictionary(IEnumerable<string> examples, string[] exclusion = null)
+		{
+			var d = new Dictionary<string, double>();
+
+			foreach(string o in examples) {
+				foreach(string key in GetChars(o, exclusion)) {
+					if(d.ContainsKey(key))
+						d[key] += 1;
+					else
+						d.Add(key, 1);
+				}
+			}
+
+			return d;
+		}
+
+		/// <summary>Builds enum dictionary.</summary>
+		/// <param name="examples">The examples.</param>
+		/// <returns>A Dictionary&lt;string,double&gt;</returns>
+		public static Dictionary<string, double> BuildEnumDictionary(IEnumerable<string> examples)
+		{
+			// TODO: Really need to consider this as an enum builder
+			var d = new Dictionary<string, double>();
+
+			// for holding string
+			string s;
+
+			foreach(string o in examples) {
+				s = o.Trim().ToUpperInvariant();
+
+				// kill inlined stuff that creates noise
+				// (like punctuation etc.)
+				s = s.ToCharArray().Aggregate("",
+					(x, a) => {
+						return char.IsSymbol(a) || char.IsPunctuation(a) || char.IsSeparator(a) ? x : x + a;
+					}
+				);
+
+				// null or whitespace
+				if(string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s))
+					s = EmptyStringHash;
+
+				if(d.ContainsKey(s))
+					d[s] += 1;
+				else
+					d.Add(s, 1);
+			}
+
+			return d;
+		}
+
+		/// <summary>Builds word dictionary.</summary>
+		/// <param name="examples">The examples.</param>
+		/// <param name="separator">(Optional) separator string.</param>
+		/// <param name="exclusion">(Optional) the exclusion.</param>
+		/// <returns>A Dictionary&lt;string,double&gt;</returns>
+		public static Dictionary<string, double> BuildWordDictionary(IEnumerable<string> examples, string separator = " ", string[] exclusion = null)
+		{
+			var d = new Dictionary<string, double>();
+
+			foreach(string s in examples)
+				foreach(string key in GetWords(s, separator, exclusion))
+					if(d.ContainsKey(key))
+						d[key] += 1;
+					else
+						d.Add(key, 1);
+
+			return d;
+		}
+	}
+}
