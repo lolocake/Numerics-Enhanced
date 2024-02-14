@@ -245,4 +245,79 @@ namespace Orbifold.Numerics.Tests.DataStructures
         [Tag("Data Structures")]
 #else
 		[Category("Data Structures")]
-		#en
+		#endif
+		public void QueueCopyArrayTest()
+		{
+			var queue = new PriorityQueue<string, int>(OrderType.Ascending);
+			queue.Enqueue("B");
+			queue.Enqueue("S");
+			queue.Enqueue("Z");
+			queue.Enqueue("X");
+			queue.Enqueue("3");
+			queue.Enqueue("G");
+			queue.Enqueue("2");
+
+			var array = new string[queue.Count];
+			queue.CopyTo(array, 0);
+			var index = 0;
+			Assert.AreEqual(queue.Count, array.Length);
+			while(queue.Any()) {
+				var item = queue.Pop();
+				Assert.AreEqual(item, array[index], string.Format("Wrong at position {0}", index));
+				index++;
+			}
+		}
+
+		#endregion
+
+		#region RedBlackTree
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+#endif
+		[ExpectedException(typeof(KeyNotFoundException))]
+		public void KeyValuePairTest()
+		{
+			var tree = new RedBlackTree<string, double>();
+			var count = Rand.Next(17, 123);
+			for(var i = 0; i < count; i++) {
+				tree.Add(new KeyValuePair<string, double>(i.ToString(CultureInfo.InvariantCulture), Rand.NextDouble()));
+			}
+			var shouldraiseexception = tree["W"];
+			var maxShouldBe = tree.Max(m => m.Value);
+			var minShouldBe = tree.Min(m => m.Value);
+			var sumShouldBe = tree.Sum(m => m.Value);
+			Assert.AreEqual(count, tree.Count);
+			var visitor = new SumVisitor();
+			tree.DepthFirstTraversal(visitor);
+			Assert.AreEqual(sumShouldBe, visitor.Sum, "Sum of the visitor is wrong.");
+			tree.Clear();
+			Assert.AreEqual(0, tree.Count);
+			Assert.IsFalse(tree.ContainsKey("17"));
+			Assert.IsTrue(tree.IsEmpty);
+			Assert.AreEqual(maxShouldBe, tree.Maximum.Value, "Maximum is not correct.");
+			Assert.AreEqual(minShouldBe, tree.Minimum.Value, "Minimum is not correct.");
+		}
+
+		/// <summary>
+		/// Gets a basic red-black tree consisting of int-string pairs.
+		/// </summary>
+		/// <param name="count">The count.</param>
+		/// <returns></returns>
+		private static RedBlackTree<int, string> GetBasicRedBlackTree(int count)
+		{
+			var redBlackTree = new RedBlackTree<int, string>();
+			Range.Create(1, count).ForEach(i => redBlackTree.Add(i, i.ToString(CultureInfo.InvariantCulture)));
+			return redBlackTree;
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public v
