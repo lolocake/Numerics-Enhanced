@@ -320,4 +320,99 @@ namespace Orbifold.Numerics.Tests.DataStructures
 #else
 		[Category("Data Structures")]
 		#endif
-		public v
+		public void RedBlackEnumerationTest1()
+		{
+			const int Count = 123;
+			var tree = GetBasicRedBlackTree(Count);
+			Assert.AreEqual(Count, tree.Values.Count);
+			var runner = 1;
+			using (var enumerator = tree.Values.GetEnumerator()) {
+				while(enumerator.MoveNext()) {
+					Assert.AreEqual(enumerator.Current, runner.ToString(CultureInfo.InvariantCulture));
+					runner++;
+				}
+			}
+
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public void RedBlackBasicTest1()
+		{
+			const int Count = 93;
+			var tree = GetBasicRedBlackTree(Count);
+			Assert.AreEqual(Count, tree.Values.Count);
+			string val;
+			Assert.IsFalse(tree.TryGetValue(95, out val));
+			Assert.IsNull(val, "The value should not be around.");
+
+			tree.Add(102, "a");
+			Assert.IsTrue(tree.TryGetValue(102, out val));
+			Assert.AreEqual("a", val, "Value should be there now.");
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public void RedBlackVisitorTest()
+		{
+			var tree = new RedBlackTree<string, int> {
+				{ "A", 331 }, 
+				{ "B", 2 },
+				{ "C", 43 },
+				{ "K", 17 },
+				{ "X", 841 },
+			};
+
+			Assert.AreEqual(5, tree.Count);
+			var visitor = new CountingVisitor<KeyValuePair<string, int>>();
+			tree.DepthFirstTraversal(visitor);
+			Assert.AreEqual(5, visitor.Count);
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public void ConstructorTest()
+		{
+			var tree = new RedBlackTree<char, byte> {
+				{ 'l', 201 }, { '4', 42 }, { 'z', 73 }, { ',',99 }, { '8',125 }
+			};
+			Assert.AreEqual(5, tree.Count);
+		}
+
+		#endregion
+
+		#region BinaryTree
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+#endif
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void BinaryTreeTest()
+		{
+			var tree = new BinaryTree<int>(0);
+			Range.Create(1, 2).ForEach(tree.Add);
+			Assert.AreEqual(2, tree.Count, "Items count is wrong.");
+			Assert.IsTrue(tree.IsComplete, "The tree should be full.");
+			var leftChild = tree.GetChild(0);
+			Assert.IsFalse(leftChild.IsComplete, "Should not be full at this moment.");
+			Range.Create(1, 5).ForEach(leftChild.Add);
+		}
+
+		#endregion
+
+		#regio
