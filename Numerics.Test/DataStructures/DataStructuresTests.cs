@@ -415,4 +415,87 @@ namespace Orbifold.Numerics.Tests.DataStructures
 
 		#endregion
 
-		#regio
+		#region AVLTree
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+		#endif
+		public void AVL1Test()
+		{
+			var tree = new AVLTree<int>();
+			Range.Create(1, 30).ForEach(tree.Add);//should give five levels
+			Assert.AreEqual(4, tree.Root.Height, "Height of the tree is wrong.");
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+#endif
+		[Description("Checking the balancing at different stages.")]
+		public void AVL2Test()
+		{
+			var tree = new AVLTree<int>();
+			tree.Add(1);
+			Assert.AreEqual(0, tree.Root.Height);
+			tree.Add(2);
+			Assert.AreEqual(1, tree.Root.Height);
+			tree.Add(3);
+			Assert.AreEqual(1, tree.Root.Height);
+			//level one is full now
+			Range.Create(4, 7).ForEach(tree.Add);
+			Assert.AreEqual(2, tree.Root.Height);
+			//level two is full
+			tree.Add(445);
+			Assert.AreEqual(3, tree.Root.Height);
+		}
+		#if !SILVERLIGHT
+		[Test]
+#if SILVERLIGHT
+        [Tag("Data Structures")]
+#else
+		[Category("Data Structures")]
+#endif
+		[Ignore]
+		[Description("Performance test with respect to the standard list.")]
+		public void AVLPerfTest()
+		{
+			var watch = new Stopwatch();
+			var tree = new AVLTree<int>();
+			watch.Start();
+			Range.Create(1, 100000).ForEach(tree.Add);
+			watch.Stop();
+			Console.WriteLine(string.Format("Adding to AVL: {0}", watch.ElapsedTicks));
+
+			var list = new List<int>();
+			watch.Start();
+			Range.Create(1, 100000).ForEach(list.Add);
+			watch.Stop();
+			Console.WriteLine(string.Format("Adding to list: {0}", watch.ElapsedTicks));
+
+			watch.Start();
+			tree.Find(7777);
+			watch.Stop();
+			Console.WriteLine(string.Format("Searching AVL: {0}", watch.ElapsedTicks));
+
+			watch.Start();
+			list.Find(i => i == 7777);
+			watch.Stop();
+			Console.WriteLine(string.Format("Searching list: {0}", watch.ElapsedTicks));
+
+			/* Differences are negligible though it doesnt mean more complex test give equal results
+			 * Adding to AVL: 914692845
+				Adding to list: 914713703
+				Searching AVL: 914718103
+				Searching list: 914718802
+			 */
+
+		}
+		#endif
+		#endregion
+	}
+}
