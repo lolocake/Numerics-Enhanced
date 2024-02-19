@@ -166,4 +166,77 @@ namespace Orbifold.Numerics.Tests.DataStructures
 
 		[Test]
 #if SILVERLIGHT
-        [Tag("Graph Analysi
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void FindCyclesTest()
+		{
+			var g = GraphExtensions.Parse(new[] { "1,2", "3,1", "2,4", "4,3", "4,5", "10,11", "11,12", "12,10" });
+			var cycles = g.FindCycles();
+			Assert.AreEqual(2, cycles.Count, "There are two cycles, one in each of the two components.");
+			var expectedCycle0 = new[] { 1, 2, 3, 4 };
+			var expectedCycle1 = new[] { 10, 11, 12 };
+
+			var cycle0 = cycles[0].Select(n => n.Id).OrderBy(i => i).ToList();
+			var cycle1 = cycles[1].Select(n => n.Id).OrderBy(i => i).ToList();
+			Assert.IsTrue(cycle0.Contains(1) || cycle1.Contains(1), "One of the cycles should contain id=1.");
+
+			if(cycle1.Contains(1)) {
+				// we want to have id=1 in the first cycle, so let's swap things
+				var temp = cycle1;
+				cycle1 = cycle0;
+				cycle0 = temp;
+			}
+			Assert.AreEqual(expectedCycle0.Count(), cycle0.Count, "The first cycle has not the expected length.");
+			Assert.AreEqual(expectedCycle1.Count(), cycle1.Count, "The second cycle has not the expected length.");
+
+			var runner = 0;
+			while(cycle0.Count > 0) {
+				var id = cycle0[0];
+				cycle0.RemoveAt(0);
+				Assert.AreEqual(expectedCycle0[runner], id, string.Format("Mismatch of the first cycle at {0}", id));
+				runner++;
+			}
+
+			runner = 0;
+			while(cycle1.Count > 0) {
+				var id = cycle1[0];
+				cycle1.RemoveAt(0);
+				Assert.AreEqual(expectedCycle1[runner], id, string.Format("Mismatch of the second cycle at {0}", id));
+				runner++;
+			}
+
+			var tree = g.PrimsSpanningTree(g.FindNode(1));
+			cycles = tree.FindCycles();
+			Assert.AreEqual(0, cycles.Count, "A spanning tree should not have cycles...");
+		}
+
+		#endregion
+
+		#region Traversals
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void BFTTest1()
+		{
+			var g = GraphExtensions.Parse(new[] { "1,2", "1,3", "2,4", "3,4", "4,5" });
+			var trail = new TrailVisitor<Node>();
+			var start = g.FindNode(1);
+			g.BreadthFirstTraversal(trail, start);
+			Assert.AreEqual(5, trail.Trail.Count, "Not all nodes were visited.");
+			for(var i = 0; i < trail.Trail.Count; i++)
+				Assert.AreEqual(i + 1, trail.Trail[i].Id, string.Format("Wrong visite at {0}", i));
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public voi
