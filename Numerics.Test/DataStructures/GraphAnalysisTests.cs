@@ -239,4 +239,79 @@ namespace Orbifold.Numerics.Tests.DataStructures
 #else
 		[Category("Graph Analysis")]
 		#endif
-		public voi
+		public void BFTTest2()
+		{
+			// tadpole aka lolly diagram
+			var g = GraphExtensions.Parse(new[] { "1,2", "1,3", "2,4", "3,4", "4,5" });
+			var start = g.FindNode(1);
+
+			var trail = new List<Node>();
+			g.BreadthFirstTraversal(new ActionVisitor<Node>(trail.Add), start);
+			Assert.AreEqual(5, trail.Count, "Not all nodes were visited.");
+			for(var i = 0; i < trail.Count; i++)
+				Assert.AreEqual(i + 1, trail[i].Id, string.Format("Wrong visite at {0}", i));
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void DFTTest()
+		{
+			var g = GraphExtensions.Parse(new[] { "1,2", "1,3", "2,4", "3,4", "4,5" });
+			var trail = new TrailVisitor<Node>();
+			var start = g.FindNode(1);
+			g.DepthFirstTraversal(trail, start);
+			Assert.AreEqual(5, trail.Trail.Count, "Not all nodes were visited.");
+			var shouldbe = new List<int> { 1, 2, 4, 5, 3 };
+
+			for(var i = 0; i < trail.Trail.Count; i++)
+				Assert.AreEqual(shouldbe[i], trail.Trail[i].Id, string.Format("Wrong visite at {0}", i));
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void DFTSpecificGraphTest()
+		{
+			var g = GraphExtensions.Parse(new[] { "1,2", "2,3", "1,3" });
+			var nodeCount = g.Nodes.Count;
+
+			// pretend the directions don't matter
+			g.IsDirected = false;
+
+			// any node can serve as root
+			var root = g.FindNode(2);
+			var tree = g.PrimsSpanningTree(root, true);
+			tree.IsDirected = true;
+			Console.WriteLine(tree.ToLinkListString());
+			Assert.AreEqual(nodeCount, tree.Nodes.Count, "The spanning tree doesn't span the whole graph.");
+			var trailVisitor = new TrailVisitor<Node>();
+			tree.DepthFirstTraversal(trailVisitor, root);
+			Assert.AreEqual(nodeCount, trailVisitor.Trail.Count, "DFT didn't visit the whole tree.");
+			foreach(var node in tree.Nodes)
+				Assert.IsTrue(node.Parents.Count() <= 1, string.Format("Node {0} has more than one parent.", node.Id));
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void FindDuplicatesInListTest()
+		{
+			var list = new List<Point> {
+				new Point(0, 2),
+				new Point(4, 55),
+				new Point(0, 5),
+				new Point(0, 2),
+				new Point(845, 4),
+				new Point(0, 5)
+			};
+	
