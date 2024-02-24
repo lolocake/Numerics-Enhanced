@@ -368,3 +368,20 @@ namespace Orbifold.Numerics.Tests.Engineering
 			Assert.AreEqual(-5.12039246294541E-07, EngineeringFunctions.CONVERT(-753.7112839818, "GRT", "mi3"), Accuracy);
 			Assert.AreEqual(362721.130157101, EngineeringFunctions.CONVERT(393.266303777695, "uk_gal", "tsp"), Accuracy);
 			Assert.AreEqual(-4.8781304512643, EngineeringFunctions.CONVERT(-187.468492865562, "tbs", "uk_pt"), Accuracy);
+			Assert.AreEqual(-7.24031395933627E-06, EngineeringFunctions.CONVERT(-624.261954784393, "Pica3", "gal"), Accuracy);
+			Assert.AreEqual(-7.86369202782462E-12, EngineeringFunctions.CONVERT(-105.566543221474, "us_pt", "Nmi3"), Accuracy);
+			Assert.AreEqual(221.476040065289, EngineeringFunctions.CONVERT(221.476040065289, "gal", "gal"), Accuracy);
+			Assert.AreEqual(8.98545929625445, EngineeringFunctions.CONVERT(722.039120912552, "bushel", "GRT"), Accuracy);
+			Assert.AreEqual(6.24461821878925E-12, EngineeringFunctions.CONVERT(34.9020391106606, "uk_qt", "Nmi3"), Accuracy);
+			Assert.AreEqual(-1156.80055928904, EngineeringFunctions.CONVERT(-481.61898124218, "uk_pt", "cup"), Accuracy);
+			Assert.AreEqual(-1.50696232007003E-03, EngineeringFunctions.CONVERT(-305.73874861002, "tsp", "m3"), Accuracy);
+			Assert.AreEqual(4.58089013937495E-49, EngineeringFunctions.CONVERT(682.615026473999, "uk_pt", "ly3"), Accuracy);
+			Assert.AreEqual(-145.162909137435, EngineeringFunctions.CONVERT(-189.865916907787, "yd3", "m3"), Accuracy);
+			Assert.AreEqual(-0.136638859482503, EngineeringFunctions.CONVERT(-124.234510540962, "tspm", "uk_gal"), Accuracy);
+
+			// multipliers
+			Assert.AreEqual(48.11898513, EngineeringFunctions.CONVERT(44000000000000, "pm", "yd"), Accuracy);
+
+		}
+	}
+}
