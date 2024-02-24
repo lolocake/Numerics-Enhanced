@@ -314,4 +314,74 @@ namespace Orbifold.Numerics.Tests.DataStructures
 				new Point(845, 4),
 				new Point(0, 5)
 			};
-	
+			var dups = Sequence.FindDuplicates(list);
+			Assert.IsNotNull(dups, "Failed to find the duplicates.");
+			Assert.AreEqual(2, dups.Count(), "There is only one duplicate.");
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void DFTRandomGraphTest()
+		{
+			// a random non-tree graph
+			var g = GraphExtensions.CreateRandomConnectedGraph(50, 4, false);
+			var nodeCount = g.Nodes.Count;
+
+			// pretend the directions don't matter
+			g.IsDirected = false;
+
+			// any node can serve as root
+			var root = g.FindNode(2);
+
+			// force the links to reverse if not in the flow direction
+			var tree = g.PrimsSpanningTree(root, true);
+
+			tree.IsDirected = true;
+			Console.WriteLine(tree.ToLinkListString());
+			Assert.AreEqual(nodeCount, tree.Nodes.Count, "The spanning tree doesn't span the whole graph.");
+			var trailVisitor = new TrailVisitor<Node>();
+			tree.DepthFirstTraversal(trailVisitor, root);
+			Assert.AreEqual(nodeCount, trailVisitor.Trail.Count, "DFT didn't visit the whole tree.");
+			foreach(var node in tree.Nodes)
+				Assert.IsTrue(node.Parents.Count() <= 1, string.Format("Node {0} has more than one parent.", node.Id));
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void ReverseEdgeTest()
+		{
+			var g = GraphExtensions.Parse(new[] { "1,2", "2,3", "1,3" });
+			var edge = g.FindEdge(1, 2, true);
+			edge.Reverse();
+			var two = g.FindNode(2);
+			Assert.AreEqual(2, two.Outgoing.Count);
+		}
+
+		[Test]
+#if SILVERLIGHT
+        [Tag("Graph Analysis")]
+#else
+		[Category("Graph Analysis")]
+		#endif
+		public void RemoveEdgeTest()
+		{
+			#region Directed
+			var g = GraphExtensions.Parse(new[] { "1,2", "2,3", "1,3" });
+			g.IsDirected = true;
+			var edge = g.FindEdge(1, 2, true);
+			g.RemoveLink(edge);
+			var one = g.FindNode(1);
+			var two = g.FindNode(2);
+			var three = g.FindNode(3);
+			Assert.AreEqual(1, one.Outgoing.Count, "Node one should have only one outgoing edge.");
+			Assert.AreEqual(0, one.Incoming.Count, "Node one should not have any incoming edge.");
+			Assert.AreEqual(1, two.Outgoing.Count, "Node two should have only one outgoing edge.");
+			Assert.AreEqual(0, two.Incoming.Count, "Node two should not have
