@@ -384,4 +384,48 @@ namespace Orbifold.Numerics.Tests.DataStructures
 			Assert.AreEqual(1, one.Outgoing.Count, "Node one should have only one outgoing edge.");
 			Assert.AreEqual(0, one.Incoming.Count, "Node one should not have any incoming edge.");
 			Assert.AreEqual(1, two.Outgoing.Count, "Node two should have only one outgoing edge.");
-			Assert.AreEqual(0, two.Incoming.Count, "Node two should not have
+			Assert.AreEqual(0, two.Incoming.Count, "Node two should not have any outgoing edges.");
+			Assert.AreEqual(0, three.Outgoing.Count, "Node three should not have any outgoing edge.");
+			Assert.AreEqual(2, three.Incoming.Count, "Node three should have two incoming edge.");
+
+			g.AddEdge(two, one);
+			Assert.AreEqual(1, one.Outgoing.Count, "Node one should have only one outgoing edge.");
+			Assert.AreEqual(1, one.Incoming.Count, "Node one should have only one incoming edge.");
+			Assert.AreEqual(2, two.Outgoing.Count, "Node two should have only two outgoing edges.");
+			Assert.AreEqual(0, two.Incoming.Count, "Node two should not have any incoming at this stage.");
+			Assert.AreEqual(0, three.Outgoing.Count, "Node three should not have any outgoing edge.");
+			Assert.AreEqual(2, three.Incoming.Count, "Node three should have two incoming edge.");
+			#endregion
+
+			#region Not Directed
+			g = GraphExtensions.Parse(new[] { "1,2", "2,3", "1,3" });
+			g.IsDirected = false;
+			edge = g.FindEdge(1, 2, true);
+			g.RemoveLink(edge);
+			one = g.FindNode(1);
+			two = g.FindNode(2);
+			three = g.FindNode(3);
+
+			Assert.AreEqual(1, one.Outgoing.Count, "Node one should have only one outgoing edge.");
+			Assert.AreEqual(1, one.Incoming.Count, "Node one should have the same as the outgoing collection now.");
+			Assert.AreEqual(1, two.Outgoing.Count, "Node two should have only one outgoing edge.");
+			Assert.AreEqual(1, two.Incoming.Count, "Node two should also have one incoming edge.");
+			Assert.AreEqual(2, three.Outgoing.Count, "Node three should have two outgoing edges.");
+			Assert.AreEqual(2, three.Incoming.Count, "Node three should have two incoming edge.");
+
+			g.AddEdge(two, one);
+
+			// now they have all degree two
+			foreach(var node in g.Nodes) {
+				Assert.AreEqual(2, node.Outgoing.Count, string.Format("Node {0} should have  two outgoing edges.", node.Id));
+				Assert.AreEqual(2, node.Incoming.Count, string.Format("Node {0} should have  two incoming edges.", node.Id));
+
+			}
+			#endregion
+
+		}
+
+		#endregion
+
+	}
+}
