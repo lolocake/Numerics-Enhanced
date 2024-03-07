@@ -76,4 +76,63 @@ namespace Orbifold.Numerics.Tests.Math
 			Assert.AreEqual(53130, Functions.BinomialCoefficient(25, 5), Accuracy);
 			Assert.AreEqual(53130, Functions.BinomialCoefficient(25, 5), Accuracy);
 			Assert.AreEqual(170544, Functions.BinomialCoefficient(22, 7), Accuracy);
-			Assert.AreEq
+			Assert.AreEqual(0, Functions.BinomialCoefficient(-5, 3), Accuracy);
+			Assert.AreEqual(0, Functions.BinomialCoefficient(5, -43), Accuracy);
+			Assert.AreEqual(0, Functions.BinomialCoefficient(5, 43), Accuracy);
+			Assert.AreEqual(6.67456139181, Functions.BinomialCoefficientLn(12, 5), Accuracy);
+			Assert.AreEqual(9.64885333413, Functions.BinomialCoefficientLn(20, 15), Accuracy);
+
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void BetaRegularizedTest()
+		{
+			Assert.AreEqual(0.651473, Functions.BetaRegularized(0.1, 0.22, 0.33), Accuracy);
+			Assert.AreEqual(0.470091, Functions.BetaRegularized(0.55, 0.77, 0.33), Accuracy);
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void FactorialTest()
+		{
+			Assert.AreEqual(479001600, Functions.Factorial(12), Accuracy);
+			Assert.AreEqual(355687428096000, Functions.Factorial(17), Accuracy);
+			Assert.AreEqual(40320, Functions.Factorial(8), Accuracy);
+
+			Assert.AreEqual(19.9872144957, Functions.FactorialLn(12), Accuracy);
+			Assert.AreEqual(932.555207148, Functions.FactorialLn(213), Accuracy);
+			Assert.AreEqual(8.52516136107, Functions.FactorialLn(7), Accuracy);
+
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void GCDTest()
+		{
+			Assert.AreEqual(2, Functions.GCD(1128, 314), Accuracy);
+			Assert.AreEqual(1, Functions.GCD(978, 455), Accuracy);
+			Assert.AreEqual(1, Functions.GCD(361, 1104), Accuracy);
+			Assert.AreEqual(1, Functions.GCD(787, 754), Accuracy);
+			Assert.AreEqual(2, Functions.GCD(534, 118), Accuracy);
+			Assert.AreEqual(3, Functions.GCD(699, 834), Accuracy);
+			Assert.AreEqual(2, Functions.GCD(1138, 1002), Accuracy);
+			Assert.AreEqual(1, Functions.GCD(29, 653), Accuracy);
+			Assert.AreEqual(1, Functions.GCD(1141, 517), Accuracy);
+			Assert.AreEqual(1, Functions.GCD(845, 603), Accuracy);
+
+			// more than two values
+			Assert.AreEqual(20, Functions.GCD(120, 400, 500), Accuracy);
+			Assert.AreEqual(10, Functions.GCD(120, 400, 500, 630, 1210), Accuracy);
+
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void ErfTest()
+		{
+			// Erf
+			Assert.AreEqual(0.157299, Functions.ErfC(1), Accuracy);
+			Assert.AreEqual(0.974041238799887, Functions.Erf(1.57460528612137), Accuracy);
+			Assert.AreEqual(0.179576632289644, Functions.Erf(0.160513579845428), Accuracy);
+			Assert.AreEqual(0.953246
