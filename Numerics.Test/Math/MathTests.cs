@@ -135,4 +135,56 @@ namespace Orbifold.Numerics.Tests.Math
 			Assert.AreEqual(0.157299, Functions.ErfC(1), Accuracy);
 			Assert.AreEqual(0.974041238799887, Functions.Erf(1.57460528612137), Accuracy);
 			Assert.AreEqual(0.179576632289644, Functions.Erf(0.160513579845428), Accuracy);
-			Assert.AreEqual(0.953246
+			Assert.AreEqual(0.953246471325595, Functions.Erf(1.40610033273697), Accuracy);
+			Assert.AreEqual(0.991755233573447, Functions.Erf(1.86809009313583), Accuracy);
+			Assert.AreEqual(0.736936058170946, Functions.Erf(0.791378796100616), Accuracy);
+			Assert.AreEqual(0.999569347389669, Functions.Erf(2.48940485715866), Accuracy);
+			Assert.AreEqual(0.987566883153486, Functions.Erf(1.76748901605606), Accuracy);
+			Assert.AreEqual(0.999888862657955, Functions.Erf(2.73289293050766), Accuracy);
+			Assert.AreEqual(0.996813252870384, Functions.Erf(2.08534651994705), Accuracy);
+			Assert.AreEqual(0.699290496068478, Functions.Erf(0.731794059276581), Accuracy);
+
+			//ErfC
+			Assert.AreEqual(0.651781770756059, Functions.ErfC(0.31910902261734), Accuracy);
+			Assert.AreEqual(4.12069564569917E-03, Functions.ErfC(2.02852767705917), Accuracy);
+			Assert.AreEqual(1.46751412783641E-02, Functions.ErfC(1.72555142641068), Accuracy);
+			Assert.AreEqual(0.662047513039235, Functions.ErfC(0.309067904949188), Accuracy);
+			Assert.AreEqual(0.227452330753622, Functions.ErfC(0.853440821170807), Accuracy);
+			Assert.AreEqual(0.209530338576434, Functions.ErfC(0.887318551540375), Accuracy);
+			Assert.AreEqual(0.201634140967401, Functions.ErfC(0.902911484241486), Accuracy);
+			Assert.AreEqual(3.22363767814562E-05, Functions.ErfC(2.93948811292648), Accuracy);
+			Assert.AreEqual(0.237745018524273, Functions.ErfC(0.834839880466461), Accuracy);
+			Assert.AreEqual(0.489695316985242, Functions.ErfC(0.488464772701263), Accuracy);
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void SiCiTest()
+		{
+			// Si
+			Assert.AreEqual(0.946083, Functions.Si(1), Accuracy);
+			Assert.AreEqual(1.658347594, Functions.Si(10), Accuracy);
+			Assert.AreEqual(-1.47509, Functions.Si(-7.2), Accuracy);
+
+			//Ci
+			Assert.AreEqual(.0959571, Functions.Ci(7.2), Accuracy);
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void LaguerreTest()
+		{
+
+			Assert.AreEqual(0.663492, Functions.Laguerre(2, 7), Accuracy);
+			Assert.AreEqual(-0.114667, Functions.Laguerre(2.2, 3), Accuracy);
+			Assert.AreEqual(3465.09, Functions.Laguerre(23.3, 8), 0.01);
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void LegendreTest()
+		{
+
+			Assert.AreEqual(73, Functions.Legendre(7, 2), Accuracy);
+			Assert.AreEqual(2199.125000, Functions.Legendre(2, 7), Accuracy);
+			Assert.AreEqual(23.32, Functions.Legendre(2
