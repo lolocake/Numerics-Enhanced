@@ -187,4 +187,57 @@ namespace Orbifold.Numerics.Tests.Math
 
 			Assert.AreEqual(73, Functions.Legendre(7, 2), Accuracy);
 			Assert.AreEqual(2199.125000, Functions.Legendre(2, 7), Accuracy);
-			Assert.AreEqual(23.32, Functions.Legendre(2
+			Assert.AreEqual(23.32, Functions.Legendre(2.2, 3), Accuracy);
+			Assert.AreEqual(4.352028145736411E+12, Functions.Legendre(23.3, 8), 0.01);
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void HermiteTest()
+		{
+
+			Assert.AreEqual(194, Functions.Hermite(7, 2), Accuracy);
+			Assert.AreEqual(-3104, Functions.Hermite(2, 7), Accuracy);
+			Assert.AreEqual(58.78400000000001, Functions.Hermite(2.2, 3), Accuracy);
+			Assert.AreEqual(2.166806362005386E+13, Functions.Hermite(23.3, 8), 0.1);
+		}
+        
+        [Test]
+		[Category("Diverse functions")]
+		public void ErfInverseTest()
+        {
+            Assert.AreEqual(0.2724627147267544, Functions.ErfInverse(0.3), Accuracy);
+            Assert.AreEqual(0.6040031879352371, Functions.ErfInverse(0.607), Accuracy);
+            Assert.AreEqual(0.1418558907268814, Functions.ErfInverse(0.159), Accuracy);
+            Assert.AreEqual(1.701751973779214, Functions.ErfInverse(0.9839), Accuracy);
+
+        }
+
+		[Test]
+		[Category("Diverse functions")]
+		public void BesselTest()
+		{
+			Assert.AreEqual(-0.2459357645, Functions.BesselJ0(10), Accuracy);
+			Assert.AreEqual(0.110798, Functions.BesselJ0(12.3), Accuracy);
+			Assert.AreEqual(-0.155559, Functions.BesselJ0(2.73), Accuracy);
+			Assert.AreEqual(0.0142751, Functions.BesselJ0(209.44), Accuracy);
+
+			Assert.AreEqual(-0.0267446, Functions.BesselY0(809.44), Accuracy);
+			Assert.AreEqual(0.0140024, Functions.BesselY0(79.17), Accuracy);
+			Assert.AreEqual(0.244426, Functions.BesselY0(9.05), Accuracy);
+
+			Assert.AreEqual(0.02628796642, Functions.BesselJ1(901), Accuracy);
+			Assert.AreEqual(-0.0943526, Functions.BesselJ1(61.66), Accuracy);
+			Assert.AreEqual(0.443286, Functions.BesselJ1(1.01), Accuracy);
+
+			Assert.AreEqual(0.0707866, Functions.BesselY1(111.1), Accuracy);
+			Assert.AreEqual(-0.966882, Functions.BesselY1(0.81), Accuracy);
+			Assert.AreEqual(-0.0596379, Functions.BesselY1(45.8), Accuracy);
+
+			Assert.AreEqual(0.0505855, Functions.BesselY(45.8, 3), Accuracy);
+			Assert.AreEqual(-0.0556135, Functions.BesselY(55.5, 34), Accuracy);
+
+			Assert.AreEqual(0.207486106634021, Functions.BesselJ(10, 10), Accuracy);
+			Assert.AreEqual(0.207486106634021, Functions.BesselJ(10, 10.5.Truncate()), Accuracy);
+			Assert.AreEqual(0.207486106634021, Functions.BesselJ(10, 10.855.Truncate()), Accuracy);
+			Assert.AreEqual(0.207486106634021, Functions.BesselJ
