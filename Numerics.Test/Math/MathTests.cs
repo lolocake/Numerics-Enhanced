@@ -266,4 +266,38 @@ namespace Orbifold.Numerics.Tests.Math
 			Assert.AreEqual(-7.91404283286247E-02, Functions.BesselY(73.4053198099136, 71.0911808013916.Truncate()), Accuracy);
 			Assert.AreEqual(-13162504.974304, Functions.BesselY(55.5980623960495, 84.8179188966751.Truncate()), Accuracy);
 			Assert.AreEqual(-4.56293634715995E-02, Functions.BesselY(79.4113589525223, 20.2836105823517.Truncate()), Accuracy);
-			Assert.AreEqual(-5670.83700260085, Functio
+			Assert.AreEqual(-5670.83700260085, Functions.BesselY(63.4385474920273, 84.3002752065659.Truncate()), Accuracy);
+			Assert.AreEqual(-5956.65770853918, Functions.BesselY(30.0509201288223, 46.3792119026184.Truncate()), Accuracy);
+
+			// problem cases of Deyan
+			Assert.AreEqual("2.23438690749371E+25", Functions.BesselI(100, 90).ToString());
+			Assert.AreEqual("1.617319483915E+24", Functions.BesselI(70, 40).ToString());
+			Assert.AreEqual("1.20158844027E+29", Functions.BesselI(70, 0).ToString());
+			Assert.AreEqual("5.85925129038407E+28", Functions.BesselI(70, 10).ToString());
+
+			Assert.AreEqual(0.00222052182115523, Functions.BesselJ(80, 90), Accuracy);
+			Assert.AreEqual(4.60655306482347E-06, Functions.BesselJ(-80, 100), Accuracy);
+
+			Assert.AreEqual(-0.1139486674, Functions.BesselJ(70, 50), Accuracy);
+			Assert.AreEqual(-0.124230136902855, Functions.BesselJ(70, 60), Accuracy);
+
+			Assert.AreEqual(-0.124230136902855, Functions.BesselJ(-70, 60), Accuracy);
+			Assert.AreEqual(-0.1139486674, Functions.BesselJ(-70, 50), Accuracy);
+			Assert.AreEqual(-0.0914718040406352, Functions.BesselJ(60, 0), Accuracy);
+			Assert.AreEqual(0.0558123275994173, Functions.BesselJ(50, 0), Accuracy);
+
+			Assert.AreEqual(0.000174459, Functions.BesselK(8.05547511577606, 2), Accuracy);
+
+
+			// modified of the first kind
+			Assert.AreEqual(-36.2867133167814, Functions.BesselI(-7.25505954027176, 5.8989474773407.Truncate()), Accuracy);
+			Assert.AreEqual(-757.642823453682, Functions.BesselI(-9.97638005018234, 5.74459171295166.Truncate()), Accuracy);
+			Assert.AreEqual(-46.3021169622632, Functions.BesselI(-8.65552049875259, 7.28751873970032.Truncate()), Accuracy);
+			Assert.AreEqual(16.7107111103458, Functions.BesselI(-4.95308727025986, 2.56302213668823.Truncate()), Accuracy);
+			Assert.AreEqual(8.47578514068768, Functions.BesselI(-5.42086428403854, 4.90471458435059.Truncate()), Accuracy);
+			Assert.AreEqual(244.988171836858, Functions.BesselI(-10.6041207909584, 8.83995270729065.Truncate()), Accuracy);
+			Assert.AreEqual(0.440387388712755, Functions.BesselI(-6.02466958761215, 8.53688097000122.Truncate()), Accuracy);
+			Assert.AreEqual(-10077.3191262523, Functions.BesselI(-11.7561413645744, 3.10368633270264.Truncate()), Accuracy);
+
+			// modified of the second kind
+			Assert.AreEqual(1.06647166273871E-03, Functions.Be
