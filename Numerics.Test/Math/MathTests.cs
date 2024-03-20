@@ -300,4 +300,49 @@ namespace Orbifold.Numerics.Tests.Math
 			Assert.AreEqual(-10077.3191262523, Functions.BesselI(-11.7561413645744, 3.10368633270264.Truncate()), Accuracy);
 
 			// modified of the second kind
-			Assert.AreEqual(1.06647166273871E-03, Functions.Be
+			Assert.AreEqual(1.06647166273871E-03, Functions.BesselK(8.05547511577606, 6.33424019813538.Truncate()), Accuracy);
+			Assert.AreEqual(9.76053018739238E-04, Functions.BesselK(6.79518616199493, 3.89562463760376.Truncate()), Accuracy);
+			Assert.AreEqual(5.4480877288023, Functions.BesselK(4.01948010921478, 8.74740099906921.Truncate()), Accuracy);
+			Assert.AreEqual(215663.892022097, Functions.BesselK(1.14017641544342, 8.6072359085083.Truncate()), Accuracy);
+			Assert.AreEqual(1.05301707327901E-03, Functions.BesselK(9.14490020275116, 8.09037899971008.Truncate()), Accuracy);
+			Assert.AreEqual(52.0039071955581, Functions.BesselK(1.45352756977081, 5.14032697677612.Truncate()), Accuracy);
+			Assert.AreEqual(5.5102547538128E-04, Functions.BesselK(9.62619340419769, 8.90480017662048.Truncate()), Accuracy);
+			Assert.AreEqual(17.9663705301776, Functions.BesselK(4.73536169528961, 10.6195316314697.Truncate()), Accuracy);
+			Assert.AreEqual(2.51991462316546E-05, Functions.BesselK(9.71445834636688, 1.56236863136292.Truncate()), Accuracy);
+			Assert.AreEqual(2.17828016795605E-05, Functions.BesselK(10.4955664873123, 4.64018678665161.Truncate()), Accuracy);
+
+			// spherical of the first kind
+			Assert.AreEqual(0.00009256115861, Functions.SphericalBesselJ(1, 5), Accuracy);
+			Assert.AreEqual(0.003112791813, Functions.SphericalBesselJ(11, 15), Accuracy);
+			Assert.AreEqual(0.170869, Functions.SphericalBesselJ(3.2, 3), Accuracy);
+
+			// spherical of the second kind
+			Assert.AreEqual(-999.4403434, Functions.SphericalBesselY(1, 5), 0.0001); // function diverges near zero and six digits accuracy doesn't work there
+			Assert.AreEqual(-1.353530885, Functions.SphericalBesselY(11, 15), Accuracy);
+			Assert.AreEqual(-0.433651, Functions.SphericalBesselY(3.2, 3), Accuracy);
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void MersenneTest()
+		{
+			// the question is: how to test a random MachineLearningModelCreator...?
+			var rand = new MersenneSource();
+			var trail = new List<int>();
+			Range.Create(1, 1000).ForEach(i => {
+				var v = rand.Next();
+
+				Assert.IsFalse(trail.Contains(v));
+				trail.Add(v);
+			});
+			var traild = new List<double>();
+			Range.Create(1, 1000).ForEach(i => {
+				var v = rand.NextDouble();
+				Assert.IsFalse(traild.Contains(v));
+				traild.Add(v);
+			});
+
+		}
+
+		[Test]
+		[Category("Complex numb
