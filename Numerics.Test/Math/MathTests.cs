@@ -422,4 +422,87 @@ namespace Orbifold.Numerics.Tests.Math
 			var w = new Complex(2, 5);
 			w = 2 * w;
 			Assert.AreEqual(4, w.Real, "Real part is wrong after multiplication.");
-			Assert.Are
+			Assert.AreEqual(10, w.Imaginary, "Imaginary part is wrong after multiplication.");
+			var u = new Complex(1, 1);
+			Assert.AreEqual(System.Math.PI / 4, u.PolarFormAngle(), "Polar angle is wrong.");
+
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		public void IsXBetweenTest()
+		{
+			var p = new Point(0, 10);
+			var a = new Point(-5, 77);
+			var b = new Point(5, 55);
+			Assert.IsTrue(p.IsXBetween(a, b));
+			p.Offset(5, 0);
+			Assert.IsTrue(p.IsXBetween(a, b));
+			p.Offset(2, 0);
+			Assert.IsFalse(p.IsXBetween(a, b));
+
+		}
+
+		[Test]
+		[Category("Diverse functions")]
+		[Ignore]
+		public void BenchmarkRandomizerTest()
+		{
+
+			var amount = 1E7;
+			var defaultSource = new DefaultSource(Environment.TickCount);
+			var sw = new Stopwatch();
+			sw.Start();
+			for(var i = 0; i < amount; i++) {
+				var r = defaultSource.Next();
+			}
+			sw.Stop();
+			var defaultTime = sw.ElapsedMilliseconds;
+
+
+//			var cryptoSource = new CryptoSource();
+//			sw.Reset();
+//			sw.Start();
+//			for(var i = 0; i < amount; i++) {
+//				var r = cryptoSource.Next();
+//			}
+//			sw.Stop();
+//			var cryptoTime = sw.ElapsedMilliseconds;
+
+
+			var mSource = new MersenneSource(Environment.TickCount);
+			sw.Reset();
+			sw.Start();
+			for(var i = 0; i < amount; i++) {
+				var r = mSource.Next();
+			}
+			sw.Stop();
+			var mTime = sw.ElapsedMilliseconds;
+
+			Console.WriteLine(string.Format("Default: {0} ms", defaultTime));
+			//Console.WriteLine(string.Format("Crypto: {0} ms", cryptoTime));
+			Console.WriteLine(string.Format("Mersenne: {0} ms", mTime));
+
+			Assert.IsTrue(defaultTime < mTime, "Not so much faster after all...");
+			//Assert.IsTrue(mTime < cryptoTime, "Not so much faster after all...");
+
+		}
+
+		[Test]
+		[Category("Fourier transform")]
+		public void Radix2Test()
+		{
+			var size = 5.PowerOfTwo();
+			var x = new Complex[size];
+            var myRand = new System.Random();
+			for(var i = 0; i < x.Length; i++)
+				x[i] = new Complex(-2 * myRand.NextDouble() + 1, 0);
+			var y = DiscreteFourierTransform.Radix2Forward(x);
+			var z = DiscreteFourierTransform.Radix2Inverse(y);
+		    var u = DiscreteFourierTransform.PlainForward(x);
+		    var v = DiscreteFourierTransform.PlainInverse(u);
+		    for (var i = 0; i < x.Length; i++)
+		    {
+                if ((x[i] - z[i]).IsNotZero())
+                    Assert.Fail("Radix: item [{0}] failed to be mapped correctly; differs by [{1}].", i, x[i] - z[i]);
+            
