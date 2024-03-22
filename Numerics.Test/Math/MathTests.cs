@@ -505,4 +505,24 @@ namespace Orbifold.Numerics.Tests.Math
 		    {
                 if ((x[i] - z[i]).IsNotZero())
                     Assert.Fail("Radix: item [{0}] failed to be mapped correctly; differs by [{1}].", i, x[i] - z[i]);
-            
+                if ((x[i] - v[i]).IsNotZero())
+                    Assert.Fail("Plain: item [{0}] failed to be mapped correctly; differs by [{1}].", i, x[i] - v[i]);
+		    }
+				
+
+			var input = new Complex[16, 32];
+			for(var i = 0; i < input.GetLength(0); i++)
+				for(var k = 0; k < input.GetLength(1); k++)
+					input[i, k] = new Complex(-2 * myRand.NextDouble() + 1, 0);
+			var output1 = DiscreteFourierTransform.Radix2Forward2D(input);
+			var output2 = DiscreteFourierTransform.Radix2Inverse2D(output1);
+			for(var i = 0; i < input.GetLength(0); i++) {
+				for(var j = 0; j < input.GetLength(1); j++) {
+					if((output2[i, j] - input[i, j]).IsNotZero())
+						Assert.Fail(string.Format("Item [{0},{1}] failed to be mapped correctly.", i, j));
+				}
+			}
+		}
+
+	}
+}
