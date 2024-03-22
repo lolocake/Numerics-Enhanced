@@ -345,4 +345,81 @@ namespace Orbifold.Numerics.Tests.Math
 		}
 
 		[Test]
-		[Category("Complex numb
+		[Category("Complex numbers")]
+		public void Complex2Test()
+		{
+			Assert.AreEqual(0.92729522, EngineeringFunctions.IMARGUMENT("3+4i"), Accuracy);
+			Assert.AreEqual(new Complex(3, -4), EngineeringFunctions.IMCONJUGATE("3+4j"));
+			var zln2 = EngineeringFunctions.IMLOG2("3+4j");
+			Assert.AreEqual(2.32192809488736, zln2.Real, Accuracy);
+			Assert.AreEqual(1.33780421245098, zln2.Imaginary, Accuracy);
+		}
+
+		[Test]
+		[Category("Complex numbers")]
+		public void Complex1Test()
+		{
+			var z = "4.3+j7".ToComplex();
+			Assert.AreEqual(4.3, z.Real);
+			Assert.AreEqual(7, z.Imaginary);
+
+			z = "44+77j".ToComplex();
+			Assert.AreEqual(44, z.Real);
+			Assert.AreEqual(77, z.Imaginary);
+
+			z = "77E+44j".ToComplex();
+			Assert.AreEqual(0, z.Real);
+			Assert.AreEqual(77E44, z.Imaginary);
+
+			z = "-77E+44j".ToComplex();
+			Assert.AreEqual(0, z.Real);
+			Assert.AreEqual(-77E44, z.Imaginary);
+
+			z = "0.2 +i.87".ToComplex();
+			Assert.AreEqual(.2, z.Real);
+			Assert.AreEqual(.87, z.Imaginary);
+
+			z = "0.2E-12".ToComplex();
+			Assert.AreEqual(.2E-12, z.Real);
+			Assert.AreEqual(0, z.Imaginary);
+
+			z = "88E-12i".ToComplex();
+			Assert.AreEqual(0, z.Real);
+			Assert.AreEqual(88E-12, z.Imaginary);
+
+			z = "i".ToComplex();
+			Assert.AreEqual(0, z.Real);
+			Assert.AreEqual(1, z.Imaginary);
+
+			z = "-i".ToComplex();
+			Assert.AreEqual(0, z.Real);
+			Assert.AreEqual(-1, z.Imaginary);
+
+			z = "j".ToComplex();
+			Assert.AreEqual(0, z.Real);
+			Assert.AreEqual(1, z.Imaginary);
+
+			z = "-j".ToComplex();
+			Assert.AreEqual(0, z.Real);
+			Assert.AreEqual(-1, z.Imaginary);
+
+
+			z = ("2 +  i3").ToComplex();
+			Assert.AreEqual(2, z.Real, "Real part is wrong.");
+			Assert.AreEqual(3, z.Imaginary, "Imaginary part is wrong.");
+			Assert.AreEqual(System.Math.Sqrt(13), z.Norm(), "Norm is wrong.");
+
+			z = z.NegateRealNumberPart();
+			Assert.AreEqual(-2, z.Real, "Inverse of the real is wrong");
+			z = z.NegateImaginaryNumberPart();
+			Assert.AreEqual(-3, z.Imaginary, "Inverse of the imaginary is wrong");
+			var sum = z + new Complex(22, 0);
+			Assert.AreEqual(20, sum.Real);
+			Assert.AreEqual(-3, sum.Imaginary);
+			sum += new Complex(0, 22);
+			Assert.AreEqual(20, sum.Real);
+			Assert.AreEqual(19, sum.Imaginary);
+			var w = new Complex(2, 5);
+			w = 2 * w;
+			Assert.AreEqual(4, w.Real, "Real part is wrong after multiplication.");
+			Assert.Are
