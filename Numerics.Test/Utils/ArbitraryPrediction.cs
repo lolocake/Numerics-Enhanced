@@ -35,4 +35,25 @@ namespace Orbifold.Numerics.Tests
 					new ArbitraryPrediction {
 						FirstTestFeature = 1.0m,
 						SecondTestFeature = i,
-						Thir
+						ThirdTestFeature = 1.2m,
+						OutcomeLabel = (i < 50) ? PredictionLabel.Minimum : PredictionLabel.Maximum
+					});
+			}
+
+			return returnData.ToArray();
+		}
+
+		public static IEnumerable<ArbitraryPrediction> GetDataUsingNamedIterator()
+		{
+			for(int i = 0; i < 80; i++) {
+				yield return new ArbitraryPrediction {
+					FirstTestFeature = 1.0m,
+					SecondTestFeature = i,
+					ThirdTestFeature = 1.2m,
+					OutcomeLabel = (i < 50) ? PredictionLabel.Minimum : PredictionLabel.Maximum
+				};
+			}
+		}
+	}
+	
+}
