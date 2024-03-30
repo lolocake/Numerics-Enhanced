@@ -77,3 +77,52 @@ namespace Orbifold.Numerics.Tests.Statistics
 
 		[Test]
 		[Category("Statistics")]
+		public void GeometricTest()
+		{
+			var bin = new GeometricDistribution(.27);
+			Assert.AreEqual(0.848665773711, bin.CumulativeDistribution(5), Accuracy);
+			Assert.AreEqual(0.610983, bin.CumulativeDistribution(2), Accuracy);
+			//Assert.AreEqual(2, bin.Median, Accuracy);
+			//Assert.AreEqual(2.703703703703703, bin.Mean, Accuracy);
+			Assert.AreEqual(2.024811846493059, bin.Skewness, Accuracy);
+			Assert.AreEqual(10.01371742112483, bin.Variance, Accuracy);
+		}
+
+		[Test]
+		[Category("Statistics")]
+		public void NormalDistributionTest()
+		{
+			var bin = new GaussianDistribution(10, 4.5);
+			Assert.AreEqual(0.1332602629025055, bin.CumulativeDistribution(5), Accuracy);
+			Assert.AreEqual(0.03772017981340023, bin.CumulativeDistribution(2), Accuracy);
+			Assert.AreEqual(10, bin.Median, Accuracy);
+			Assert.AreEqual(10, bin.Mean, Accuracy);
+			Assert.AreEqual(0d, bin.Skewness, Accuracy);
+			Assert.AreEqual(20.25, bin.Variance, Accuracy);
+		}
+        
+        [Test]
+		[Category("Statistics")]
+		public void ChiSquareTesTest()
+		{
+            var observed = new  double[] { 639, 241 };
+            var expected = new double[] { 660, 220 };
+            var chi = new ChiSquareTest(expected, observed);
+ 
+            Assert.AreEqual(0.102080961, chi.PValue, Accuracy);
+            Assert.AreEqual(0.2782519, chi.RPValue, Accuracy);
+           
+            observed = new double[] { 44, 56 };
+            expected = new double[] { 50, 50 };
+            chi = new ChiSquareTest(expected, observed);
+            Assert.AreEqual(0.23013934044341644, chi.PValue, Accuracy);
+            Assert.AreEqual(0.4787074, chi.RPValue, Accuracy);
+
+            observed = new double[] { 10, 20, 30, 40 };
+            expected = new double[] { 20, 20, 30, 30 };
+            chi = new ChiSquareTest(expected, observed, 3);
+            Assert.AreEqual(0.039602355, chi.PValue, Accuracy);
+            Assert.AreEqual(0.1900852, chi.RPValue, Accuracy);
+		}
+	}
+}
