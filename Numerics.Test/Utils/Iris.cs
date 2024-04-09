@@ -245,3 +245,51 @@ namespace Orbifold.Numerics.Tests
 					Class = "Iris-versicolor"
 				}, 
 				new Iris { SepalLength = 5.6m, SepalWidth = 3m, PetalLength = 4.1m, PetalWidth = 1.3m, Class = "Iris-versicolor" }, 
+				new Iris { SepalLength = 5.5m, SepalWidth = 2.5m, PetalLength = 4m, PetalWidth = 1.3m, Class = "Iris-versicolor" }, 
+				new Iris {
+					SepalLength = 5.5m,
+					SepalWidth = 2.6m,
+					PetalLength = 4.4m,
+					PetalWidth = 1.2m,
+					Class = "Iris-versicolor"
+				}, 
+				new Iris { SepalLength = 6.1m, SepalWidth = 3m, PetalLength = 4.6m, PetalWidth = 1.4m, Class = "Iris-versicolor" }, 
+				new Iris { SepalLength = 5.8m, SepalWidth = 2.6m, PetalLength = 4m, PetalWidth = 1.2m, Class = "Iris-versicolor" }, 
+				new Iris { SepalLength = 5m, SepalWidth = 2.3m, PetalLength = 3.3m, PetalWidth = 1m, Class = "Iris-versicolor" }, 
+				new Iris {
+					SepalLength = 5.6m,
+					SepalWidth = 2.7m,
+					PetalLength = 4.2m,
+					PetalWidth = 1.3m,
+					Class = "Iris-versicolor"
+				}, 
+				new Iris { SepalLength = 5.7m, SepalWidth = 3m, PetalLength = 4.2m, PetalWidth = 1.2m, Class = "Iris-versicolor" }, 
+				new Iris {
+					SepalLength = 5.7m,
+					SepalWidth = 2.9m,
+					PetalLength = 4.2m,
+					PetalWidth = 1.3m,
+					Class = "Iris-versicolor"
+				}, 
+				new Iris {
+					SepalLength = 6.2m,
+					SepalWidth = 2.9m,
+					PetalLength = 4.3m,
+					PetalWidth = 1.3m,
+					Class = "Iris-versicolor"
+				}, 
+				new Iris { SepalLength = 5.1m, SepalWidth = 2.5m, PetalLength = 3m, PetalWidth = 1.1m, Class = "Iris-versicolor" }, 
+				new Iris {
+					SepalLength = 5.7m,
+					SepalWidth = 2.8m,
+					PetalLength = 4.1m,
+					PetalWidth = 1.3m,
+					Class = "Iris-versicolor"
+				}, 
+				new Iris { SepalLength = 6.3m, SepalWidth = 3.3m, PetalLength = 6m, PetalWidth = 2.5m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 5.8m, SepalWidth = 2.7m, PetalLength = 5.1m, PetalWidth = 1.9m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 7.1m, SepalWidth = 3m, PetalLength = 5.9m, PetalWidth = 2.1m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 6.3m, SepalWidth = 2.9m, PetalLength = 5.6m, PetalWidth = 1.8m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 6.5m, SepalWidth = 3m, PetalLength = 5.8m, PetalWidth = 2.2m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 7.6m, SepalWidth = 3m, PetalLength = 6.6m, PetalWidth = 2.1m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 4.9m, SepalWidth = 2.5m, PetalLength = 4.5m, PetalWidth = 1
