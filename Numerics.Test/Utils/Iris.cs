@@ -331,4 +331,14 @@ namespace Orbifold.Numerics.Tests
 				new Iris { SepalLength = 5.8m, SepalWidth = 2.7m, PetalLength = 5.1m, PetalWidth = 1.9m, Class = "Iris-virginica" }, 
 				new Iris { SepalLength = 6.8m, SepalWidth = 3.2m, PetalLength = 5.9m, PetalWidth = 2.3m, Class = "Iris-virginica" }, 
 				new Iris { SepalLength = 6.7m, SepalWidth = 3.3m, PetalLength = 5.7m, PetalWidth = 2.5m, Class = "Iris-virginica" }, 
-				new Iris { SepalLength = 6.7m, SepalWidth = 3m, PetalLength = 5.2m, PetalWidth = 2.3m, Class = "Iris-virginica"
+				new Iris { SepalLength = 6.7m, SepalWidth = 3m, PetalLength = 5.2m, PetalWidth = 2.3m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 6.3m, SepalWidth = 2.5m, PetalLength = 5m, PetalWidth = 1.9m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 6.5m, SepalWidth = 3m, PetalLength = 5.2m, PetalWidth = 2m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 6.2m, SepalWidth = 3.4m, PetalLength = 5.4m, PetalWidth = 2.3m, Class = "Iris-virginica" }, 
+				new Iris { SepalLength = 5.9m, SepalWidth = 3m, PetalLength = 5.1m, PetalWidth = 1.8m, Class = "Iris-virginica" }, 
+			};
+		}
+
+	}
+	
+}
