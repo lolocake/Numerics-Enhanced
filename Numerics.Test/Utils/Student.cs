@@ -236,4 +236,18 @@ namespace Orbifold.Numerics.Tests
 				new Student { Name = "Adalyn", Age = 18, Friends = 9, GPA = 2.66, Grade = Grade.B, Tall = true, Nice = true },
 				new Student { Name = "Jason", Age = 32, Friends = 1, GPA = 1.03, Grade = Grade.C, Tall = true, Nice = false },
 				new Student { Name = "Lorelei", Age = 26, Friends = 8, GPA = 4.04, Grade = Grade.A, Tall = false, Nice = true },
-				new Student { Name = "Anthony", Age = 28, Friends = 3, GPA = 0.89, Grade = Grade.C, Tall = false, Nice = false 
+				new Student { Name = "Anthony", Age = 28, Friends = 3, GPA = 0.89, Grade = Grade.C, Tall = false, Nice = false },
+				new Student { Name = "Julia", Age = 21, Friends = 8, GPA = 3.86, Grade = Grade.A, Tall = true, Nice = true },
+				new Student { Name = "Nolan", Age = 34, Friends = 1, GPA = 1.86, Grade = Grade.F, Tall = false, Nice = false },
+				new Student { Name = "Reagan", Age = 34, Friends = 7, GPA = 3.71, Grade = Grade.B, Tall = false, Nice = true },
+				new Student { Name = "Cooper", Age = 37, Friends = 2, GPA = 1.13, Grade = Grade.D, Tall = true, Nice = false },
+				new Student { Name = "Faith", Age = 23, Friends = 9, GPA = 2.63, Grade = Grade.A, Tall = true, Nice = true },
+				new Student { Name = "Maddox", Age = 21, Friends = 3, GPA = 2.30, Grade = Grade.D, Tall = true, Nice = false },
+				new Student { Name = "Sydney", Age = 39, Friends = 7, GPA = 2.64, Grade = Grade.A, Tall = false, Nice = true },
+				new Student { Name = "John", Age = 22, Friends = 1, GPA = 1.17, Grade = Grade.C, Tall = false, Nice = false },
+				new Student { Name = "Jasmine", Age = 20, Friends = 8, GPA = 2.53, Grade = Grade.B, Tall = false, Nice = true },
+			};
+		}
+	}
+	
+}
