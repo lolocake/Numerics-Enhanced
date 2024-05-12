@@ -58,4 +58,20 @@ namespace Orbifold.Numerics.Tests
 			return new [] {
 				Tennis.Make(Outlook.Sunny, Temperature.Hot, Humidity.High, false, false),
 				Tennis.Make(Outlook.Sunny, Temperature.Hot, Humidity.High, true, false),
-				Tennis.Make(Outlook.Over
+				Tennis.Make(Outlook.Overcast, Temperature.Hot, Humidity.High, false, true),
+				Tennis.Make(Outlook.Rainy, Temperature.Mild, Humidity.High, false, true),
+				Tennis.Make(Outlook.Rainy, Temperature.Cool, Humidity.Normal, false, true),
+				Tennis.Make(Outlook.Rainy, Temperature.Cool, Humidity.Normal, true, false),
+				Tennis.Make(Outlook.Overcast, Temperature.Cool, Humidity.Normal, true, true),
+				Tennis.Make(Outlook.Sunny, Temperature.Mild, Humidity.High, false, false),
+				Tennis.Make(Outlook.Sunny, Temperature.Cool, Humidity.Normal, false, true),
+				Tennis.Make(Outlook.Rainy, Temperature.Mild, Humidity.Normal, false, true),
+				Tennis.Make(Outlook.Sunny, Temperature.Mild, Humidity.Normal, true, true),
+				Tennis.Make(Outlook.Overcast, Temperature.Mild, Humidity.High, true, true),
+				Tennis.Make(Outlook.Overcast, Temperature.Hot, Humidity.Normal, false, true),
+				Tennis.Make(Outlook.Rainy, Temperature.Mild, Humidity.High, true, false)
+			};
+		}
+	}
+	
+}
